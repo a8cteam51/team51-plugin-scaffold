@@ -9,7 +9,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="team51-plugin-scaffold"/>
+				<element value="wpcomsp-scaffold"/>
 			</property>
 		</properties>
 	</rule>
@@ -19,6 +19,7 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="wpcomsp_"/>
+				<element value="wpcomsp_scaffold_"/>
 			</property>
 		</properties>
 	</rule>

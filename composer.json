@@ -27,14 +27,14 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.0",
     "ext-json": "*"
   },
   "require-dev": {
     "a8cteam51/team51-configs": "dev-trunk",
 
     "johnpbloch/wordpress-core": "6.2.*",
-    "wpackagist-plugin/woocommerce": "7.6.*",
+    "wpackagist-plugin/woocommerce": "7.4.*",
 
     "wp-cli/i18n-command": "^2.4",
 
@@ -48,7 +48,7 @@
 
   "autoload": {
     "psr-4": {
-      "Team51\\Donations\\": "src/"
+      "WPcomSpecialProjects\\Scaffold\\": "src/"
     },
     "classmap": [
       "models/"
@@ -70,7 +70,7 @@
       "@makejson"
     ],
     "makepot": "wp i18n make-pot .",
-    "updatepo": "wp i18n update-po ./languages/team51-plugin-scaffold.pot",
+    "updatepo": "wp i18n update-po ./languages/wpcomsp-scaffold.pot",
     "makejson": "wp i18n make-json ./languages --pretty-print --no-purge",
     "makemo": "wp i18n make-mo ./languages",
 

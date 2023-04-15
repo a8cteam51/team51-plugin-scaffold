@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2333685186d721124e5e7ddaf34416e6",
+    "content-hash": "4bfc28cc2f313083c4fb08ab88c79b9e",
     "packages": [],
     "packages-dev": [
         {
@@ -12,7 +12,7 @@
             "version": "dev-trunk",
             "source": {
                 "type": "git",
-                "url": "git@github.com:a8cteam51/team51-configs.git",
+                "url": "https://github.com/a8cteam51/team51-configs.git",
                 "reference": "2292c2c66d0741af1c97502b5260627d6fa6aa4f"
             },
             "dist": {
@@ -50,6 +50,10 @@
                 }
             ],
             "description": "A collection of shared configuration files for Team51 projects.",
+            "support": {
+                "source": "https://github.com/a8cteam51/team51-configs/tree/trunk",
+                "issues": "https://github.com/a8cteam51/team51-configs/issues"
+            },
             "time": "2023-03-16T16:08:41+00:00"
         },
         {
@@ -2040,15 +2044,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "7.6.0",
+            "version": "7.4.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/7.6.0"
+                "reference": "tags/7.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.7.6.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.7.4.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -2067,7 +2071,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-json": "*"
     },
     "platform-dev": [],
