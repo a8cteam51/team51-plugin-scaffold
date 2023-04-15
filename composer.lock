@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8df11fba4a803e4cbe4aa11372a141aa",
+    "content-hash": "2333685186d721124e5e7ddaf34416e6",
     "packages": [],
     "packages-dev": [
         {
@@ -12,7 +12,7 @@
             "version": "dev-trunk",
             "source": {
                 "type": "git",
-                "url": "https://github.com/a8cteam51/team51-configs.git",
+                "url": "git@github.com:a8cteam51/team51-configs.git",
                 "reference": "2292c2c66d0741af1c97502b5260627d6fa6aa4f"
             },
             "dist": {
@@ -50,10 +50,6 @@
                 }
             ],
             "description": "A collection of shared configuration files for Team51 projects.",
-            "support": {
-                "source": "https://github.com/a8cteam51/team51-configs/tree/trunk",
-                "issues": "https://github.com/a8cteam51/team51-configs/issues"
-            },
             "time": "2023-03-16T16:08:41+00:00"
         },
         {
@@ -494,16 +490,16 @@
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "6.1.1",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "c9688597721b8579f3c29028e572a7b9753db893"
+                "reference": "cec139b6b71913343b68fbf043c468407a921225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/c9688597721b8579f3c29028e572a7b9753db893",
-                "reference": "c9688597721b8579f3c29028e572a7b9753db893",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/cec139b6b71913343b68fbf043c468407a921225",
+                "reference": "cec139b6b71913343b68fbf043c468407a921225",
                 "shasum": ""
             },
             "require": {
@@ -511,7 +507,7 @@
                 "php": ">=5.6.20"
             },
             "provide": {
-                "wordpress/core-implementation": "6.1.1"
+                "wordpress/core-implementation": "6.2.0"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -538,7 +534,7 @@
                 "source": "https://core.trac.wordpress.org/browser",
                 "wiki": "https://codex.wordpress.org/"
             },
-            "time": "2022-11-15T19:11:58+00:00"
+            "time": "2023-03-30T04:14:50+00:00"
         },
         {
             "name": "mck89/peast",

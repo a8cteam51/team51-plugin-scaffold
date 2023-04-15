@@ -2,7 +2,7 @@
   "name": "a8cteam51/team51-plugin-scaffold",
   "type": "wordpress-plugin",
 
-  "description": "A plugin scaffold for Team51 plugins.",
+  "description": "A scaffold for WP.com Special Projects plugins.",
   "homepage": "https://github.com/a8cteam51/team51-plugin-scaffold",
   "license": "GPL-2.0-or-later",
   "authors": [
@@ -33,7 +33,7 @@
   "require-dev": {
     "a8cteam51/team51-configs": "dev-trunk",
 
-    "johnpbloch/wordpress-core": "6.1.*",
+    "johnpbloch/wordpress-core": "6.2.*",
     "wpackagist-plugin/woocommerce": "7.6.*",
 
     "wp-cli/i18n-command": "^2.4",
@@ -59,7 +59,7 @@
   },
 
   "scripts": {
-    "dump-autoload": "@composer dump-autoload -o",
+    "generate-autoloader": "@composer dump-autoload -o",
 
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. . -v",
     "lint:php": "phpcs --standard=./.phpcs.xml --basepath=. . -v",
