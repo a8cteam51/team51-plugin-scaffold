@@ -20,6 +20,7 @@ You'll need to update the following fields in the main PHP file's header:
 
 This scaffold has the following folder structure:
 
+```
 plugin-name/
 ├── assets/
 │   ├── css/
@@ -40,6 +41,7 @@ plugin-name/
 ├── templates/
 │   └── admin/
 └── plugin-name.php
+```
 
 - assets: A folder to store all static assets such as styles, scripts, and images.
 - blocks: A folder for storing Gutenberg block files, if the plugin uses custom blocks.
