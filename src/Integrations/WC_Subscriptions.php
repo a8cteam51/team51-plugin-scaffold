@@ -1,6 +1,6 @@
 <?php
 
-namespace WPcomSpecialProjects\Scaffold\Integrations;
+namespace WPCOMSpecialProjects\Scaffold\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
