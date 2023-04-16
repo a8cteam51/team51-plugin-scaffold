@@ -4,7 +4,7 @@ Welcome to the Team 51 Plugin Scaffold, a standardized starting point for creati
 
 ## Getting Started
 
-To begin, run the command `team51 create-repository --type=plugin`
+To begin, run the command `team51 create-repository --repo-type=plugin`
 
 If you don't want to create a repository for your plugin, another option is to clone or download this repository. Rename the folder and the main PHP file with your desired plugin name. Be sure to follow the naming convention: plugin-name for the folder and plugin-name.php for the main PHP file.
 
