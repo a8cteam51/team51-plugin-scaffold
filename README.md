@@ -37,26 +37,28 @@ plugin-name/
 ├── languages/
 ├── models/
 ├── src/
+│   ├ ...
 │   └── Integrations/
 ├── templates/
+│   ├ ...
 │   └── admin/
 └── plugin-name.php
 ```
 
 - assets: A folder to store all static assets such as styles, scripts, and images.
 - blocks: A folder for storing Gutenberg block files, if the plugin uses custom blocks.
-- includes: Contains any PHP files with additional functionality for the plugin.
+- includes: Contains any PHP files with additional functionality for the plugin. Mostly useful for helper functions.
 - languages: Contains the translation files for your plugin.
-- models: Contains PHP classes or data models that represent the plugin's data structures.
-- src: A folder for organizing the plugin's main PHP classes or code components, such as integrations with other plugins or services.
-- templates: Contains any PHP template files used for rendering HTML output.
-- plugin-name.php: The main PHP file containing the plugin header and essential functions.
+- models: Contains PHP classes or data models that represent the plugin's data structures. As an example, think of WooCommerce's `WC_Order` class.
+- src: A folder for organizing the plugin's main PHP classes or code components, such as integrations with other plugins or services. These classes should be organized into subfolders following the [PSR-4](https://www.php-fig.org/psr/psr-4/) convention. `Composer` will handle the autoloading for these classes.
+- templates: Contains any PHP template files used for rendering HTML output. Admin templates should generally be in their own folder separated from front-end templates.
+- plugin-name.php: The main PHP file containing the plugin header and bootstraping functionality.
 
 ## Development
 
 Develop your plugin by adding the necessary functionality by creating new files within the includes folder. Remember to enqueue your styles and scripts within the assets folder.
 
-Follow the WordPress Coding Standards for PHP, CSS, and JavaScript when writing your code.
+Follow the WordPress Coding Standards for PHP, CSS, and JavaScript when writing your code. You can read more about linting and formatting your code in the [Team51 Project Scaffold](https://github.com/a8cteam51/team51-project-scaffold#code-style--quality).
 
 ## Documentation
 
