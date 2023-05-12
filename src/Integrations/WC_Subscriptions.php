@@ -19,7 +19,7 @@ class WC_Subscriptions {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 */
 	public function is_active(): bool {
 		return \class_exists( 'WC_Subscriptions' );

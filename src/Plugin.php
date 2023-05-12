@@ -99,9 +99,9 @@ class Plugin {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   string|null     $minimum_wc_version    The minimum WooCommerce version required.
+	 * @param   string|null $minimum_wc_version The minimum WooCommerce version required.
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 */
 	public function is_active( string &$minimum_wc_version = null ): bool {
 		// Check if WooCommerce is active.
