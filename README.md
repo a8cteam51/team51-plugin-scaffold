@@ -60,6 +60,18 @@ Develop your plugin by adding the necessary functionality by creating new files 
 
 Follow the WordPress Coding Standards for PHP, CSS, and JavaScript when writing your code. You can read more about linting and formatting your code in the [Team51 Project Scaffold](https://github.com/a8cteam51/team51-project-scaffold#code-style--quality).
 
+## PHP Dependencies Scoping
+
+If you're using 3rd-party libraries, you should scope them to the plugin's namespace to avoid conflicts with other plugins.
+
+This scaffold provides a small framework+example for doing that, but you'll need to create a configuration file for each library you want to use/scope. Follow these steps:
+
+* Add your library to Composer in its `require-dev` block.
+* Create a configuration file for your library in the `.php-scoper` folder (see the examples for `psr/log` and `psr/container` provided in the scaffold).
+* Create a script in the `composer.json` file that will run the PHP Scoper tool. See the `composer.json` file in the scaffold for an example for the two PSR libraries mentioned above.
+* Include your script inside the `scope-php-dependencies` script in the `composer.json` file.
+* Whenever you use the library, make sure you reference the scoped version of the library. For example, if you're using the `psr/log` library, you'll need to reference it as `\WPCOMSpecialProjects\PluginName\Psr\Log` instead of `\Psr\Log`.
+
 ## Documentation
 
 As you develop your plugin, update the README.md file with detailed information about your plugin's features, usage, installation, and any other pertinent information.
