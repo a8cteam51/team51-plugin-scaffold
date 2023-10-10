@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a8cteam51/team51-configs.git",
-                "reference": "a68fe88137f05ee5aee6e475c2ca45990957eec9"
+                "reference": "e4737f2cba9a57d72a32cbf46bca54b69555e3a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/a68fe88137f05ee5aee6e475c2ca45990957eec9",
-                "reference": "a68fe88137f05ee5aee6e475c2ca45990957eec9",
+                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/e4737f2cba9a57d72a32cbf46bca54b69555e3a5",
+                "reference": "e4737f2cba9a57d72a32cbf46bca54b69555e3a5",
                 "shasum": ""
             },
             "require": {
@@ -60,7 +60,7 @@
                 "source": "https://github.com/a8cteam51/team51-configs/tree/trunk",
                 "issues": "https://github.com/a8cteam51/team51-configs/issues"
             },
-            "time": "2023-10-10T15:54:21+00:00"
+            "time": "2023-10-10T15:57:04+00:00"
         },
         {
             "name": "composer/installers",
