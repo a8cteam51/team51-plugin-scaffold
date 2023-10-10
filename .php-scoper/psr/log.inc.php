@@ -11,7 +11,7 @@ return array(
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
 	'finders'  => array(
-		Finder::create()->files()->in( 'vendor/psr/log' )->exclude( 'Test' )->name( array( '*.php', 'LICENSE', 'composer.json' ) )
+		Finder::create()->files()->in( 'vendor/psr/log' )->exclude( 'Test' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 	),
 
 	/**
