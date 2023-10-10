@@ -70,6 +70,7 @@ This scaffold provides a small framework+example for doing that, but you'll need
 * Create a configuration file for your library in the `.php-scoper` folder (see the examples for `psr/log` and `psr/container` provided in the scaffold).
 * Create a script in the `composer.json` file that will run the PHP Scoper tool. See the `composer.json` file in the scaffold for an example for the two PSR libraries mentioned above.
 * Include your script inside the `scope-php-dependencies` script in the `composer.json` file.
+* Add your library's autoloading logic to the plugin's `autoload` block. Be sure to include the logic for the scoped version of the library. See the `composer.json` file in the scaffold for an example.
 * Whenever you use the library, make sure you reference the scoped version of the library. For example, if you're using the `psr/log` library, you'll need to reference it as `\WPCOMSpecialProjects\PluginName\Psr\Log` instead of `\Psr\Log`.
 
 ## Documentation
