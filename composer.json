@@ -66,10 +66,11 @@
 
   "scripts": {
     "generate-autoloader": "@composer dump-autoload -o",
+    "pre-autoload-dump": "WPCOMSpecialProjects\\Config\\Composer\\ScopePhpDependencies::preAutoloadDump",
+    "post-autoload-dump": "WPCOMSpecialProjects\\Config\\Composer\\ScopePhpDependencies::postAutoloadDump",
 
     "scope-php-dependencies": [
-      "@composer scope-psr",
-      "@composer generate-autoloader"
+      "@composer scope-psr"
     ],
     "scope-psr": [
       "@php ./vendor/bin/php-scoper add-prefix --prefix=WPCOMSpecialProjects\\\\Scaffold\\\\Deps --output-dir=./dependencies/psr/container --config=./.php-scoper/psr/log.inc.php --force --quiet",
