@@ -162,7 +162,7 @@ class Plugin {
 		if ( ! $this->is_active( $minimum_wc_version ) ) {
 			add_action(
 				'admin_notices',
-				static function() use ( $minimum_wc_version ) {
+				static function () use ( $minimum_wc_version ) {
 					if ( \is_null( $minimum_wc_version ) ) {
 						$message = \wp_sprintf(
 							/* translators: 1. Plugin name, 2. Plugin version. */

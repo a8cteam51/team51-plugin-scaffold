@@ -8,7 +8,7 @@
   "authors": [
     {
       "name": "WordPress.com Special Projects Team",
-      "homepage": "https://wpspecialprojects.wordpress.com/"
+      "homepage": "https://wpspecialprojects.wordpress.com"
     },
     {
       "name": "Contributors",
@@ -33,6 +33,10 @@
   "require-dev": {
     "a8cteam51/team51-configs": "dev-trunk",
 
+    "humbug/php-scoper": "^0.18",
+    "psr/container": "^2.0",
+    "psr/log": "^3.0",
+
     "johnpbloch/wordpress-core": "6.2.*",
     "wpackagist-plugin/woocommerce": "7.4.*",
 
@@ -48,18 +52,30 @@
 
   "autoload": {
     "psr-4": {
-      "WPCOMSpecialProjects\\Scaffold\\": "src/"
+      "WPCOMSpecialProjects\\Scaffold\\": "src/",
+
+      "WPCOMSpecialProjects\\Scaffold\\Deps\\Psr\\Container\\": "dependencies/psr/container/src",
+      "WPCOMSpecialProjects\\Scaffold\\Deps\\Psr\\Log\\": "dependencies/psr/log/src"
     },
     "classmap": [
       "models/"
     ]
   },
   "autoload-dev": {
-
   },
 
   "scripts": {
     "generate-autoloader": "@composer dump-autoload -o",
+    "pre-autoload-dump": "WPCOMSpecialProjects\\Config\\Composer\\ScopePhpDependencies::preAutoloadDump",
+    "post-autoload-dump": "WPCOMSpecialProjects\\Config\\Composer\\ScopePhpDependencies::postAutoloadDump",
+
+    "scope-php-dependencies": [
+      "@composer scope-psr"
+    ],
+    "scope-psr": [
+      "@php ./vendor/bin/php-scoper add-prefix --prefix=WPCOMSpecialProjects\\\\Scaffold\\\\Deps --output-dir=./dependencies/psr/container --config=./.php-scoper/psr/log.inc.php --force --quiet",
+      "@php ./vendor/bin/php-scoper add-prefix --prefix=WPCOMSpecialProjects\\\\Scaffold\\\\Deps --output-dir=./dependencies/psr/log --config=./.php-scoper/psr/container.inc.php --force --quiet"
+    ],
 
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. . -v",
     "lint:php": "phpcs --standard=./.phpcs.xml --basepath=. . -v",

@@ -40,7 +40,7 @@ define( 'WPCOMSP_SCAFFOLD_URL', plugin_dir_url( __FILE__ ) );
 // Load plugin translations so they are available even for the error admin notices.
 add_action(
 	'init',
-	static function() {
+	static function () {
 		load_plugin_textdomain(
 			WPCOMSP_SCAFFOLD_METADATA['TextDomain'],
 			false,
@@ -53,7 +53,7 @@ add_action(
 if ( ! is_file( WPCOMSP_SCAFFOLD_PATH . '/vendor/autoload.php' ) ) {
 	add_action(
 		'admin_notices',
-		static function() {
+		static function () {
 			$message      = __( 'It seems like <strong>Team51 Plugin Scaffold</strong> is corrupted. Please reinstall!', 'wpcomsp-scaffold' );
 			$html_message = wp_sprintf( '<div class="error notice wpcomsp-scaffold-error">%s</div>', wpautop( $message ) );
 			echo wp_kses_post( $html_message );
@@ -70,7 +70,7 @@ define( 'WPCOMSP_SCAFFOLD_REQUIREMENTS', $wpcomsp_scaffold_requirements );
 if ( $wpcomsp_scaffold_requirements instanceof WP_Error ) {
 	add_action(
 		'admin_notices',
-		static function() use ( $wpcomsp_scaffold_requirements ) {
+		static function () use ( $wpcomsp_scaffold_requirements ) {
 			$html_message = wp_sprintf( '<div class="error notice wpcomsp-scaffold-error">%s</div>', $wpcomsp_scaffold_requirements->get_error_message() );
 			echo wp_kses_post( $html_message );
 		}
