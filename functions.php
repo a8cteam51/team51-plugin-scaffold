@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use WPcomSpecialProjects\Scaffold\Plugin;
+use WPCOMSpecialProjects\Scaffold\Plugin;
 
 // region
 
