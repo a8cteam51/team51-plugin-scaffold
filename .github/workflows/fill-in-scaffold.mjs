@@ -17,25 +17,25 @@ const skip_dirs = [
  */
 const traverseDirectory = async ( dirPath, callback ) => {
 	if ( skip_dirs.includes( dirPath ) ) {
-		console.log('Skipping %s', dirPath);
+		console.log( 'Skipping %s', dirPath );
 		return;
 	}
-	console.log('Traversing %s', dirPath);
+	console.log( 'Traversing %s', dirPath );
 
 	// Read the contents of the directory
-	const files = await readdir(dirPath);
+	const files = await readdir( dirPath );
 	
 	// Loop over each file in that directory
-	for (const file of files) {
+	for ( const file of files ) {
 		// Construct the full path to the file
-		const filePath = joinPath(dirPath, file);
+		const filePath = joinPath( dirPath, file );
 
 		// Check if the current entry is a file
-		if (statSync(filePath).isFile()) {
-			await callback(filePath);
+		if ( statSync( filePath ).isFile() ) {
+			await callback( filePath );
 		} else {
 			// Recursively traverse directories
-			await traverseDirectory(filePath, callback);
+			await traverseDirectory( filePath, callback );
 		}
 	}
 };
@@ -44,11 +44,11 @@ const traverseDirectory = async ( dirPath, callback ) => {
  * Build a template using envs
  * @param {string} filePath 
  */
-const buildTemplate = async (filePath) => {
-	console.log('Building %s', filePath);
+const buildTemplate = async ( filePath ) => {
+	console.log( 'Building %s', filePath );
 
 	// Read the template file
-	const templateFile = await readFile(filePath, 'utf-8');
+	const templateFile = await readFile( filePath, 'utf-8' );
 
 	// Do all the swaps!
 	let renderedTemplate = templateFile;
@@ -139,10 +139,9 @@ const buildTemplate = async (filePath) => {
 	if ( renderedTemplate !== templateFile ) {
 		console.log( "	Changes were made.  Writing file." );
 		// Write back over the templated file
-		await writeFile(filePath, renderedTemplate);
+		await writeFile( filePath, renderedTemplate );
 	}
 
 };
-
 
 await traverseDirectory( '.', buildTemplate );
