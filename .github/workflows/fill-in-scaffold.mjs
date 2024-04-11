@@ -12,7 +12,7 @@ const skip_dirs = [
 ];
 
 /**
- * @param {string} dirPath 
+ * @param {string} dirPath
  * @param {(filePath: string) => Promise<void>} callback
  */
 const traverseDirectory = async ( dirPath, callback ) => {
@@ -66,10 +66,6 @@ const buildTemplate = async ( filePath ) => {
 		renderedTemplate = renderedTemplate.replaceAll(
 			'EXAMPLE_REPO_PROD_URL',
 			repository.custom_properties['site-production-url']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'EXAMPLE_REPO_DEV_URL',
-			repository.custom_properties['site-development-url']
 		);
 	}
 
@@ -132,7 +128,6 @@ const buildTemplate = async ( filePath ) => {
 			'WPCOMSP_SCAFFOLD',
 			'WPCOMSP_' + repository.custom_properties['php-globals-short-prefix'].toUpperCase
 		);
-
 	}
 
 	// If stuff has changed, say so and write it back out.  If there were no changes, do nothing.
