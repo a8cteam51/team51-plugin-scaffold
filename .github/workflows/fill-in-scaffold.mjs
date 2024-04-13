@@ -38,37 +38,16 @@ const buildTemplate = async ( filePath ) => {
 	console.log( 'Building %s', filePath );
 
 	const templateFile   = await readFile( filePath, 'utf-8' );
-	let renderedTemplate = templateFile;
+	let renderedTemplate = templateFile, replacements;
 
+	const title = repository.custom_properties['human-title'] ?? repository.name;
 	if ( 'README.md' === filePath ) {
-		const replacements = {
-			'EXAMPLE_REPO_NAME': repository.custom_properties['human-title'] ?? repository.name,
+		replacements = {
+			'EXAMPLE_REPO_NAME': title,
 			'EXAMPLE_REPO_DESCRIPTION': repository.description ?? '',
-			'EXAMPLE_REPO_PROD_URL': repository.homepage ?? 'https://wpspecialprojects.com',
 		};
-
-		for ( const [ key, value ] of Object.entries( replacements ) ) {
-			renderedTemplate = renderedTemplate.replaceAll( key, value );
-		}
-	}
-
-	if ( 'project' === repository.custom_properties['repo-type'] ) {
-		const replacements = {
-			'Build Processes Demo': repository.custom_properties['human-title'] ?? repository.name,
-			'A demo project for showcasing standardized build processes for various asset types.': repository.description ?? '',
-			'build-processes-demo-production.mystagingwebsite.com': repository.homepage ?? 'https://wpspecialprojects.com',
-			'build-processes-demo': repository.name,
-			'build_processes_demo': repository.custom_properties['php-globals-long-prefix'],
-			'bpd': repository.custom_properties['php-globals-short-prefix'],
-			'BPD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
-		};
-
-		for ( const [ key, value ] of Object.entries( replacements ) ) {
-			renderedTemplate = renderedTemplate.replaceAll( key, value );
-		}
-	} else if ( 'plugin' === repository.custom_properties['repo-type'] ) {
-		const title = repository.custom_properties['human-title'] ?? repository.name,
-			replacements = {
+	} else {
+		replacements = {
 			'Team51 Plugin Scaffold': title,
 			'A scaffold for WP.com Special Projects plugins.': repository.description ?? '',
 			'team51-plugin-scaffold': repository.name,
@@ -78,10 +57,10 @@ const buildTemplate = async ( filePath ) => {
 			'wpcomsp_scaffold': repository.custom_properties['php-globals-short-prefix'],
 			'WPCOMSP_SCAFFOLD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
 		};
+	}
 
-		for ( const [ key, value ] of Object.entries( replacements ) ) {
-			renderedTemplate = renderedTemplate.replaceAll( key, value );
-		}
+	for ( const [ key, value ] of Object.entries( replacements ) ) {
+		renderedTemplate = renderedTemplate.replaceAll( key, value );
 	}
 
 	if ( renderedTemplate !== templateFile ) {

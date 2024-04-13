@@ -24,26 +24,10 @@ jobs:
       - name: Set github actions[bot] as the committer.
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: If it's a project scaffold, rearrange some directories.
-        if: ${{ 'project' == github.event.repository.custom_properties['repo-type'] }}
-        run: |
-          git submodule init
-          git submodule update
-          git mv --force README.scaffold.md README.md
-          git mv themes/build-processes-demo themes/${{ github.event.repository.name }}
-          git mv mu-plugins/build-processes-demo-blocks mu-plugins/${{ github.event.repository.name }}-blocks
-          git mv mu-plugins/build-processes-demo-features mu-plugins/${{ github.event.repository.name }}-features
-
-      - name: If it's a plugin scaffold, rename the readme and plugin file.
-        if: ${{ 'plugin' == github.event.repository.custom_properties['repo-type'] }}
+      - name: Rename the readme and plugin file.
         run: |
           git mv --force README.scaffold.md README.md
           git mv team51-plugin-scaffold.php ${{ github.event.repository.name }}.php
-
-      - name: If it's an issues repo scaffold, rename the readme file.
-        if: ${{ 'issues' == github.event.repository.custom_properties['repo-type'] }}
-        run: |
-          git mv --force README.scaffold.md README.md
 
       - name: Commit the changed files.
         run: git commit -am "chore -- rename files from scaffolding"
