@@ -2,33 +2,28 @@ name: Fill in the Scaffold Placeholders
 
 on:
   repository_dispatch:
-    types: [fill_scaffold]
+    types: [ fill_scaffold ]
   workflow_dispatch:
 
 jobs:
   fill-scaffold:
-    # Don't run this in the scaffold repo
-    if: github.repository != 'a8cteam51/team51-plugin-scaffold'
+    if: github.repository != 'a8cteam51/team51-plugin-scaffold' # Don't run this on the scaffold itself.
+
     runs-on: ubuntu-latest
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
       contents: write
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup proper Node.js version
+        uses: actions/setup-node@v4
         with:
-          # by default, it uses a depth of 1
-          # this fetches all history so that we can read each commit
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          node-version-file: 'package.json'
 
       - name: Set github actions[bot] as the committer.
-        run: |
-          git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
-  
+        run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: If it's a project scaffold, rearrange some directories.
         if: ${{ 'project' == github.event.repository.custom_properties['repo-type'] }}
         run: |
@@ -51,18 +46,13 @@ jobs:
           git mv --force README.scaffold.md README.md
 
       - name: Commit the changed files.
-        run: |
-          git commit -am "chore: rename files from scaffolding"
+        run: git commit -am "chore -- rename files from scaffolding"
 
-      # Run the templating
-      - name: Do the string replacements within the files.
-        run: |
-          node ./.github/workflows/fill-in-scaffold.mjs '${{ toJSON( github.event.repository ) }}'
+      - name: Perform string replacements within the files.
+        run: node ./.github/workflows/fill-in-scaffold.mjs '${{ toJSON( github.event.repository ) }}'
 
       - name: Commit the changed files.
-        run: |
-          git commit -am "chore: fill in scaffolding placeholders"
+        run: git commit -am "chore -- fill in scaffolding placeholders"
 
       - name: Push all the changed files.
-        run: |
-          git push
+        run: git push

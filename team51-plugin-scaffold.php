@@ -14,17 +14,17 @@
  * Plugin URI:              https://wpspecialprojects.wordpress.com
  * Description:             A scaffold for WP.com Special Projects plugins.
  * Version:                 1.0.0
- * Requires at least:       6.2
- * Tested up to:            6.2
- * Requires PHP:            8.0
+ * Requires at least:       6.5
+ * Tested up to:            6.5
+ * Requires PHP:            8.2
  * Author:                  WordPress.com Special Projects
  * Author URI:              https://wpspecialprojects.wordpress.com
  * License:                 GPL v3 or later
  * License URI:             https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:             wpcomsp-scaffold
  * Domain Path:             /languages
- * WC requires at least:    7.4
- * WC tested up to:         7.4
+ * WC requires at least:    8.8
+ * WC tested up to:         8.8
  **/
 
 defined( 'ABSPATH' ) || exit;
