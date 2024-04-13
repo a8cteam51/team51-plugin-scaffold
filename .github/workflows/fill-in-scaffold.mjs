@@ -1,15 +1,11 @@
 import { statSync } from 'fs';
 import { readdir, readFile } from 'fs/promises';
-import { rename as moveFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { join as joinPath } from 'path';
 import process from 'process';
 
 const repository = JSON.parse( process.argv[2] );
-
-const skip_dirs = [
-	'.github',
-	'.git'
-];
+const skip_dirs = [ '.github', '.git' ];
 
 /**
  * @param {string} dirPath
@@ -22,19 +18,13 @@ const traverseDirectory = async ( dirPath, callback ) => {
 	}
 	console.log( 'Traversing %s', dirPath );
 
-	// Read the contents of the directory
-	const files = await readdir( dirPath );
-	
-	// Loop over each file in that directory
+	const files = await readdir( dirPath ); // Read the contents of the directory
 	for ( const file of files ) {
-		// Construct the full path to the file
 		const filePath = joinPath( dirPath, file );
 
-		// Check if the current entry is a file
 		if ( statSync( filePath ).isFile() ) {
 			await callback( filePath );
-		} else {
-			// Recursively traverse directories
+		} else { // Recursively traverse directories
 			await traverseDirectory( filePath, callback );
 		}
 	}
@@ -42,22 +32,18 @@ const traverseDirectory = async ( dirPath, callback ) => {
 
 /**
  * Build a template using envs
- * @param {string} filePath 
+ * @param {string} filePath
  */
 const buildTemplate = async ( filePath ) => {
 	console.log( 'Building %s', filePath );
 
-	// Read the template file
-	const templateFile = await readFile( filePath, 'utf-8' );
-
-	// Do all the swaps!
+	const templateFile   = await readFile( filePath, 'utf-8' );
 	let renderedTemplate = templateFile;
 
-	// Some README.md specific strings...
-	if ( 'README.md' == filePath ) {
+	if ( 'README.md' === filePath ) {
 		renderedTemplate = renderedTemplate.replaceAll(
 			'EXAMPLE_REPO_NAME',
-			repository.custom_properties['human-title'] ?? repository.name
+			repository.custom_properties['human-title']
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'EXAMPLE_REPO_DESCRIPTION',
@@ -65,19 +51,18 @@ const buildTemplate = async ( filePath ) => {
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'EXAMPLE_REPO_PROD_URL',
-			repository.custom_properties['site-production-url']
+			repository.homepage
 		);
 	}
 
-	if ( 'project' == repository.custom_properties['repo-type'] ) {
-		// Some existing string swaps...
+	if ( 'project' === repository.custom_properties['repo-type'] ) {
 		renderedTemplate = renderedTemplate.replaceAll(
 			'A demo project for showcasing standardized build processes for various asset types.',
 			repository.description
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'build-processes-demo-production.mystagingwebsite.com',
-			repository.custom_properties['site-production-url']
+			repository.homepage
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'build-processes-demo',
@@ -95,10 +80,10 @@ const buildTemplate = async ( filePath ) => {
 			'BPD',
 			repository.custom_properties['php-globals-short-prefix'].toUpperCase()
 		);
-	} else if ( 'plugin' == repository.custom_properties['repo-type'] ) {
+	} else if ( 'plugin' === repository.custom_properties['repo-type'] ) {
 		renderedTemplate = renderedTemplate.replaceAll(
 			'Team51 Plugin Scaffold',
-			repository.custom_properties['human-title'] ?? repository.name
+			repository.custom_properties['human-title']
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'A scaffold for WP.com Special Projects plugins.',
@@ -110,15 +95,15 @@ const buildTemplate = async ( filePath ) => {
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'wpcomsp-scaffold',
-			repository.name
+			'wpcomsp-' + repository.name
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'WPCOMSpecialProjects\\Scaffold',
-			'WPCOMSpecialProjects\\' + repository.name
+			'WPCOMSpecialProjects\\' + repository.custom_properties['human-title'].replaceAll( ' ', '' )
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'WPCOMSpecialProjects\\\\Scaffold',
-			'WPCOMSpecialProjects\\\\' + repository.name
+			'WPCOMSpecialProjects\\\\' + repository.custom_properties['human-title'].replaceAll( ' ', '' )
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'wpcomsp_scaffold',
@@ -126,17 +111,14 @@ const buildTemplate = async ( filePath ) => {
 		);
 		renderedTemplate = renderedTemplate.replaceAll(
 			'WPCOMSP_SCAFFOLD',
-			'WPCOMSP_' + repository.custom_properties['php-globals-short-prefix'].toUpperCase
+			'WPCOMSP_' + repository.custom_properties['php-globals-short-prefix'].toUpperCase()
 		);
 	}
 
-	// If stuff has changed, say so and write it back out.  If there were no changes, do nothing.
 	if ( renderedTemplate !== templateFile ) {
-		console.log( "	Changes were made.  Writing file." );
-		// Write back over the templated file
+		console.log( 'Changes were made. Overwriting file.' );
 		await writeFile( filePath, renderedTemplate );
 	}
-
 };
 
 await traverseDirectory( '.', buildTemplate );
