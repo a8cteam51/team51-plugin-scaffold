@@ -41,78 +41,47 @@ const buildTemplate = async ( filePath ) => {
 	let renderedTemplate = templateFile;
 
 	if ( 'README.md' === filePath ) {
-		renderedTemplate = renderedTemplate.replaceAll(
-			'EXAMPLE_REPO_NAME',
-			repository.custom_properties['human-title']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'EXAMPLE_REPO_DESCRIPTION',
-			repository.description
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'EXAMPLE_REPO_PROD_URL',
-			repository.homepage
-		);
+		const replacements = {
+			'EXAMPLE_REPO_NAME': repository.custom_properties['human-title'] ?? repository.name,
+			'EXAMPLE_REPO_DESCRIPTION': repository.description ?? '',
+			'EXAMPLE_REPO_PROD_URL': repository.homepage ?? 'https://wpspecialprojects.com',
+		};
+
+		for ( const [ key, value ] of Object.entries( replacements ) ) {
+			renderedTemplate = renderedTemplate.replaceAll( key, value );
+		}
 	}
 
 	if ( 'project' === repository.custom_properties['repo-type'] ) {
-		renderedTemplate = renderedTemplate.replaceAll(
-			'A demo project for showcasing standardized build processes for various asset types.',
-			repository.description
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'build-processes-demo-production.mystagingwebsite.com',
-			repository.homepage
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'build-processes-demo',
-			repository.name
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'build_processes_demo',
-			repository.custom_properties['php-globals-long-prefix']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'bpd',
-			repository.custom_properties['php-globals-short-prefix']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'BPD',
-			repository.custom_properties['php-globals-short-prefix'].toUpperCase()
-		);
+		const replacements = {
+			'Build Processes Demo': repository.custom_properties['human-title'] ?? repository.name,
+			'A demo project for showcasing standardized build processes for various asset types.': repository.description ?? '',
+			'build-processes-demo-production.mystagingwebsite.com': repository.homepage ?? 'https://wpspecialprojects.com',
+			'build-processes-demo': repository.name,
+			'build_processes_demo': repository.custom_properties['php-globals-long-prefix'],
+			'bpd': repository.custom_properties['php-globals-short-prefix'],
+			'BPD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
+		};
+
+		for ( const [ key, value ] of Object.entries( replacements ) ) {
+			renderedTemplate = renderedTemplate.replaceAll( key, value );
+		}
 	} else if ( 'plugin' === repository.custom_properties['repo-type'] ) {
-		renderedTemplate = renderedTemplate.replaceAll(
-			'Team51 Plugin Scaffold',
-			repository.custom_properties['human-title']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'A scaffold for WP.com Special Projects plugins.',
-			repository.description
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'team51-plugin-scaffold',
-			repository.name
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'wpcomsp-scaffold',
-			'wpcomsp-' + repository.name
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'WPCOMSpecialProjects\\Scaffold',
-			'WPCOMSpecialProjects\\' + repository.custom_properties['human-title'].replaceAll( ' ', '' )
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'WPCOMSpecialProjects\\\\Scaffold',
-			'WPCOMSpecialProjects\\\\' + repository.custom_properties['human-title'].replaceAll( ' ', '' )
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'wpcomsp_scaffold',
-			'wpcomsp_' + repository.custom_properties['php-globals-short-prefix']
-		);
-		renderedTemplate = renderedTemplate.replaceAll(
-			'WPCOMSP_SCAFFOLD',
-			'WPCOMSP_' + repository.custom_properties['php-globals-short-prefix'].toUpperCase()
-		);
+		const title = repository.custom_properties['human-title'] ?? repository.name,
+			replacements = {
+			'Team51 Plugin Scaffold': title,
+			'A scaffold for WP.com Special Projects plugins.': repository.description ?? '',
+			'team51-plugin-scaffold': repository.name,
+			'wpcomsp-scaffold': repository.name,
+			'WPCOMSpecialProjects\\Scaffold': 'WPCOMSpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'WPCOMSP', '' ),
+			'WPCOMSpecialProjects\\\\Scaffold': 'WPCOMSpecialProjects\\\\' + title.replaceAll( ' ', '' ).replace( 'WPCOMSP', '' ),
+			'wpcomsp_scaffold': repository.custom_properties['php-globals-short-prefix'],
+			'WPCOMSP_SCAFFOLD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
+		};
+
+		for ( const [ key, value ] of Object.entries( replacements ) ) {
+			renderedTemplate = renderedTemplate.replaceAll( key, value );
+		}
 	}
 
 	if ( renderedTemplate !== templateFile ) {
