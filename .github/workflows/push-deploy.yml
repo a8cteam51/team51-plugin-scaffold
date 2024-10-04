@@ -1,0 +1,26 @@
+name: Deploy to WordPress.org
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev
+
+      - name: Install Node Modules and Build Assets
+        run: |
+          npm install
+          npm run build
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: team51-plugin-scaffold
