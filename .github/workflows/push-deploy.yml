@@ -10,12 +10,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
       - name: Install Composer Dependencies
-        run: composer install --no-dev
+        run: composer install --no-dev --ignore-platform-reqs --prefer-dist --optimize-autoloader --no-progress
 
       - name: Install Node Modules and Build Assets
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: WordPress Plugin Deploy
