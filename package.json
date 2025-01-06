@@ -1,10 +1,10 @@
 {
   "name": "team51-plugin-scaffold",
   "version": "1.0.0",
-  "description": "A scaffold for WP.com Special Projects plugins",
+  "description": "A scaffold for A8C Special Projects plugins",
   "author": {
-    "name": "WordPress.com Special Projects Team",
-    "url": "https://wpspecialprojects.wordpress.com"
+    "name": "A8C Special Projects Team",
+    "url": "https://specialprojects.automattic.com/"
   },
   "license": "GPL-2.0-or-later",
   "keywords": [
@@ -19,9 +19,10 @@
   },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.0.1",
-    "@wordpress/browserslist-config": "^5.34.1",
-    "@wordpress/postcss-plugins-preset": "^4.35.5",
-    "@wordpress/scripts": "^27.2.5",
+    "@wordpress/browserslist-config": "^6.8.1",
+    "@wordpress/env": "^10.8.1",
+    "@wordpress/postcss-plugins-preset": "^5.8.3",
+    "@wordpress/scripts": "^30.0.6",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^10.1.0",
     "rtlcss": "^4.0.0"
@@ -54,11 +55,23 @@
     "lint:styles": "wp-scripts lint-style blocks/**/*.{css,sass,scss} assets/css/**/*.{css,sass,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
-    "packages-update": "wp-scripts packages-update --dist-tag=wp-6.5",
+    "packages-update": "wp-scripts packages-update --dist-tag=wp-6.7",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
+    "selenium:start": "docker container start selenium-chromium",
+    "selenium:stop": "docker container stop selenium-chromium",
     "start": "npm-run-all --parallel start:**",
     "start:blocks": "wp-scripts start --webpack-src-dir=blocks/src --output-path=blocks/build",
-    "start:assets:scripts": "wp-scripts start assets/js/src/*.js --output-path=assets/js/build"
+    "start:assets:scripts": "wp-scripts start assets/js/src/*.js --output-path=assets/js/build",
+    "tests:start": "wp-env start && npm run selenium:start",
+    "tests:run": "npm run tests:start && npm run tests:run:integration && npm run tests:run:end-to-end",
+    "tests:run:integration": "wp-env run tests-wordpress --env-cwd=wp-content/plugins/a8csp-plugin-scaffold composer run-script tests:run:integration",
+    "tests:run:end-to-end": "wp-env run tests-wordpress --env-cwd=wp-content/plugins/a8csp-plugin-scaffold composer run-script tests:run:end-to-end",
+    "tests:output-wp-path": "npm run wp-env install-path",
+    "tests:export-db": "npm run wp-env run tests-cli wp db export wp-content/plugins/a8csp-plugin-scaffold/tests/Support/Data/dump.sql",
+    "wp-env:start": "wp-env start",
+    "wp-env:update": "wp-env start --update",
+    "wp-env:stop": "wp-env stop",
+    "wp-env": "wp-env"
   }
 }

@@ -1,6 +1,6 @@
-<?php
+<?php declare( strict_types=1 );
 
-namespace WPCOMSpecialProjects\Scaffold;
+namespace A8C\SpecialProjects\Scaffold;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -39,7 +39,7 @@ final class Blocks {
 	 * @return  void
 	 */
 	public function register_blocks(): void {
-		\register_block_type( WPCOMSP_SCAFFOLD_PATH . 'blocks/build/foobar' );
+		\register_block_type( \constant( 'A8CSP_SCAFFOLD_DIR_PATH' ) . 'blocks/build/foobar' );
 	}
 
 	/**
@@ -51,12 +51,15 @@ final class Blocks {
 	 * @return  void
 	 */
 	public function enqueue_block_editor_assets(): void {
-		$plugin_slug = wpcomsp_scaffold_get_plugin_slug();
+		$asset_meta = a8csp_scaffold_get_asset_meta( 'assets/js/build/editor.js' );
+		if ( \is_null( $asset_meta ) ) {
+			return;
+		}
 
-		$asset_meta = wpcomsp_scaffold_get_asset_meta( WPCOMSP_SCAFFOLD_PATH . 'assets/js/build/editor.js' );
+		$plugin_slug = a8csp_scaffold_get_plugin_slug();
 		\wp_register_script(
 			"$plugin_slug-editor",
-			WPCOMSP_SCAFFOLD_URL . 'assets/js/build/editor.js',
+			\constant( 'A8CSP_SCAFFOLD_DIR_URL' ) . 'assets/js/build/editor.js',
 			$asset_meta['dependencies'],
 			$asset_meta['version'],
 			false

@@ -2,13 +2,13 @@
   "name": "a8cteam51/team51-plugin-scaffold",
   "type": "wordpress-plugin",
 
-  "description": "A scaffold for WP.com Special Projects plugins.",
+  "description": "A scaffold for A8C Special Projects plugins.",
   "homepage": "https://github.com/a8cteam51/team51-plugin-scaffold",
   "license": "GPL-2.0-or-later",
   "authors": [
     {
-      "name": "WordPress.com Special Projects Team",
-      "homepage": "https://wpspecialprojects.wordpress.com/"
+      "name": "Automattic Special Projects Team",
+      "homepage": "https://specialprojects.automattic.com/"
     },
     {
       "name": "Contributors",
@@ -27,26 +27,23 @@
     }
   ],
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "ext-json": "*"
   },
   "require-dev": {
     "a8cteam51/team51-configs": "dev-trunk",
 
-    "johnpbloch/wordpress-core": "6.5.*",
-    "wpackagist-plugin/woocommerce": "8.8.*",
+    "wp-cli/i18n-command": "^2",
+    "lucatume/wp-browser": "^4",
 
-    "wp-cli/i18n-command": "^2.6",
-
-    "wp-coding-standards/wpcs": "^3",
-    "phpcompatibility/phpcompatibility-wp": "*",
+    "wpackagist-plugin/woocommerce": "9.5.*",
 
     "roave/security-advisories": "dev-latest"
   },
 
   "autoload": {
     "psr-4": {
-      "WPCOMSpecialProjects\\Scaffold\\": "src/"
+      "A8C\\SpecialProjects\\Scaffold\\": "src/"
     },
     "classmap": [
       "models/"
@@ -57,31 +54,54 @@
   },
 
   "scripts": {
-    "generate-autoloader": "@composer dump-autoload -o",
+    "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
 
-    "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. . -v",
-    "lint:php": "phpcs --standard=./.phpcs.xml --basepath=. . -v",
+    "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. ./ -v",
+    "lint:php": [
+      "@lint:php:phpcs",
+      "@lint:php:phpmd",
+      "@lint:php:phpstan"
+    ],
+    "lint:php:phpcs": "phpcs --standard=./.phpcs.xml --basepath=. ./ -v",
+    "lint:php:phpmd": "phpmd ./ ansi ./.phpmd.xml -v",
+    "lint:php:phpstan": "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G",
 
     "internationalize": [
-      "@makepot",
-      "@updatepo",
-      "@makejson"
+      "@i18n:makepot",
+      "@i18n:updatepo",
+      "@i18n:makemo",
+      "@i18n:makephp"
     ],
-    "makepot": "wp i18n make-pot .",
-    "updatepo": "wp i18n update-po ./languages/wpcomsp-scaffold.pot",
-    "makejson": "wp i18n make-json ./languages --pretty-print --no-purge",
-    "makemo": "wp i18n make-mo ./languages",
+    "i18n:makepot": "wp i18n make-pot ./ --slug=a8csp-scaffold",
+    "i18n:updatepo": "wp i18n update-po ./languages/a8csp-scaffold.pot",
+    "i18n:makemo": "wp i18n make-mo ./languages/",
+    "i18n:makephp": "wp i18n make-php ./languages/",
+
+    "tests:clean": "@php ./vendor/bin/codecept clean",
+    "tests:run": [
+      "@tests:run:integration",
+      "@tests:run:end-to-end"
+    ],
+    "tests:run:integration": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php ./vendor/bin/codecept run Integration --debug"
+    ],
+    "tests:run:end-to-end": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php ./vendor/bin/codecept run EndToEnd  --debug"
+    ],
 
     "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
     "packages-update": [
       "@composer clear-cache",
-      "@composer update --prefer-stable --no-interaction"
+      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
     ]
   },
   "config": {
     "allow-plugins": {
       "composer/*": true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
   },
 

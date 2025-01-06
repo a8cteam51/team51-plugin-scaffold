@@ -1,81 +1,77 @@
 <?php
 /**
- * The Team51 Plugin Scaffold bootstrap file.
+ * The A8CSP Plugin Scaffold bootstrap file.
  *
  * @since       1.0.0
  * @version     1.0.0
+ * @package     A8C\SpecialProjects\Plugins
  * @author      WordPress.com Special Projects
  * @license     GPL-3.0-or-later
  *
  * @noinspection    ALL
  *
  * @wordpress-plugin
- * Plugin Name:             Team51 Plugin Scaffold
+ * Plugin Name:             A8CSP Plugin Scaffold
  * Plugin URI:              https://wpspecialprojects.wordpress.com
- * Description:             A scaffold for WP.com Special Projects plugins.
+ * Description:             A scaffold for A8C Special Projects plugins.
  * Version:                 1.0.0
- * Requires at least:       6.5
- * Tested up to:            6.5
- * Requires PHP:            8.2
+ * Requires at least:       6.7
+ * Tested up to:            6.7
+ * Requires PHP:            8.3
  * Author:                  WordPress.com Special Projects
  * Author URI:              https://wpspecialprojects.wordpress.com
  * License:                 GPL v3 or later
  * License URI:             https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:             wpcomsp-scaffold
+ * Text Domain:             a8csp-scaffold
  * Domain Path:             /languages
- * WC requires at least:    8.8
- * WC tested up to:         8.8
+ * WC requires at least:    9.5
+ * WC tested up to:         9.5
  **/
 
 defined( 'ABSPATH' ) || exit;
 
 // Define plugin constants.
-function_exists( 'get_plugin_data' ) || require_once ABSPATH . 'wp-admin/includes/plugin.php';
-define( 'WPCOMSP_SCAFFOLD_METADATA', get_plugin_data( __FILE__, false, false ) );
+define( 'A8CSP_SCAFFOLD_BASENAME', plugin_basename( __FILE__ ) );
+define( 'A8CSP_SCAFFOLD_DIR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'A8CSP_SCAFFOLD_DIR_URL', plugin_dir_url( __FILE__ ) );
 
-define( 'WPCOMSP_SCAFFOLD_BASENAME', plugin_basename( __FILE__ ) );
-define( 'WPCOMSP_SCAFFOLD_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WPCOMSP_SCAFFOLD_URL', plugin_dir_url( __FILE__ ) );
+// Load the rest of the bootstrap functions.
+require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions-bootstrap.php';
 
 // Load plugin translations so they are available even for the error admin notices.
 add_action(
 	'init',
 	static function () {
 		load_plugin_textdomain(
-			WPCOMSP_SCAFFOLD_METADATA['TextDomain'],
+			a8csp_scaffold_get_plugin_metadata( 'TextDomain' ),
 			false,
-			dirname( WPCOMSP_SCAFFOLD_BASENAME ) . WPCOMSP_SCAFFOLD_METADATA['DomainPath']
+			dirname( A8CSP_SCAFFOLD_BASENAME ) . a8csp_scaffold_get_plugin_metadata( 'DomainPath' )
 		);
 	}
 );
 
-// Load the autoloader.
-if ( ! is_file( WPCOMSP_SCAFFOLD_PATH . '/vendor/autoload.php' ) ) {
-	add_action(
-		'admin_notices',
-		static function () {
-			$message      = __( 'It seems like <strong>Team51 Plugin Scaffold</strong> is corrupted. Please reinstall!', 'wpcomsp-scaffold' );
-			$html_message = wp_sprintf( '<div class="error notice wpcomsp-scaffold-error">%s</div>', wpautop( $message ) );
-			echo wp_kses_post( $html_message );
+// Declare compatibility with WC features.
+add_action(
+	'before_woocommerce_init',
+	static function () {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 		}
-	);
+	}
+);
+
+// Load the autoloader.
+if ( ! is_file( A8CSP_SCAFFOLD_DIR_PATH . '/vendor/autoload.php' ) ) {
+	a8csp_scaffold_output_requirements_error( new WP_Error( 'missing_autoloader' ) );
 	return;
 }
-require_once WPCOMSP_SCAFFOLD_PATH . '/vendor/autoload.php';
+require_once A8CSP_SCAFFOLD_DIR_PATH . '/vendor/autoload.php';
 
-// Initialize the plugin if system requirements check out.
-$wpcomsp_scaffold_requirements = validate_plugin_requirements( WPCOMSP_SCAFFOLD_BASENAME );
-define( 'WPCOMSP_SCAFFOLD_REQUIREMENTS', $wpcomsp_scaffold_requirements );
-
-if ( $wpcomsp_scaffold_requirements instanceof WP_Error ) {
-	add_action(
-		'admin_notices',
-		static function () use ( $wpcomsp_scaffold_requirements ) {
-			$html_message = wp_sprintf( '<div class="error notice wpcomsp-scaffold-error">%s</div>', $wpcomsp_scaffold_requirements->get_error_message() );
-			echo wp_kses_post( $html_message );
-		}
-	);
+// Bootstrap the plugin (maybe)!
+define( 'A8CSP_SCAFFOLD_REQUIREMENTS', a8csp_scaffold_validate_requirements() );
+if ( is_wp_error( A8CSP_SCAFFOLD_REQUIREMENTS ) ) {
+	a8csp_scaffold_output_requirements_error( A8CSP_SCAFFOLD_REQUIREMENTS );
 } else {
-	require_once WPCOMSP_SCAFFOLD_PATH . 'functions.php';
-	add_action( 'plugins_loaded', array( wpcomsp_scaffold_get_plugin_instance(), 'maybe_initialize' ) );
+	require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions.php';
+	add_action( 'plugins_loaded', array( a8csp_scaffold_get_plugin_instance(), 'maybe_initialize' ) );
 }

@@ -48,14 +48,14 @@ const buildTemplate = async ( filePath ) => {
 		};
 	} else {
 		replacements = {
-			'Team51 Plugin Scaffold': title,
-			'A scaffold for WP.com Special Projects plugins.': repository.description ?? '',
+			'A8CSP Plugin Scaffold': title,
+			'A scaffold for A8C Special Projects plugins.': repository.description ?? '',
 			'team51-plugin-scaffold': repository.name,
-			'wpcomsp-scaffold': repository.name,
-			'WPCOMSpecialProjects\\Scaffold': 'WPCOMSpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'WPCOMSP', '' ),
-			'WPCOMSpecialProjects\\\\Scaffold': 'WPCOMSpecialProjects\\\\' + title.replaceAll( ' ', '' ).replace( 'WPCOMSP', '' ),
-			'wpcomsp_scaffold': repository.custom_properties['php-globals-short-prefix'],
-			'WPCOMSP_SCAFFOLD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
+			'a8csp-scaffold': repository.name,
+			'A8C\\SpecialProjects\\Scaffold': 'A8C\\SpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
+			'A8C\\SpecialProjects\\\\Scaffold': 'A8C\\SpecialProjects\\\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
+			'a8csp_scaffold': repository.custom_properties['php-globals-short-prefix'],
+			'A8CSP_SCAFFOLD': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
 		};
 	}
 

@@ -1,10 +1,10 @@
-<?php
+<?php declare( strict_types=1 );
+
+use A8C\SpecialProjects\Scaffold\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-use WPCOMSpecialProjects\Scaffold\Plugin;
-
-// region
+// region META
 
 /**
  * Returns the plugin's main class instance.
@@ -14,27 +14,23 @@ use WPCOMSpecialProjects\Scaffold\Plugin;
  *
  * @return  Plugin
  */
-function wpcomsp_scaffold_get_plugin_instance(): Plugin {
+function a8csp_scaffold_get_plugin_instance(): Plugin {
 	return Plugin::get_instance();
-}
-
-/**
- * Returns the plugin's slug.
- *
- * @since   1.0.0
- * @version 1.0.0
- *
- * @return  string
- */
-function wpcomsp_scaffold_get_plugin_slug(): string {
-	return sanitize_key( WPCOMSP_SCAFFOLD_METADATA['TextDomain'] );
 }
 
 // endregion
 
-//region OTHERS
+// region OTHERS
 
-require WPCOMSP_SCAFFOLD_PATH . 'includes/assets.php';
-require WPCOMSP_SCAFFOLD_PATH . 'includes/settings.php';
+$a8csp_scaffold_files = glob( constant( 'A8CSP_SCAFFOLD_DIR_PATH' ) . 'includes/*.php' );
+if ( false !== $a8csp_scaffold_files ) {
+	foreach ( $a8csp_scaffold_files as $a8csp_scaffold_file ) {
+		if ( 1 === preg_match( '#/includes/_#i', $a8csp_scaffold_file ) ) {
+			continue; // Ignore files prefixed with an underscore.
+		}
+
+		require_once $a8csp_scaffold_file;
+	}
+}
 
 // endregion

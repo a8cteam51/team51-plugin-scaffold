@@ -1,4 +1,4 @@
-# Team 51 Plugin Scaffold
+# Automattic Special Projects -- Plugin Scaffold
 
 Welcome to the Team 51 Plugin Scaffold, a standardized starting point for creating new WordPress plugins for Team 51. This repository contains the necessary files and structure to ensure a consistent approach when developing new plugins.
 
