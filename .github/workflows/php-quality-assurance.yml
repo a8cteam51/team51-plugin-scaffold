@@ -11,6 +11,7 @@ jobs:
         php: [ 8.3 ]
 
     runs-on: ubuntu-latest
+    timeout-minutes: 3
 
     steps:
       - uses: actions/checkout@v4
