@@ -47,7 +47,7 @@ function a8csp_scaffold_get_plugin_metadata( $property = null ) {
  *
  * @return  string
  */
-function a8csp_scaffold_get_plugin_slug(): string {
+function a8csp_scaffold_get_plugin_slug() {
 	$text_domain = a8csp_scaffold_get_plugin_metadata( 'TextDomain' );
 	return sanitize_key( $text_domain );
 }
@@ -60,7 +60,7 @@ function a8csp_scaffold_get_plugin_slug(): string {
  *
  * @return  string
  */
-function a8csp_scaffold_get_plugin_name(): string {
+function a8csp_scaffold_get_plugin_name() {
 	return a8csp_scaffold_get_plugin_metadata( 'Name' );
 }
 
@@ -72,7 +72,7 @@ function a8csp_scaffold_get_plugin_name(): string {
  *
  * @return  string
  */
-function a8csp_scaffold_get_plugin_version(): string {
+function a8csp_scaffold_get_plugin_version() {
 	return a8csp_scaffold_get_plugin_metadata( 'Version' );
 }
 
