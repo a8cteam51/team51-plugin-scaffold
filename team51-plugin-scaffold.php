@@ -15,8 +15,8 @@
  * Plugin URI:              https://wpspecialprojects.wordpress.com
  * Description:             A scaffold for A8C Special Projects plugins.
  * Version:                 1.0.0
- * Requires at least:       6.7
- * Tested up to:            6.7
+ * Requires at least:       6.9
+ * Tested up to:            6.9
  * Requires PHP:            8.3
  * Author:                  WordPress.com Special Projects
  * Author URI:              https://wpspecialprojects.wordpress.com
@@ -39,6 +39,7 @@ define( 'A8CSP_SCAFFOLD_DIR_URL', plugin_dir_url( __FILE__ ) );
 require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions-bootstrap.php';
 
 // Load plugin translations so they are available even for the error admin notices.
+// This is not needed if the plugin will be uploaded to the WordPress.org plugin repository.
 add_action(
 	'init',
 	static function () {

@@ -1,4 +1,16 @@
-# Automattic Special Projects -- Plugin Scaffold
+# A8CSP Plugin Scaffold
+
+**Contributors:** wpcomspecialprojects
+**Requires at least:** 6.9
+**Tested up to:** 6.9
+**Requires PHP:** 8.3
+**Stable tag:** 1.0.0
+**License:** GPL v3 or later
+**License URI:** https://www.gnu.org/licenses/gpl-3.0.html
+
+A scaffold for A8C Special Projects plugins.
+
+## Description
 
 Welcome to the Team 51 Plugin Scaffold, a standardized starting point for creating new WordPress plugins for Team 51. This repository contains the necessary files and structure to ensure a consistent approach when developing new plugins.
 
