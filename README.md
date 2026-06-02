@@ -1,81 +1,174 @@
 # A8CSP Plugin Scaffold
 
-**Contributors:** wpcomspecialprojects
-**Requires at least:** 6.9
-**Tested up to:** 6.9
-**Requires PHP:** 8.3
-**Stable tag:** 1.0.0
-**License:** GPL v3 or later
-**License URI:** https://www.gnu.org/licenses/gpl-3.0.html
+A scaffold for A8C Special Projects / Team 51 WordPress plugins.
 
-A scaffold for A8C Special Projects plugins.
+This repository is a template plugin, not a finished product plugin. It contains
+the PHP bootstrap, block and asset build setup, Codeception test harness, and
+GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 
-## Description
+## What is in this repository
 
-Welcome to the Team 51 Plugin Scaffold, a standardized starting point for creating new WordPress plugins for Team 51. This repository contains the necessary files and structure to ensure a consistent approach when developing new plugins.
+- `team51-plugin-scaffold.php` is the scaffold plugin bootstrap. It defines the
+  plugin header, constants, translation loading, WooCommerce HPOS compatibility,
+  autoloader check, and requirement validation.
+- `functions-bootstrap.php` contains metadata, version compatibility, and admin
+  notice helpers that are available before the full plugin loads.
+- `functions.php` exposes the main plugin singleton and loads PHP helper files
+  from `includes/*.php`, skipping files prefixed with an underscore.
+- `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
+  including the main `Plugin`, block registration, and integration coordinator.
+- `src/Integrations/WC_Subscriptions.php` is an example optional integration
+  with placeholder hook and filter methods.
+- `includes/`, `models/`, `templates/`, and `languages/` are extension points
+  for helper functions, classmapped models, PHP templates, and translations.
+- `blocks/src/foobar/` is the source for an example block. `blocks/build/foobar/`
+  is the tracked build output registered by `src/Blocks.php`.
+- `assets/js/src/editor.js` defines the shared editor hook entry point.
+  `assets/js/build/` contains the tracked build output used in the editor.
+- `tests/` contains the WPBrowser / Codeception integration and end-to-end test
+  configuration. See `tests/README.md` for the local test workflow.
+- `.github/workflows/` contains PHP, JavaScript, CSS, Codeception, syntax, and
+  scaffold-fill workflows.
 
-## Getting Started
+## Scaffold generation
 
-To begin, run the command `team51 create-repository --repo-type=plugin`
+The `.github/workflows/fill-in-scaffold.yml` workflow runs on
+`repository_dispatch` with the `fill_scaffold` type, or manually through
+`workflow_dispatch`. It is guarded so it does not run on this scaffold
+repository itself.
 
-If you don't want to create a repository for your plugin, another option is to clone or download this repository. Rename the folder and the main PHP file with your desired plugin name. Be sure to follow the naming convention: plugin-name for the folder and plugin-name.php for the main PHP file.
+For generated repositories, the workflow:
 
-## Configuration
+1. Renames `README.scaffold.md` to `README.md`.
+2. Renames `team51-plugin-scaffold.php` to the generated repository name.
+3. Runs `.github/workflows/fill-in-scaffold.mjs` to replace scaffold strings.
+4. Commits and pushes the renamed and filled files.
 
-You'll need to update the following fields in the main PHP file's header:
+The replacement script uses the GitHub repository name, repository description,
+and these repository custom properties:
 
-- Plugin Name: The name of your plugin
-- Plugin URI: The URL of the plugin's repository
-- Description: A brief description of the plugin's functionality.
+- `human-title` for the human-readable plugin title.
+- `php-globals-short-prefix` for the PHP global function and constant prefix.
 
-## Folder Structure
+The script replaces the following tracked template values:
 
-This scaffold has the following folder structure:
+- `EXAMPLE_REPO_NAME` and `EXAMPLE_REPO_DESCRIPTION` in the generated
+  `README.md`.
+- `A8CSP Plugin Scaffold`, `A scaffold for A8C Special Projects plugins.`,
+  `team51-plugin-scaffold`, and `a8csp-scaffold` outside the generated README.
+- `A8C\SpecialProjects\Scaffold` with a title-derived namespace.
+- `a8csp_scaffold` and `A8CSP_SCAFFOLD` with the configured PHP prefix.
 
-```
-plugin-name/
-├── assets/
-│   ├── css/
-│   │   ├── build/
-│   │   └── src/
-│   ├── js/
-│   │   ├── build/
-│   │   └── src/
-│   └── images/
-├── blocks/
-│   ├── build/
-│   └── src/
-├── includes/
-├── languages/
-├── models/
-├── src/
-│   ├ ...
-│   └── Integrations/
-├── templates/
-│   ├ ...
-│   └── admin/
-└── plugin-name.php
-```
+After generation, review the remaining example identifiers that the script does
+not replace, including the `wpcomsp-scaffold/foobar` block metadata, example
+block copy, `window.wpcomsp_scaffold`, the `team51_donations` localized script
+object, and the placeholder WooCommerce Subscriptions hook methods.
 
-- assets: A folder to store all static assets such as styles, scripts, and images.
-- blocks: A folder for storing Gutenberg block files, if the plugin uses custom blocks.
-- includes: Contains any PHP files with additional functionality for the plugin. Mostly useful for helper functions.
-- languages: Contains the translation files for your plugin.
-- models: Contains PHP classes or data models that represent the plugin's data structures. As an example, think of WooCommerce's `WC_Order` class.
-- src: A folder for organizing the plugin's main PHP classes or code components, such as integrations with other plugins or services. These classes should be organized into subfolders following the [PSR-4](https://www.php-fig.org/psr/psr-4/) convention. `Composer` will handle the autoloading for these classes.
-- templates: Contains any PHP template files used for rendering HTML output. Admin templates should generally be in their own folder separated from front-end templates.
-- plugin-name.php: The main PHP file containing the plugin header and bootstraping functionality.
+## Runtime requirements
+
+The tracked scaffold files declare these runtime targets:
+
+- WordPress `6.9` in the plugin header.
+- PHP `>=8.3` in `composer.json` and `8.3` in `.wp-env.json`.
+- WooCommerce `9.5` in the plugin header and `wpackagist-plugin/woocommerce`
+  `9.5.*` as a development dependency.
+- Composer for PHP dependency installation and autoload generation.
+- Node.js `>=20.0` and npm `>=10.0` for JavaScript, CSS, block, and markdown
+  tooling.
+- Docker for the `wp-env` and Selenium-based test workflow.
+
+The plugin checks for WooCommerce before initializing its components, and the
+main bootstrap declares compatibility with WooCommerce custom order tables.
 
 ## Development
 
-Develop your plugin by adding the necessary functionality by creating new files within the includes folder. Remember to enqueue your styles and scripts within the assets folder.
+Install PHP dependencies:
 
-Follow the WordPress Coding Standards for PHP, CSS, and JavaScript when writing your code. You can read more about linting and formatting your code in the [Team51 Project Scaffold](https://github.com/a8cteam51/team51-project-scaffold#code-style--quality).
+```sh
+composer run-script packages-install
+```
 
-## Documentation
+Install JavaScript dependencies:
 
-As you develop your plugin, update the README.md file with detailed information about your plugin's features, usage, installation, and any other pertinent information.
+```sh
+npm ci
+```
 
-## Testing
+Build blocks and editor assets:
 
-If your plugin is WooCommerce specific, it should be tested with the Storefront theme and latest default theme. If it's a general plugin, it should be tested with the latest default theme as well as Twenty Twenty-One (a non-FSE theme).
+```sh
+npm run build
+```
+
+Run watch builds:
+
+```sh
+npm start
+```
+
+Run the local WordPress environment:
+
+```sh
+npm run wp-env:start
+```
+
+Stop the local WordPress environment:
+
+```sh
+npm run wp-env:stop
+```
+
+Generate translation files:
+
+```sh
+composer run-script internationalize
+```
+
+## Quality checks
+
+PHP checks are configured through `.phpcs.xml`, `.phpmd.xml`, `.phpstan.neon`,
+and the shared `a8cteam51/team51-configs` package:
+
+```sh
+composer run-script lint:php
+```
+
+JavaScript, CSS, package metadata, and README markdown checks are defined in
+`package.json`:
+
+```sh
+npm run lint:scripts
+npm run lint:styles
+npm run lint:pkg-json
+npm run lint:readme-md
+```
+
+The GitHub workflows run these checks on `trunk`, and the JavaScript/CSS and PHP
+syntax workflows also run for `develop` pull requests and pushes.
+
+## Tests
+
+The test harness uses `lucatume/wp-browser` and Codeception. The GitHub
+Codeception workflow runs integration and end-to-end suites across PHP `8.3` and
+`8.4`, and WordPress versions including `6.6`, `6.7`, and `master`.
+
+For local tests, follow `tests/README.md`. In summary, install Composer and npm
+dependencies, run a Selenium Chromium container with host networking, copy
+`tests/.dist.env` to `tests/.env`, export the database fixture, and run:
+
+```sh
+npm run tests:run
+```
+
+`tests:export-db` writes `tests/Support/Data/dump.sql`, which is intentionally
+ignored by Git.
+
+## Maintenance notes
+
+- Customize source files under `src/`, `includes/`, `blocks/src/`, `assets/js/src/`,
+  `assets/css/src/`, `models/`, `templates/`, and `languages/`.
+- Rebuild generated assets after changing block or editor sources. The tracked
+  generated outputs live in `blocks/build/` and `assets/js/build/`.
+- Do not commit dependency directories such as `vendor/` or `node_modules/`.
+- The tracked `LICENSE` file and plugin header use GPL v3 terms, while
+  `composer.json` and `package.json` currently declare `GPL-2.0-or-later`.
