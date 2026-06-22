@@ -14,10 +14,13 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      # Credentials are persisted on purpose: the final step pushes the
+      # scaffolding commits back to the repo via the checkout-provided token.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        # zizmor: ignore[artipacked] git push below needs the persisted token
 
       - name: Setup proper Node.js version
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: 'package.json'
 
@@ -25,15 +28,19 @@ jobs:
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Rename the readme and plugin file.
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
           git mv --force README.scaffold.md README.md
-          git mv team51-plugin-scaffold.php ${{ github.event.repository.name }}.php
+          git mv team51-plugin-scaffold.php "$REPO_NAME.php"
 
       - name: Commit the changed files.
         run: git commit -am "chore -- rename files from scaffolding"
 
       - name: Perform string replacements within the files.
-        run: node ./.github/workflows/fill-in-scaffold.mjs '${{ toJSON( github.event.repository ) }}'
+        env:
+          REPO_JSON: ${{ toJSON( github.event.repository ) }}
+        run: node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
 
       - name: Commit the changed files.
         run: git commit -am "chore -- fill in scaffolding placeholders"
