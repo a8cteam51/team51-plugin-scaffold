@@ -34,7 +34,6 @@
     "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
 
     "wp-cli/i18n-command": "^2",
-    "lucatume/wp-browser": "^4",
 
     "wpackagist-plugin/woocommerce": "10.9.*",
 
@@ -76,20 +75,6 @@
     "i18n:updatepo": "wp i18n update-po ./languages/a8csp-scaffold.pot",
     "i18n:makemo": "wp i18n make-mo ./languages/",
     "i18n:makephp": "wp i18n make-php ./languages/",
-
-    "tests:clean": "@php ./vendor/bin/codecept clean",
-    "tests:run": [
-      "@tests:run:integration",
-      "@tests:run:end-to-end"
-    ],
-    "tests:run:integration": [
-      "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run Integration --debug"
-    ],
-    "tests:run:end-to-end": [
-      "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run EndToEnd  --debug"
-    ],
 
     "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
     "packages-update": [

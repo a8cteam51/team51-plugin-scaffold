@@ -3,7 +3,7 @@
 A scaffold for A8C Special Projects / Team 51 WordPress plugins.
 
 This repository is a template plugin, not a finished product plugin. It contains
-the PHP bootstrap, block and asset build setup, Codeception test harness, and
+the PHP bootstrap, block and asset build setup, automated test suite, and
 GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 
 ## What is in this repository
@@ -25,9 +25,9 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
   is the tracked build output registered by `src/Blocks.php`.
 - `assets/js/src/editor.js` defines the shared editor hook entry point.
   `assets/js/build/` contains the tracked build output used in the editor.
-- `tests/` contains the WPBrowser / Codeception integration and end-to-end test
-  configuration. See `tests/README.md` for the local test workflow.
-- `.github/workflows/` contains PHP, JavaScript, CSS, Codeception, syntax, and
+- `tests/` contains the automated test suite. See `tests/README.md` for the
+  local test workflow.
+- `.github/workflows/` contains PHP, JavaScript, CSS, syntax, and
   scaffold-fill workflows.
 
 ## Scaffold generation
@@ -75,7 +75,7 @@ The tracked scaffold files declare these runtime targets:
 - Composer for PHP dependency installation and autoload generation.
 - Node.js `>=26` and npm `>=11` for JavaScript, CSS, block, and markdown
   tooling.
-- Docker for the `wp-env` and Selenium-based test workflow.
+- Docker for the `wp-env` local environment.
 
 The plugin checks for WooCommerce before initializing its components, and the
 main bootstrap declares compatibility with WooCommerce custom order tables.
@@ -148,11 +148,8 @@ syntax workflows also run for `develop` pull requests and pushes.
 
 ## Tests
 
-The Codeception/wp-browser test harness is being replaced with a PHPUnit 13
-suite (Unit, Integration, and Requirements tiers) plus a Playwright
-end-to-end suite; see `tests/README.md` for the current local workflow during
-the migration. The full rewrite of this section, including the new commands
-and the rig's rationale, lands in a later modernization task.
+The test suite is being rebuilt on PHPUnit 13 and Playwright; this section is
+rewritten in a later modernization task.
 
 ## Maintenance notes
 
