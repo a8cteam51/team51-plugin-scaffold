@@ -31,7 +31,7 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "a8cteam51/team51-configs": "dev-trunk",
+    "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
 
     "wp-cli/i18n-command": "^2",
     "lucatume/wp-browser": "^4",
@@ -101,7 +101,8 @@
     "allow-plugins": {
       "composer/*": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "phpstan/extension-installer": true
+      "phpstan/extension-installer": true,
+      "infection/extension-installer": true
     }
   },
 
