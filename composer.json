@@ -32,6 +32,7 @@
   },
   "require-dev": {
     "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
+    "phpunit/phpunit": "^13",
 
     "wp-cli/i18n-command": "^2",
 
@@ -49,7 +50,9 @@
     ]
   },
   "autoload-dev": {
-
+    "psr-4": {
+      "A8C\\SpecialProjects\\Scaffold\\Tests\\": "tests/"
+    }
   },
 
   "scripts": {
@@ -80,6 +83,13 @@
     "packages-update": [
       "@composer clear-cache",
       "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
+    ],
+
+    "test": "@php vendor/bin/phpunit",
+    "test:unit": "@php vendor/bin/phpunit --testsuite=Unit",
+    "quality-check": [
+      "@lint:php",
+      "@test:unit"
     ]
   },
   "config": {
