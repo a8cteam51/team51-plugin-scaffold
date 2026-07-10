@@ -18,7 +18,7 @@ jobs:
         with:
           php-version: '8.5'
           coverage: none
-          tools: composer:v2
+          tools: composer:v2, wp-cli
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: '26'
@@ -27,8 +27,19 @@ jobs:
         run: |
           composer install --no-interaction
           composer changelog:validate
-      - name: Build zip
-        run: ./bin/build-release-zip.sh "${GITHUB_REPOSITORY##*/}"
+      - name: Install production dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
+      - name: Install dist-archive command
+        run: |
+          wp package install wp-cli/dist-archive-command:3.2.2
+      - name: Create plugin archive
+        run: |
+          wp dist-archive . "./${GITHUB_REPOSITORY##*/}.zip" --plugin-dirname="${GITHUB_REPOSITORY##*/}"
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
