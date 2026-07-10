@@ -1,0 +1,4 @@
+Significance: major
+Type: changed
+
+Modernized tooling: PHP 8.5 / WP 7.0 floors, PHPUnit 13 + Playwright test rig, centralized reusable CI.

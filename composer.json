@@ -31,6 +31,7 @@
     "ext-json": "*"
   },
   "require-dev": {
+    "automattic/jetpack-changelogger": "^6",
     "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
     "phpunit/phpunit": "^13",
 
@@ -56,6 +57,9 @@
   },
 
   "scripts": {
+    "changelog:add": "@php vendor/bin/changelogger add",
+    "changelog:validate": "@php vendor/bin/changelogger validate",
+    "changelog:write": "@php vendor/bin/changelogger write",
     "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
 
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. ./ -v",
@@ -104,6 +108,20 @@
   },
 
   "extra": {
+    "changelogger": {
+      "changelog": "CHANGELOG.md",
+      "changes-dir": "changelog",
+      "versioning": "semver",
+      "default-type": "changed",
+      "types": {
+        "added": "Added",
+        "changed": "Changed",
+        "deprecated": "Deprecated",
+        "removed": "Removed",
+        "fixed": "Fixed",
+        "security": "Security"
+      }
+    },
     "installer-paths": {
       "vendor/wpackagist-plugin/{$name}/": [
         "type:wordpress-plugin"
