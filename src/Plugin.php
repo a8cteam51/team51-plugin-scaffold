@@ -108,7 +108,7 @@ class Plugin {
 		}
 
 		// Get the minimum WooCommerce version required from the plugin's header, if needed.
-		$minimum_wc_version = a8csp_scaffold_get_plugin_metadata( \WC_Plugin_Updates::VERSION_REQUIRED_HEADER );
+		$minimum_wc_version = a8csp_scaffold_get_plugin_metadata( 'WC requires at least' );
 		if ( \is_null( $minimum_wc_version ) ) {
 			return true;
 		}

@@ -19,7 +19,6 @@ function a8csp_scaffold_get_plugin_metadata( $property = null ) {
 
 	if ( ! isset( $plugin_data[ $translate_key ] ) ) {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			/* @phpstan-ignore requireOnce.fileNotFound */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
