@@ -20,6 +20,8 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 - `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
   with placeholder hook and filter methods.
 - `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
+- `models/` is an extension point for classmapped data/model classes.
+- `templates/` is an extension point for template partials rendered by components.
 - `uninstall.php` reads `includes/_uninstall-footprint.php` during WordPress's cold
   uninstall bootstrap and deletes the options and user-meta keys declared there.
   The manifest records the plugin's complete persisted footprint; add an entry in
@@ -168,12 +170,13 @@ npm run test:e2e
 
 ## Maintenance notes
 
-- Customize source files under `src/`, `includes/`, `blocks/src/`, `assets/js/src/`,
-  `assets/css/src/`, and `languages/`.
+- Customize source files under `src/`, `includes/`, `models/`, `templates/`,
+  `blocks/src/`, `assets/js/src/`, `assets/css/src/`, and `languages/`.
 - Rebuild generated assets after changing block or editor sources. The tracked
   generated outputs live in `blocks/build/` and `assets/js/build/`.
-- Composer autoloading uses PSR-4 only. Files loaded from `includes/` and PSR-4
-  classes may carry an `ABSPATH` guard, but any file added to Composer's
+- Composer autoloading uses PSR-4 for `src/` plus a classmap for `models/`. Files
+  loaded from `includes/` and classes loaded through either Composer mapping may
+  carry an `ABSPATH` guard, but any file added to Composer's
   `autoload.files` is eagerly required in non-WordPress CLI processes and must not
   carry an unconditional guard that exits when `ABSPATH` is undefined.
 - Do not commit dependency directories such as `vendor/` or `node_modules/`.

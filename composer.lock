@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a8cteam51/team51-configs.git",
-                "reference": "73ba69e19f7cd8d2ffcd0247e40cd21507f45b70"
+                "reference": "e5a4b6fd8a56df3454e423f4c09365f765842df9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/73ba69e19f7cd8d2ffcd0247e40cd21507f45b70",
-                "reference": "73ba69e19f7cd8d2ffcd0247e40cd21507f45b70",
+                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/e5a4b6fd8a56df3454e423f4c09365f765842df9",
+                "reference": "e5a4b6fd8a56df3454e423f4c09365f765842df9",
                 "shasum": ""
             },
             "require": {
@@ -73,7 +73,7 @@
                 "source": "https://github.com/a8cteam51/team51-configs/tree/update/php85-wp70-floors",
                 "issues": "https://github.com/a8cteam51/team51-configs/issues"
             },
-            "time": "2026-07-10T12:54:41+00:00"
+            "time": "2026-07-10T22:52:20+00:00"
         },
         {
             "name": "automattic/jetpack-changelogger",
@@ -3573,12 +3573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "b2e645043972cdf13f7b82d2af54365ab4f678e1"
+                "reference": "d162f89e37b3026c5b00680c8e64b70d3ad57024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b2e645043972cdf13f7b82d2af54365ab4f678e1",
-                "reference": "b2e645043972cdf13f7b82d2af54365ab4f678e1",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d162f89e37b3026c5b00680c8e64b70d3ad57024",
+                "reference": "d162f89e37b3026c5b00680c8e64b70d3ad57024",
                 "shasum": ""
             },
             "conflict": {
@@ -4151,7 +4151,7 @@
                 "nilsteampassnet/teampass": "<3.1.3.1-dev",
                 "nitsan/ns-backup": "<13.0.1",
                 "nonfiction/nterchange": "<4.1.1",
-                "notrinos/notrinos-erp": "<=0.7",
+                "notrinos/notrinos-erp": "<=1",
                 "noumo/easyii": "<=0.9",
                 "novaksolutions/infusionsoft-php-sdk": "<1",
                 "novosga/novosga": "<=2.2.12",
@@ -4234,14 +4234,14 @@
                 "phpxmlrpc/phpxmlrpc": "<4.9.2",
                 "phraseanet/phraseanet": "==4.0.3",
                 "pi/pi": "<=2.5",
-                "pimcore/admin-ui-classic-bundle": "<=2.3.5",
+                "pimcore/admin-ui-classic-bundle": "<1.7.18|>=2.0.0.0-RC1-dev,<=2.3.5",
                 "pimcore/customer-management-framework-bundle": "<4.2.1",
                 "pimcore/data-hub": "<1.2.4",
                 "pimcore/data-importer": "<1.8.9|>=1.9,<1.9.3",
                 "pimcore/demo": "<10.3",
                 "pimcore/ecommerce-framework-bundle": "<1.0.10",
                 "pimcore/perspective-editor": "<1.5.1",
-                "pimcore/pimcore": "<=12.3.8",
+                "pimcore/pimcore": "<=12.3.8|>=2026.1,<2026.1.3",
                 "pimcore/web2print-tools-bundle": "<=5.2.1|>=6.0.0.0-RC1-dev,<=6.1",
                 "piwik/piwik": "<1.11",
                 "pixelfed/pixelfed": "<0.12.5",
@@ -4262,7 +4262,7 @@
                 "prestashop/ps_checkout": "<5.3",
                 "prestashop/ps_contactinfo": "<=3.3.2",
                 "prestashop/ps_emailsubscription": "<2.6.1",
-                "prestashop/ps_facetedsearch": "<3.4.1",
+                "prestashop/ps_facetedsearch": "<4.0.4",
                 "prestashop/ps_linklist": "<3.1",
                 "privatebin/privatebin": "<1.4|>=1.5,<1.7.4|>=1.7.7,<2.0.3",
                 "processwire/processwire": "<=3.0.255",
@@ -4686,7 +4686,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-10T16:24:10+00:00"
+            "time": "2026-07-10T22:02:12+00:00"
         },
         {
             "name": "sanmai/di-container",

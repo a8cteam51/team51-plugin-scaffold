@@ -49,7 +49,10 @@
   "autoload": {
     "psr-4": {
       "A8C\\SpecialProjects\\Scaffold\\": "src/"
-    }
+    },
+    "classmap": [
+      "models/"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

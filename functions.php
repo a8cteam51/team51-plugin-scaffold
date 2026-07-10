@@ -20,7 +20,7 @@ function a8csp_scaffold_boot_plugin(): void {
 
 // endregion
 
-// region LOADER
+// region OTHER
 
 $a8csp_scaffold_includes = glob( constant( 'A8CSP_SCAFFOLD_DIR_PATH' ) . 'includes/*.php' );
 if ( false !== $a8csp_scaffold_includes ) {
