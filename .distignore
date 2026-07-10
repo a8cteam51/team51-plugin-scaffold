@@ -11,7 +11,6 @@
 # alone and ship in the archive.
 
 .git*
-.superpowers
 .idea
 .vscode
 .gitattributes

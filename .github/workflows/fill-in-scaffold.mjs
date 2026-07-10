@@ -4,6 +4,9 @@ import { writeFile } from 'fs/promises';
 import { join as joinPath } from 'path';
 import process from 'process';
 
+// Approximates @wordpress/e2e-test-utils-playwright's runtime paramCase() conversion from a plugin Name header to its slug.
+const toKebabCase = ( str ) => str.toLowerCase().replace( /[^a-z0-9]+/g, '-' ).replace( /^-+|-+$/g, '' );
+
 const repository = JSON.parse( process.argv[2] );
 const skip_dirs = [ '.github', '.git' ];
 
@@ -52,6 +55,7 @@ const buildTemplate = async ( filePath ) => {
 			'A scaffold for A8C Special Projects plugins.': repository.description ?? '',
 			'team51-plugin-scaffold': repository.name,
 			'a8csp-scaffold': repository.name,
+			'a8csp-plugin-scaffold': toKebabCase( title ),
 			'A8C\\SpecialProjects\\Scaffold': 'A8C\\SpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
 			'A8C\\SpecialProjects\\\\Scaffold': 'A8C\\SpecialProjects\\\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
 			'a8csp_scaffold': repository.custom_properties['php-globals-short-prefix'],
