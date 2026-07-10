@@ -13,14 +13,15 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
   autoloader check, and requirement validation.
 - `functions-bootstrap.php` contains metadata, version compatibility, and admin
   notice helpers that are available before the full plugin loads.
-- `functions.php` exposes the main plugin singleton and loads PHP helper files
-  from `includes/*.php`, skipping files prefixed with an underscore.
+- `functions.php` exposes the main plugin singleton. PHP helper files under
+  `includes/` (currently `includes/assets.php`) are loaded through Composer's
+  `autoload.files` entry rather than a runtime glob.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
   including the main `Plugin`, block registration, and integration coordinator.
 - `src/Integrations/WC_Subscriptions.php` is an example optional integration
   with placeholder hook and filter methods.
-- `includes/`, `models/`, `templates/`, and `languages/` are extension points
-  for helper functions, classmapped models, PHP templates, and translations.
+- `includes/` (Composer `files`-autoloaded helper functions) and `languages/`
+  (translations) are extension points.
 - `blocks/src/foobar/` is the source for an example block. `blocks/build/foobar/`
   is the tracked build output registered by `src/Blocks.php`.
 - `assets/js/src/editor.js` defines the shared editor hook entry point.
@@ -161,7 +162,7 @@ npm run test:e2e
 ## Maintenance notes
 
 - Customize source files under `src/`, `includes/`, `blocks/src/`, `assets/js/src/`,
-  `assets/css/src/`, `models/`, `templates/`, and `languages/`.
+  `assets/css/src/`, and `languages/`.
 - Rebuild generated assets after changing block or editor sources. The tracked
   generated outputs live in `blocks/build/` and `assets/js/build/`.
 - Do not commit dependency directories such as `vendor/` or `node_modules/`.

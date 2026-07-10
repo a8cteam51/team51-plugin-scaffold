@@ -50,8 +50,8 @@
     "psr-4": {
       "A8C\\SpecialProjects\\Scaffold\\": "src/"
     },
-    "classmap": [
-      "models/"
+    "files": [
+      "includes/assets.php"
     ]
   },
   "autoload-dev": {

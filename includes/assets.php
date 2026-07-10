@@ -1,7 +1,5 @@
 <?php declare( strict_types=1 );
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Returns an array with meta information for a given asset path. First, it checks for an .asset.php file in the same directory
  * as the given asset file whose contents are returns if it exists. If not, it returns an array with the file's last modified

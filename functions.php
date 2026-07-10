@@ -19,18 +19,3 @@ function a8csp_scaffold_get_plugin_instance(): Plugin {
 }
 
 // endregion
-
-// region OTHERS
-
-$a8csp_scaffold_files = glob( constant( 'A8CSP_SCAFFOLD_DIR_PATH' ) . 'includes/*.php' );
-if ( false !== $a8csp_scaffold_files ) {
-	foreach ( $a8csp_scaffold_files as $a8csp_scaffold_file ) {
-		if ( 1 === preg_match( '#/includes/_#i', $a8csp_scaffold_file ) ) {
-			continue; // Ignore files prefixed with an underscore.
-		}
-
-		require_once $a8csp_scaffold_file;
-	}
-}
-
-// endregion
