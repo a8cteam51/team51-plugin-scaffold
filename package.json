@@ -53,6 +53,7 @@
   "scripts": {
     "build": "npm-run-all --sequential build:**",
     "build:blocks": "wp-scripts build --webpack-src-dir=blocks/src --output-path=blocks/build",
+    "build:blocks-manifest": "wp-scripts build-blocks-manifest --input=blocks/build --output=blocks/build/blocks-manifest.php",
     "build:assets:scripts": "wp-scripts build assets/js/src/*.js --output-path=assets/js/build",
     "format": "npm-run-all --sequential format:**",
     "format:scripts": "wp-scripts format blocks assets/js --no-error-on-unmatched-pattern",

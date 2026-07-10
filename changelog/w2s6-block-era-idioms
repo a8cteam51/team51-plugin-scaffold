@@ -1,0 +1,4 @@
+Significance: minor
+Type: changed
+
+Switched block registration to the WP 6.8+ blocks-manifest collection idiom (wp_register_block_types_from_metadata_collection()), wired a new build:blocks-manifest step into `npm run build` to generate it, and dropped the dead wp_localize_script()/admin-ajax teaching residue from the block-editor script registration.
