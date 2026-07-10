@@ -23,6 +23,8 @@
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<!-- House style places `declare( strict_types=1 );` inline with the opening tag, before the file docblock. -->
+		<exclude name="PSR12.Files.FileHeader.IncorrectOrder"/>
 	</rule>
 	<config name="minimum_wp_version" value="7.0"/>
 
