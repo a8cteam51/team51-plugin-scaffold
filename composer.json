@@ -49,10 +49,7 @@
   "autoload": {
     "psr-4": {
       "A8C\\SpecialProjects\\Scaffold\\": "src/"
-    },
-    "files": [
-      "includes/assets.php"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {

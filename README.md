@@ -13,15 +13,12 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
   autoloader check, and requirement validation.
 - `functions-bootstrap.php` contains metadata, version compatibility, and admin
   notice helpers that are available before the full plugin loads.
-- `functions.php` boots the plugin's component registry. PHP helper files under
-  `includes/` (currently `includes/assets.php`) are loaded through Composer's
-  `autoload.files` entry rather than a runtime glob.
+- `functions.php` boots the plugin's component registry and loads the PHP helper files under `includes/`.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
   including the main `Plugin`, its `Component` registry, and block registration.
 - `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
   with placeholder hook and filter methods.
-- `includes/` (Composer `files`-autoloaded helper functions) and `languages/`
-  (translations) are extension points.
+- `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
 - `blocks/src/foobar/` is the source for an example block. `blocks/build/foobar/`
   is the tracked build output registered by `src/Blocks.php`.
 - `assets/js/src/editor.js` defines the shared editor hook entry point.

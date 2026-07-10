@@ -19,3 +19,19 @@ function a8csp_scaffold_boot_plugin(): void {
 }
 
 // endregion
+
+// region LOADER
+
+$a8csp_scaffold_includes = glob( constant( 'A8CSP_SCAFFOLD_DIR_PATH' ) . 'includes/*.php' );
+if ( false !== $a8csp_scaffold_includes ) {
+	sort( $a8csp_scaffold_includes ); // Glob order is filesystem-dependent, so sort for a deterministic load order.
+	foreach ( $a8csp_scaffold_includes as $a8csp_scaffold_include ) {
+		if ( str_starts_with( basename( $a8csp_scaffold_include ), '_' ) ) {
+			continue; // An underscore prefix opts a file out of automatic loading.
+		}
+
+		require_once $a8csp_scaffold_include;
+	}
+}
+
+// endregion

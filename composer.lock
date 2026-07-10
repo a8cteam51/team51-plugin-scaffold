@@ -3573,12 +3573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "b2cb9a636bbf6a31c725d1786070c47831cbaa6f"
+                "reference": "b2e645043972cdf13f7b82d2af54365ab4f678e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b2cb9a636bbf6a31c725d1786070c47831cbaa6f",
-                "reference": "b2cb9a636bbf6a31c725d1786070c47831cbaa6f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b2e645043972cdf13f7b82d2af54365ab4f678e1",
+                "reference": "b2e645043972cdf13f7b82d2af54365ab4f678e1",
                 "shasum": ""
             },
             "conflict": {
@@ -3618,8 +3618,10 @@
                 "aoe/restler": "<1.7.1",
                 "apache-solr-for-typo3/solr": "<2.8.3",
                 "apereo/phpcas": "<1.6",
-                "api-platform/core": "<3.4.17|>=4,<4.0.22|>=4.1,<4.1.5",
+                "api-platform/core": "<4.1.29|>=4.2,<4.2.25|>=4.3,<4.3.8",
                 "api-platform/graphql": "<3.4.17|>=4,<4.0.22|>=4.1,<4.1.5",
+                "api-platform/hal": ">=4,<4.1.29|>=4.2,<4.2.25|>=4.3,<4.3.8",
+                "api-platform/json-api": ">=4,<4.1.29|>=4.2,<4.2.25|>=4.3,<4.3.8",
                 "appwrite/server-ce": "<=1.2.1",
                 "arc/web": "<3",
                 "area17/twill": "<1.2.5|>=2,<2.5.3",
@@ -4684,7 +4686,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-09T21:23:08+00:00"
+            "time": "2026-07-10T16:24:10+00:00"
         },
         {
             "name": "sanmai/di-container",

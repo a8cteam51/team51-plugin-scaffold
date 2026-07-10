@@ -1,0 +1,4 @@
+Significance: minor
+Type: changed
+
+The includes/ drop-in loader sorts the globbed file list so helper files load in a deterministic order regardless of filesystem; files prefixed with an underscore are skipped.
