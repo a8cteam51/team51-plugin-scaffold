@@ -7,6 +7,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Contract for a self-contained plugin component.
  *
+ * Implementations are constructed with no arguments. `initialize()` is called at most once,
+ * only when `is_needed()` returns true, during `plugins_loaded`.
+ *
  * @since   1.0.0
  * @version 1.0.0
  */

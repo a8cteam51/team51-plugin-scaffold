@@ -15,7 +15,8 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
   notice helpers that are available before the full plugin loads.
 - `functions.php` boots the plugin's component registry and loads the PHP helper files under `includes/`.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
-  including the main `Plugin`, its `Component` registry, and block registration.
+  including the main `Plugin`, its `Component` registry, and block registration. Add the plugin's
+  components to the `COMPONENTS` list in `src/Plugin.php`; they boot in registration order.
 - `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
   with placeholder hook and filter methods.
 - `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.

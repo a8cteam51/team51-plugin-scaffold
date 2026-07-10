@@ -14,7 +14,7 @@ final class Plugin {
 	// region FIELDS AND CONSTANTS
 
 	/**
-	 * The components booted by the plugin, in registration order.
+	 * Add the plugin's components here; they boot in registration order.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
