@@ -20,8 +20,15 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 - `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
   with placeholder hook and filter methods.
 - `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
-- `blocks/src/foobar/` is the source for an example block. `blocks/build/foobar/`
-  is the tracked build output registered by `src/Blocks.php`.
+- `uninstall.php` reads `includes/_uninstall-footprint.php` during WordPress's cold
+  uninstall bootstrap and deletes the options and user-meta keys declared there.
+  The manifest records the plugin's complete persisted footprint; add an entry in
+  the same change that introduces the corresponding write. Its underscore prefix
+  keeps it out of the normal `includes/` loader.
+- `blocks/src/foobar/` is the source for an example block. `blocks/build/` is the
+  tracked build output. `npm run build` generates `blocks/build/blocks-manifest.php`;
+  it is committed with that output, and `src/Blocks.php` uses it to register all
+  built blocks as one metadata collection.
 - `assets/js/src/editor.js` defines the shared editor hook entry point.
   `assets/js/build/` contains the tracked build output used in the editor.
 - `tests/` contains the automated test suite. See `tests/README.md` for the
@@ -68,7 +75,7 @@ The tracked scaffold files declare these runtime targets:
 
 - WordPress `7.0` in the plugin header.
 - PHP `>=8.5` in `composer.json` and `8.5` in `.wp-env.json`.
-- WooCommerce `10.9` in the plugin header and `wpackagist-plugin/woocommerce`
+- WooCommerce `10.0` in the plugin header and `wpackagist-plugin/woocommerce`
   `10.9.*` as a development dependency.
 - Composer for PHP dependency installation and autoload generation.
 - Node.js `>=26` and npm `>=11` for JavaScript, CSS, block, and markdown
@@ -165,4 +172,8 @@ npm run test:e2e
   `assets/css/src/`, and `languages/`.
 - Rebuild generated assets after changing block or editor sources. The tracked
   generated outputs live in `blocks/build/` and `assets/js/build/`.
+- Composer autoloading uses PSR-4 only. Files loaded from `includes/` and PSR-4
+  classes may carry an `ABSPATH` guard, but any file added to Composer's
+  `autoload.files` is eagerly required in non-WordPress CLI processes and must not
+  carry an unconditional guard that exits when `ABSPATH` is undefined.
 - Do not commit dependency directories such as `vendor/` or `node_modules/`.

@@ -17,7 +17,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo ligula, aliquam
 
 ## Installation
 
-This plugin requires WooCommerce 7.4+ to run. If you're running a lower version, please update first. After you made sure that you're running a supported version of WooCommerce, you may install `Team51 Plugin Scaffold` either manually or through your site's plugins page.
+This plugin boots whether or not WooCommerce is active. The example WooCommerce Subscriptions integration initializes only when WooCommerce is active and meets the `WC requires at least` version declared in the plugin header. Install `Team51 Plugin Scaffold` either manually or through your site's plugins page.
 
 ### INSTALL FROM WITHIN WORDPRESS
 
