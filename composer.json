@@ -27,7 +27,7 @@
     }
   ],
   "require": {
-    "php": ">=8.3",
+    "php": ">=8.5",
     "ext-json": "*"
   },
   "require-dev": {
@@ -36,7 +36,7 @@
     "wp-cli/i18n-command": "^2",
     "lucatume/wp-browser": "^4",
 
-    "wpackagist-plugin/woocommerce": "9.5.*",
+    "wpackagist-plugin/woocommerce": "10.9.*",
 
     "roave/security-advisories": "dev-latest"
   },

@@ -4,16 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73775dea6e22b283b2f50ffd457b5e5c",
+    "content-hash": "5626d479a9b533bc6ea617ab4e4a00f4",
     "packages": [],
     "packages-dev": [
         {
             "name": "a8cteam51/team51-configs",
             "version": "dev-update/php85-wp70-floors",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a8cteam51/team51-configs.git",
+                "reference": "00fd1f28f98ce981af633f9f840e56d3e9006c97"
+            },
             "dist": {
-                "type": "path",
-                "url": "../team51-configs",
-                "reference": "ebb1dc256c0609e3982a1dcacbcd861573d59a64"
+                "type": "zip",
+                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/00fd1f28f98ce981af633f9f840e56d3e9006c97",
+                "reference": "00fd1f28f98ce981af633f9f840e56d3e9006c97",
+                "shasum": ""
             },
             "require": {
                 "ext-json": "*",
@@ -63,10 +69,11 @@
                 }
             ],
             "description": "A collection of shared configuration files for Team51 projects.",
-            "transport-options": {
-                "symlink": false,
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/a8cteam51/team51-configs/tree/update/php85-wp70-floors",
+                "issues": "https://github.com/a8cteam51/team51-configs/issues"
+            },
+            "time": "2026-07-10T10:35:49+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -10767,15 +10774,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "9.5.4",
+            "version": "10.9.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/9.5.4"
+                "reference": "tags/10.9.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.9.5.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.10.9.4.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -10800,7 +10807,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.3",
+        "php": ">=8.5",
         "ext-json": "*"
     },
     "platform-dev": {},

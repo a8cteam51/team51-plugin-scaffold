@@ -2,9 +2,9 @@
 
 **Contributors:** wpcomspecialprojects
 **Tags:**
-**Requires at least:** 6.9
-**Tested up to:** 6.9
-**Requires PHP:** 8.3
+**Requires at least:** 7.0
+**Tested up to:** 7.0
+**Requires PHP:** 8.5
 **Stable tag:** 1.0.0
 **License:** GPL v3 or later
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html

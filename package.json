@@ -14,8 +14,8 @@
   "repository": "https://github.com/a8cteam51/team51-plugin-scaffold",
   "bugs": "https://github.com/a8cteam51/team51-plugin-scaffold/issues",
   "engines": {
-    "node": ">=20.0",
-    "npm": ">=10.0"
+    "node": ">=26",
+    "npm": ">=11"
   },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.0.1",
@@ -55,7 +55,7 @@
     "lint:styles": "wp-scripts lint-style blocks/**/*.{css,sass,scss} assets/css/**/*.{css,sass,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
-    "packages-update": "wp-scripts packages-update --dist-tag=wp-6.7",
+    "packages-update": "wp-scripts packages-update --dist-tag=wp-7.0",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "selenium:start": "docker container start selenium-chromium",

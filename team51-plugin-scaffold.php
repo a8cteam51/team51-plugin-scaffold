@@ -15,17 +15,17 @@
  * Plugin URI:              https://wpspecialprojects.wordpress.com
  * Description:             A scaffold for A8C Special Projects plugins.
  * Version:                 1.0.0
- * Requires at least:       6.9
- * Tested up to:            6.9
- * Requires PHP:            8.3
+ * Requires at least:       7.0
+ * Tested up to:            7.0
+ * Requires PHP:            8.5
  * Author:                  WordPress.com Special Projects
  * Author URI:              https://wpspecialprojects.wordpress.com
  * License:                 GPL v3 or later
  * License URI:             https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:             a8csp-scaffold
  * Domain Path:             /languages
- * WC requires at least:    9.5
- * WC tested up to:         9.5
+ * WC requires at least:    10.0
+ * WC tested up to:         10.9
  **/
 
 defined( 'ABSPATH' ) || exit;

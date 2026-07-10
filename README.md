@@ -68,12 +68,12 @@ object, and the placeholder WooCommerce Subscriptions hook methods.
 
 The tracked scaffold files declare these runtime targets:
 
-- WordPress `6.9` in the plugin header.
-- PHP `>=8.3` in `composer.json` and `8.3` in `.wp-env.json`.
-- WooCommerce `9.5` in the plugin header and `wpackagist-plugin/woocommerce`
-  `9.5.*` as a development dependency.
+- WordPress `7.0` in the plugin header.
+- PHP `>=8.5` in `composer.json` and `8.5` in `.wp-env.json`.
+- WooCommerce `10.9` in the plugin header and `wpackagist-plugin/woocommerce`
+  `10.9.*` as a development dependency.
 - Composer for PHP dependency installation and autoload generation.
-- Node.js `>=20.0` and npm `>=10.0` for JavaScript, CSS, block, and markdown
+- Node.js `>=26` and npm `>=11` for JavaScript, CSS, block, and markdown
   tooling.
 - Docker for the `wp-env` and Selenium-based test workflow.
 
@@ -148,20 +148,11 @@ syntax workflows also run for `develop` pull requests and pushes.
 
 ## Tests
 
-The test harness uses `lucatume/wp-browser` and Codeception. The GitHub
-Codeception workflow runs integration and end-to-end suites across PHP `8.3` and
-`8.4`, and WordPress versions including `6.6`, `6.7`, and `master`.
-
-For local tests, follow `tests/README.md`. In summary, install Composer and npm
-dependencies, run a Selenium Chromium container with host networking, copy
-`tests/.dist.env` to `tests/.env`, export the database fixture, and run:
-
-```sh
-npm run tests:run
-```
-
-`tests:export-db` writes `tests/Support/Data/dump.sql`, which is intentionally
-ignored by Git.
+The Codeception/wp-browser test harness is being replaced with a PHPUnit 13
+suite (Unit, Integration, and Requirements tiers) plus a Playwright
+end-to-end suite; see `tests/README.md` for the current local workflow during
+the migration. The full rewrite of this section, including the new commands
+and the rig's rationale, lands in a later modernization task.
 
 ## Maintenance notes
 

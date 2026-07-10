@@ -1,9 +1,17 @@
 {
-  "phpVersion": "8.3",
+  "$schema": "https://schemas.wp.org/trunk/wp-env.schema.json",
+  "phpVersion": "8.5",
+  "port": 8888,
+  "testsEnvironment": false,
   "mappings": {
-    "wp-content/plugins/a8csp-plugin-scaffold": "."
+    "wp-content/plugins/a8csp-plugin-scaffold": ".",
+    "wp-content/plugins/woocommerce": "./vendor/wpackagist-plugin/woocommerce"
   },
   "lifecycleScripts": {
-    "afterStart": "vendor/a8cteam51/team51-configs/docker/wp-env-install-pdo_mysql.sh"
+    "afterStart": "vendor/a8cteam51/team51-configs/docker/wp-env-install-pdo_mysql.sh && wp-env run cli wp plugin activate woocommerce a8csp-plugin-scaffold"
+  },
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true
   }
 }
