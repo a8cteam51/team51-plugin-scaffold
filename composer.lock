@@ -12,13 +12,13 @@
             "version": "dev-update/php85-wp70-floors",
             "source": {
                 "type": "git",
-                "url": "git@github.com:a8cteam51/team51-configs.git",
-                "reference": "b62f38f25684f34294073b0c8137ec4cc8b028fb"
+                "url": "https://github.com/a8cteam51/team51-configs.git",
+                "reference": "73ba69e19f7cd8d2ffcd0247e40cd21507f45b70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/b62f38f25684f34294073b0c8137ec4cc8b028fb",
-                "reference": "b62f38f25684f34294073b0c8137ec4cc8b028fb",
+                "url": "https://api.github.com/repos/a8cteam51/team51-configs/zipball/73ba69e19f7cd8d2ffcd0247e40cd21507f45b70",
+                "reference": "73ba69e19f7cd8d2ffcd0247e40cd21507f45b70",
                 "shasum": ""
             },
             "require": {
@@ -69,7 +69,11 @@
                 }
             ],
             "description": "A collection of shared configuration files for Team51 projects.",
-            "time": "2026-07-10T12:05:27+00:00"
+            "support": {
+                "source": "https://github.com/a8cteam51/team51-configs/tree/update/php85-wp70-floors",
+                "issues": "https://github.com/a8cteam51/team51-configs/issues"
+            },
+            "time": "2026-07-10T12:54:41+00:00"
         },
         {
             "name": "automattic/jetpack-changelogger",
