@@ -7,7 +7,7 @@ on:
 
 jobs:
   fill-scaffold:
-    if: github.repository != 'a8cteam51/team51-plugin-scaffold' # Don't run this on the scaffold itself.
+    if: github.repository != 'a8cteam51/team51-plugin-scaffold'
 
     runs-on: ubuntu-latest
     permissions:

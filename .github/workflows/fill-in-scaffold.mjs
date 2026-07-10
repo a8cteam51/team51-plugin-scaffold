@@ -21,20 +21,22 @@ const traverseDirectory = async ( dirPath, callback ) => {
 	}
 	console.log( 'Traversing %s', dirPath );
 
-	const files = await readdir( dirPath ); // Read the contents of the directory
+	const files = await readdir( dirPath );
 	for ( const file of files ) {
 		const filePath = joinPath( dirPath, file );
 
 		if ( statSync( filePath ).isFile() ) {
 			await callback( filePath );
-		} else { // Recursively traverse directories
+		} else {
 			await traverseDirectory( filePath, callback );
 		}
 	}
 };
 
 /**
- * Build a template using envs
+ * Renders filePath's scaffold placeholders (README.md gets EXAMPLE_REPO_* substitutions;
+ * every other file gets the A8CSP_SCAFFOLD_* identifier substitutions) and overwrites it in place
+ * if anything changed.
  * @param {string} filePath
  */
 const buildTemplate = async ( filePath ) => {
