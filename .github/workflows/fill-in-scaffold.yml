@@ -37,6 +37,14 @@ jobs:
       - name: Commit the changed files.
         run: git commit -am "chore -- rename files from scaffolding"
 
+      - name: Clear the changelog fragments.
+        run: |
+          # Changelog fragments describe the scaffold's own development history, not the new plugin's, so they must not carry over into a freshly generated plugin.
+          find changelog -type f ! -name '.gitkeep' -delete
+
+      - name: Commit the changed files.
+        run: git commit -am "chore -- clear scaffold changelog fragments"
+
       - name: Perform string replacements within the files.
         env:
           REPO_JSON: ${{ toJSON( github.event.repository ) }}

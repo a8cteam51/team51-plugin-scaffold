@@ -126,8 +126,8 @@ composer run-script internationalize
 
 ## Quality checks
 
-PHP checks are configured through `.phpcs.xml`, `.phpmd.xml`, `.phpstan.neon`,
-and the shared `a8cteam51/team51-configs` package:
+PHP checks are configured through `.phpcs.xml`, `.phpcs.tests.xml`, `.phpstan.neon`,
+`.composer-require-checker.json`, and the shared `a8cteam51/team51-configs` package:
 
 ```sh
 composer run-script lint:php
@@ -143,8 +143,8 @@ npm run lint:pkg-json
 npm run lint:readme-md
 ```
 
-The GitHub workflows run these checks on `trunk`, and the JavaScript/CSS and PHP
-syntax workflows also run for `develop` pull requests and pushes.
+The GitHub workflows, including the JavaScript/CSS and PHP syntax workflows, run
+on `trunk` pushes and on pull requests.
 
 ## Tests
 
