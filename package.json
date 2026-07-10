@@ -19,7 +19,9 @@
   },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.0.1",
+    "@playwright/test": "^1.61.1",
     "@wordpress/browserslist-config": "^6.8.1",
+    "@wordpress/e2e-test-utils-playwright": "^1.50.0",
     "@wordpress/env": "^11.8.0",
     "@wordpress/postcss-plugins-preset": "^5.8.3",
     "@wordpress/scripts": "^32.4.0",
@@ -61,6 +63,7 @@
     "start": "npm-run-all --parallel start:**",
     "start:blocks": "wp-scripts start --webpack-src-dir=blocks/src --output-path=blocks/build",
     "start:assets:scripts": "wp-scripts start assets/js/src/*.js --output-path=assets/js/build",
+    "test:e2e": "playwright test --config=playwright.config.js",
     "test:integration": "wp-env --config .wp-env.tests.json run cli --env-cwd=wp-content/plugins/a8csp-plugin-scaffold vendor/bin/phpunit --testsuite=Integration",
     "test:requirements": "wp-env --config .wp-env.belowfloor.json run cli --env-cwd=wp-content/plugins/a8csp-plugin-scaffold vendor/bin/phpunit --testsuite=Requirements",
     "wp-env:start": "wp-env start",
