@@ -20,7 +20,8 @@ final class PluginHeaderFloorsTest extends TestCase {
 	 * @return  void
 	 */
 	public function test_php_floor_matches_composer(): void {
-		$header   = $this->get_plugin_header();
+		$header = $this->get_plugin_header();
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local filesystem read in a WP-less unit test; wp_remote_get() is for remote URLs and isn't even loaded here.
 		$composer = \json_decode( (string) \file_get_contents( \dirname( __DIR__, 2 ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 
 		self::assertSame( 1, \preg_match( '/Requires PHP:\s*([\d.]+)/', $header, $matches ) );
@@ -36,7 +37,9 @@ final class PluginHeaderFloorsTest extends TestCase {
 	 * @return  string
 	 */
 	private function get_plugin_header(): string {
-		foreach ( \glob( \dirname( __DIR__, 2 ) . '/*.php' ) ?: array() as $file ) {
+		$files = \glob( \dirname( __DIR__, 2 ) . '/*.php' );
+		foreach ( ( false !== $files ? $files : array() ) as $file ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local filesystem read in a WP-less unit test; wp_remote_get() is for remote URLs and isn't even loaded here.
 			$contents = (string) \file_get_contents( $file );
 			if ( \str_contains( $contents, 'Plugin Name:' ) ) {
 				return $contents;

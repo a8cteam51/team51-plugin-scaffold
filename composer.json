@@ -32,12 +32,16 @@
   },
   "require-dev": {
     "automattic/jetpack-changelogger": "^6",
+    "phpcompatibility/phpcompatibility-wp": "^3@alpha",
+    "phpcompatibility/php-compatibility": "^10@alpha",
+    "phpcompatibility/phpcompatibility-paragonie": "^2@alpha",
     "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
     "phpunit/phpunit": "^13",
 
     "wp-cli/i18n-command": "^2",
 
     "wpackagist-plugin/woocommerce": "10.9.*",
+    "php-stubs/woocommerce-stubs": "^10",
 
     "roave/security-advisories": "dev-latest"
   },
@@ -65,12 +69,14 @@
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. ./ -v",
     "lint:php": [
       "@lint:php:phpcs",
-      "@lint:php:phpmd",
-      "@lint:php:phpstan"
+      "@lint:php:phpcs:tests",
+      "@lint:php:phpstan",
+      "@lint:php:composer-require-checker"
     ],
     "lint:php:phpcs": "phpcs --standard=./.phpcs.xml --basepath=. ./ -v",
-    "lint:php:phpmd": "phpmd ./ ansi ./.phpmd.xml -v",
+    "lint:php:phpcs:tests": "phpcs --standard=./.phpcs.tests.xml --basepath=. ./tests -v",
     "lint:php:phpstan": "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G",
+    "lint:php:composer-require-checker": "@php -d memory_limit=1G vendor/bin/composer-require-checker check --config-file=./.composer-require-checker.json ./composer.json",
 
     "internationalize": [
       "@i18n:makepot",
