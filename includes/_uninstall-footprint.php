@@ -10,6 +10,9 @@
  * The scaffold ships with no persisted state, so both lists start empty. Add an entry here in the
  * same change that introduces an option or user-meta write, e.g. a component that persists a
  * setting would add its option name to the `options` list below.
+ * Other persisted storage (transients, cron events, custom tables, and site options) follows the
+ * same pattern: list each key in a matching manifest entry and delete it in `uninstall.php`
+ * alongside the existing loops.
  *
  * @since   1.0.0
  * @version 1.0.0
