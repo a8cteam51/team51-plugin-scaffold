@@ -97,11 +97,16 @@
 
     "test": "@php vendor/bin/phpunit",
     "test:unit": "@php vendor/bin/phpunit --testsuite=Unit",
+    "test:unit:mutation": "@php vendor/bin/infection --threads=max",
     "test:integration": "npm --prefix=. run test:integration",
     "test:requirements": "npm --prefix=. run test:requirements",
     "quality-check": [
       "@lint:php",
       "@test:unit"
+    ],
+    "quality-check:all": [
+      "@quality-check",
+      "@test:unit:mutation"
     ]
   },
   "config": {
