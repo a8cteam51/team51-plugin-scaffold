@@ -4,17 +4,19 @@ namespace A8C\SpecialProjects\Scaffold\Tests\Unit;
 
 use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
 use A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles\RecordingWCSubscriptions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Exercises WC_Subscriptions::maybe_initialize(), the plugin's smallest branching, WP-light
- * seam: its only WordPress dependency is the ABSPATH boot guard, so it models the house
- * pattern of hand-rolled recording doubles for Unit-suite tests instead of Mockery or
- * Brain-Monkey.
+ * Exercises WC_Subscriptions::is_active() and maybe_initialize(), the plugin's smallest
+ * branching, WP-light seam: its only WordPress dependency is the ABSPATH boot guard, so it
+ * models the house pattern of hand-rolled recording doubles for Unit-suite tests instead of
+ * Mockery or Brain-Monkey.
  *
  * @since   1.0.0
  * @version 1.0.0
  */
+#[CoversClass( WC_Subscriptions::class )]
 final class WCSubscriptionsTest extends TestCase {
 	/**
 	 * Satisfies the production file's `ABSPATH` boot guard before its class is first

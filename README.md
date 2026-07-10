@@ -148,8 +148,16 @@ syntax workflows also run for `develop` pull requests and pushes.
 
 ## Tests
 
-The test suite is being rebuilt on PHPUnit 13 and Playwright; this section is
-rewritten in a later modernization task.
+The suite has three PHPUnit tiers (Unit, Integration, Requirements) plus a Playwright end-to-end
+suite. See `tests/README.md` for how to run each suite, the wp-env ports involved, and why the rig
+runs PHPUnit 13 against plain `TestCase` instead of `WP_UnitTestCase`.
+
+```sh
+composer test:unit
+npm run wp-env:tests:start && composer test:integration
+composer test:requirements
+npm run test:e2e
+```
 
 ## Maintenance notes
 

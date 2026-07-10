@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
  * @since   1.0.0
  * @version 1.0.0
  */
-class Plugin {
+final class Plugin {
 	// region FIELDS AND CONSTANTS
 
 	/**

@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types=1 );
 /**
  * The A8CSP Plugin Scaffold bootstrap file.
  *
@@ -26,7 +26,7 @@
  * Domain Path:             /languages
  * WC requires at least:    10.0
  * WC tested up to:         10.9
- **/
+ */
 
 defined( 'ABSPATH' ) || exit;
 
