@@ -2,6 +2,10 @@
 /**
  * The A8CSP Plugin Scaffold bootstrap file.
  *
+ * This file and functions-bootstrap.php must remain parsable on PHP versions below the plugin's
+ * declared floor, since they run before the requirements check can report a friendly error; a
+ * dedicated CI job lints both files directly against the older PHP versions.
+ *
  * @since       1.0.0
  * @version     1.0.0
  * @package     A8C\SpecialProjects\Plugins
@@ -38,18 +42,10 @@ define( 'A8CSP_SCAFFOLD_DIR_URL', plugin_dir_url( __FILE__ ) );
 // Load the rest of the bootstrap functions.
 require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions-bootstrap.php';
 
-// Load plugin translations so they are available even for the error admin notices.
-// This is not needed if the plugin will be uploaded to the WordPress.org plugin repository.
-add_action(
-	'init',
-	static function () {
-		load_plugin_textdomain(
-			a8csp_scaffold_get_plugin_metadata( 'TextDomain' ),
-			false,
-			dirname( A8CSP_SCAFFOLD_BASENAME ) . a8csp_scaffold_get_plugin_metadata( 'DomainPath' )
-		);
-	}
-);
+// Translations for the /languages directory declared via the Domain Path header above are
+// resolved just-in-time: WordPress registers this plugin's language directory from its header
+// before the plugin loads, and the first call to a translation function for this text domain
+// triggers loading the matching translation file for the current locale.
 
 // Declare compatibility with WC features.
 add_action(

@@ -1,5 +1,16 @@
 <?php declare( strict_types=1 );
 
+/**
+ * Bootstrap functions shared by the requirements gate.
+ *
+ * This file and the plugin's main entry file must remain parsable on PHP versions below the
+ * plugin's declared floor, since they run before the requirements check can report a friendly
+ * error; a dedicated CI job lints both files directly against the older PHP versions.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -12,21 +23,21 @@ defined( 'ABSPATH' ) || exit;
  * @return  ($property is null ? PluginMetaData : ($property is PluginMetaKey ? PluginMetaData[PluginMetaKey] : null))
  */
 function a8csp_scaffold_get_plugin_metadata( $property = null ) {
-	static $plugin_data = null;
+	static $plugin_data = array();
 
 	$can_translate = 0 < did_action( 'init' );
-	$translate_key = 0 < did_action( 'plugins_loaded' ) ? 'full' : ( $can_translate ? 'translated' : 'raw' );
+	$cache_key     = $can_translate ? 'translated' : 'raw';
 
-	if ( ! isset( $plugin_data[ $translate_key ] ) ) {
+	if ( ! isset( $plugin_data[ $cache_key ] ) ) {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$plugin_file                   = trailingslashit( WP_PLUGIN_DIR ) . constant( 'A8CSP_SCAFFOLD_BASENAME' );
-		$plugin_data[ $translate_key ] = get_plugin_data( $plugin_file, false, $can_translate );
+		$plugin_file               = trailingslashit( WP_PLUGIN_DIR ) . constant( 'A8CSP_SCAFFOLD_BASENAME' );
+		$plugin_data[ $cache_key ] = get_plugin_data( $plugin_file, false, $can_translate );
 	}
 
-	$metadata = $plugin_data[ $translate_key ];
+	$metadata = $plugin_data[ $cache_key ];
 	if ( null === $property ) {
 		return $metadata;
 	}
@@ -144,6 +155,10 @@ function a8csp_scaffold_output_requirements_error( $error ) {
 	add_action(
 		'admin_notices',
 		static function () use ( $error ) {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+
 			$requirements_error = \wp_sprintf(
 				/* translators: 1: Plugin name, 2: Plugin version */
 				__( '<strong>%1$s (version %2$s)</strong> could not be initialized.', 'a8csp-scaffold' ),

@@ -76,6 +76,7 @@ final class Blocks implements Component {
 			$asset_meta['version'],
 			false
 		);
+		\wp_set_script_translations( "$plugin_slug-editor", 'a8csp-scaffold' );
 		\wp_localize_script(
 			"$plugin_slug-editor",
 			'a8csp_scaffold',
