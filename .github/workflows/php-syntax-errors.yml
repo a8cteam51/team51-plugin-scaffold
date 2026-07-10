@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   syntax:
-    uses: a8cteam51/team51-configs/.github/workflows/reusable-php-syntax-check.yml@update/php85-wp70-floors
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-php-syntax-check.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
     with:
       php-versions: '["8.5", "8.6"]'
 

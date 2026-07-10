@@ -18,4 +18,4 @@ jobs:
       # CodeQL's SARIF upload in the called workflow needs this -- a reusable
       # workflow can never escalate beyond what this job grants.
       security-events: write
-    uses: a8cteam51/team51-configs/.github/workflows/reusable-codeql.yml@update/php85-wp70-floors
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-codeql.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
