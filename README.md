@@ -75,8 +75,10 @@ The tracked scaffold files declare these runtime targets:
   tooling.
 - Docker for the `wp-env` local environment.
 
-The plugin checks for WooCommerce before initializing its components, and the
-main bootstrap declares compatibility with WooCommerce custom order tables.
+The plugin boots its component registry unconditionally. The WooCommerce-dependent example
+component (`src/Integrations/WC_Subscriptions.php`) gates itself through `is_needed()`, checking
+that WooCommerce is active and meets the `WC requires at least` header floor. The main bootstrap
+declares HPOS (`custom_order_tables`) compatibility whether or not WooCommerce is active.
 
 ## Development
 

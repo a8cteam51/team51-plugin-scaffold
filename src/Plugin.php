@@ -103,34 +103,6 @@ final class Plugin {
 	}
 
 	/**
-	 * Returns true if all the plugin's dependencies are met.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  true|\WP_Error
-	 */
-	public function is_active(): bool|\WP_Error {
-		// Check if WooCommerce is active.
-		if ( ! \class_exists( 'WooCommerce' ) || ! \defined( 'WC_VERSION' ) ) {
-			return new \WP_Error( 'woocommerce_not_active', 'WooCommerce is not active.' );
-		}
-
-		// Get the minimum WooCommerce version required from the plugin's header, if needed.
-		$minimum_wc_version = a8csp_scaffold_get_plugin_metadata( 'WC requires at least' );
-		if ( \is_null( $minimum_wc_version ) ) {
-			return true;
-		}
-
-		// Check if WooCommerce version is supported.
-		if ( ! \version_compare( WC_VERSION, $minimum_wc_version, '>=' ) ) {
-			return new \WP_Error( 'woocommerce_version_not_supported', \sprintf( 'WooCommerce version %s or newer is required.', $minimum_wc_version ) );
-		}
-
-		return true;
-	}
-
-	/**
 	 * Initializes a component if it reports itself as needed.
 	 *
 	 * @since   1.0.0
@@ -153,8 +125,8 @@ final class Plugin {
 	// region HOOKS
 
 	/**
-	 * Boots the component registry if the plugin's dependencies are met. Idempotent: only the
-	 * first call has any effect.
+	 * Boots the component registry unconditionally; each component reports whether it is needed.
+	 * Idempotent: only the first call has any effect.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -165,13 +137,8 @@ final class Plugin {
 		if ( $this->booted ) {
 			return;
 		}
-		$this->booted = true;
 
-		$is_active = $this->is_active();
-		if ( \is_wp_error( $is_active ) ) {
-			a8csp_scaffold_output_requirements_error( $is_active );
-			return;
-		}
+		$this->booted = true;
 
 		foreach ( self::COMPONENTS as $component_class ) {
 			self::boot_component( new $component_class() );

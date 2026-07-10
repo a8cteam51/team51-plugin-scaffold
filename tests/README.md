@@ -16,6 +16,22 @@ fixtures at three WordPress-version tiers.
 - **End-to-End** (`tests/EndToEnd/`) — Playwright, driving a real browser against the dev wp-env
   instance.
 
+## WooCommerce-less boot proof
+
+`PluginBootWithoutWooCommerceTest` verifies that the plugin and its WooCommerce-independent Blocks
+component boot when WooCommerce is inactive. It self-skips whenever WooCommerce is active. To
+exercise the proof, deactivate WooCommerce in the tests wp-env instance, run that test directly,
+then reactivate WooCommerce before continuing with the Integration suite:
+
+```sh
+npm run wp-env:tests:start
+wp-env --config .wp-env.tests.json run cli wp plugin deactivate woocommerce
+wp-env --config .wp-env.tests.json run cli --env-cwd=wp-content/plugins/a8csp-plugin-scaffold vendor/bin/phpunit --filter=PluginBootWithoutWooCommerceTest
+wp-env --config .wp-env.tests.json run cli wp plugin activate woocommerce
+composer test:integration
+npm run wp-env:tests:stop
+```
+
 ## Running the suites
 
 Unit (no wp-env required):

@@ -1,0 +1,4 @@
+Significance: major
+Type: changed
+
+Moved the WooCommerce presence and minimum-version gate from Plugin::boot() to WC_Subscriptions::is_needed(), so the plugin no longer refuses to boot when WooCommerce is inactive or below the `WC requires at least` header floor; only the WooCommerce Subscriptions integration skips itself unless WooCommerce is present and meets that version requirement.

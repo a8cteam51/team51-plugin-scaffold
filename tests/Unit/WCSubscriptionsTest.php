@@ -9,10 +9,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Exercises WC_Subscriptions::is_needed() and Plugin::boot_component(), the plugin's smallest
- * branching, WP-light seam: its only WordPress dependency is the ABSPATH boot guard, so it
- * models the house pattern of hand-rolled recording doubles for Unit-suite tests instead of
- * Mockery or Brain-Monkey.
+ * Exercises WC_Subscriptions::is_needed(), WC_Subscriptions::meets_minimum_wc_version(), and
+ * Plugin::boot_component(): the negative integration gate, its pure version comparison, and the
+ * registry's component gate. The production classes require only the ABSPATH boot guard for these
+ * Unit tests, which use hand-rolled recording doubles instead of Mockery or Brain-Monkey.
  *
  * @since   1.0.0
  * @version 1.0.0
@@ -78,5 +78,53 @@ final class WCSubscriptionsTest extends TestCase {
 		Plugin::boot_component( $component );
 
 		self::assertTrue( $component->initialized );
+	}
+
+	/**
+	 * Without a header-declared floor, every installed WooCommerce version meets the requirement.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_minimum_wc_version_accepts_a_missing_floor(): void {
+		self::assertTrue( WC_Subscriptions::meets_minimum_wc_version( '1.0.0', null ) );
+	}
+
+	/**
+	 * An installed WooCommerce version below the header-declared floor fails the requirement.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_minimum_wc_version_rejects_a_version_below_the_floor(): void {
+		self::assertFalse( WC_Subscriptions::meets_minimum_wc_version( '9.9.0', '10.0.0' ) );
+	}
+
+	/**
+	 * An installed WooCommerce version equal to the header-declared floor meets the requirement.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_minimum_wc_version_accepts_a_version_equal_to_the_floor(): void {
+		self::assertTrue( WC_Subscriptions::meets_minimum_wc_version( '10.0.0', '10.0.0' ) );
+	}
+
+	/**
+	 * An installed WooCommerce version above the header-declared floor meets the requirement.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_minimum_wc_version_accepts_a_version_above_the_floor(): void {
+		self::assertTrue( WC_Subscriptions::meets_minimum_wc_version( '10.0.1', '10.0.0' ) );
 	}
 }
