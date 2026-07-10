@@ -12,14 +12,15 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
-# GitHub rejects a reusable-workflow call at startup unless the caller grants
-# every permission requested by every job in the called workflow. zizmor needs
-# both security-events: write for SARIF upload and actions: read.
-permissions:
-  contents: read
-  actions: read
-  security-events: write
+permissions: {}
 
 jobs:
+  # GitHub rejects a reusable-workflow call at startup unless this job grants
+  # every permission requested by every job in the called workflow. zizmor needs
+  # both security-events: write for SARIF upload and actions: read.
   workflow-checks:
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
     uses: a8cteam51/team51-configs/.github/workflows/reusable-workflow-checks.yml@update/php85-wp70-floors

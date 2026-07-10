@@ -8,13 +8,14 @@ on:
     # Weekly Monday 08:00 UTC -- catches newly published CodeQL query findings between workflow changes.
     - cron: '0 8 * * 1'
 
-permissions:
-  contents: read
-  actions: read
-  # CodeQL's SARIF upload in the called workflow needs this -- a reusable
-  # workflow can never escalate beyond what the caller grants.
-  security-events: write
+permissions: {}
 
 jobs:
   codeql:
+    permissions:
+      contents: read
+      actions: read
+      # CodeQL's SARIF upload in the called workflow needs this -- a reusable
+      # workflow can never escalate beyond what this job grants.
+      security-events: write
     uses: a8cteam51/team51-configs/.github/workflows/reusable-codeql.yml@update/php85-wp70-floors
