@@ -8,9 +8,6 @@
     "wp-content/plugins/a8csp-plugin-scaffold": ".",
     "wp-content/plugins/woocommerce": "./vendor/wpackagist-plugin/woocommerce"
   },
-  "lifecycleScripts": {
-    "afterStart": "bin/wp-env-install-pdo_mysql.sh"
-  },
   "config": {
     "WP_DEBUG": true,
     "SCRIPT_DEBUG": true
