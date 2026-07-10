@@ -113,10 +113,10 @@ function a8csp_scaffold_is_php_version_compatible( $min_php_version ) {
 function a8csp_scaffold_validate_requirements() {
 	$plugin_metadata = a8csp_scaffold_get_plugin_metadata();
 	if ( ! isset( $plugin_metadata['RequiresPHP'] ) || '' === $plugin_metadata['RequiresPHP'] ) {
-		$plugin_metadata['RequiresPHP'] = '8.3';
+		$plugin_metadata['RequiresPHP'] = '8.5';
 	}
 	if ( ! isset( $plugin_metadata['RequiresWP'] ) || '' === $plugin_metadata['RequiresWP'] ) {
-		$plugin_metadata['RequiresWP'] = '6.7';
+		$plugin_metadata['RequiresWP'] = '7.0';
 	}
 
 	$is_php_compatible = a8csp_scaffold_is_php_version_compatible( $plugin_metadata['RequiresPHP'] );

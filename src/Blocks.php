@@ -66,7 +66,7 @@ final class Blocks {
 		);
 		\wp_localize_script(
 			"$plugin_slug-editor",
-			'team51_donations',
+			'a8csp_scaffold',
 			array(
 				'ajax_url' => \admin_url( 'admin-ajax.php' ),
 			)

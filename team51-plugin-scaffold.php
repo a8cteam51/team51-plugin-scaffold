@@ -6,7 +6,7 @@
  * @version     1.0.0
  * @package     A8C\SpecialProjects\Plugins
  * @author      WordPress.com Special Projects
- * @license     GPL-3.0-or-later
+ * @license     GPL-2.0-or-later
  *
  * @noinspection    ALL
  *
@@ -20,8 +20,8 @@
  * Requires PHP:            8.5
  * Author:                  WordPress.com Special Projects
  * Author URI:              https://wpspecialprojects.wordpress.com
- * License:                 GPL v3 or later
- * License URI:             https://www.gnu.org/licenses/gpl-3.0.html
+ * License:                 GPL v2 or later
+ * License URI:             https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:             a8csp-scaffold
  * Domain Path:             /languages
  * WC requires at least:    10.0

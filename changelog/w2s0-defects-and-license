@@ -1,0 +1,4 @@
+Significance: patch
+Type: fixed
+
+Fixed the team51_donations copy-paste residue, stale 8.3/6.7 requirement fallbacks, and the untokenized wpcomsp-scaffold block namespace; aligned all license surfaces on GPL-2.0-or-later.

@@ -60,9 +60,8 @@ The script replaces the following tracked template values:
 - `a8csp_scaffold` and `A8CSP_SCAFFOLD` with the configured PHP prefix.
 
 After generation, review the remaining example identifiers that the script does
-not replace, including the `wpcomsp-scaffold/foobar` block metadata, example
-block copy, `window.wpcomsp_scaffold`, the `team51_donations` localized script
-object, and the placeholder WooCommerce Subscriptions hook methods.
+not replace, including the example block copy (block title, description, and
+sample text) and the placeholder WooCommerce Subscriptions hook methods.
 
 ## Runtime requirements
 
@@ -166,5 +165,3 @@ npm run test:e2e
 - Rebuild generated assets after changing block or editor sources. The tracked
   generated outputs live in `blocks/build/` and `assets/js/build/`.
 - Do not commit dependency directories such as `vendor/` or `node_modules/`.
-- The tracked `LICENSE` file and plugin header use GPL v3 terms, while
-  `composer.json` and `package.json` currently declare `GPL-2.0-or-later`.
