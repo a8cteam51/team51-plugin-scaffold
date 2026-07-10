@@ -1,0 +1,13 @@
+name: block.json Schema Check
+
+on:
+  pull_request:
+  push:
+    branches: [trunk]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-block-json-check.yml@update/php85-wp70-floors

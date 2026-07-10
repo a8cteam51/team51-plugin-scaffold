@@ -1,0 +1,56 @@
+name: Mutation Tests
+
+on:
+  schedule:
+    # Weekly Monday 05:00 UTC -- mutation testing is slow, so it runs off the PR/push path.
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mutation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+
+      - name: Run mutation tests
+        run: composer test:unit:mutation -- --logger-summary-json=build/infection/infection-summary.json --no-progress
+
+      - name: Guard against a vacuously-green zero-mutant run
+        run: |
+          # Infection 0.34.0 has been observed to exit 0 with zero mutants generated on PHP 8.5
+          # (upstream bug, under investigation). When zero mutants are produced it also skips
+          # writing any log/report at all -- so a missing summary file is itself the failure
+          # signal, not just a zero count in it. A green mutation job that tested nothing is
+          # not a pass, so this fails closed rather than trusting the exit code alone.
+          summary=build/infection/infection-summary.json
+          if [ ! -s "$summary" ]; then
+            echo "::error::Infection produced no summary report at $summary -- zero mutants were generated (or the run aborted before reporting). A green mutation job with zero mutants is not a pass."
+            exit 1
+          fi
+
+          count=$(jq -e '.stats.totalMutantsCount' "$summary") || {
+            echo "::error::Infection summary at $summary is missing stats.totalMutantsCount -- cannot confirm mutants were generated."
+            exit 1
+          }
+
+          if [ "$count" = "null" ] || [ "$count" -eq 0 ]; then
+            echo "::error::Infection generated zero mutants (totalMutantsCount=$count) -- a vacuous run is not a pass."
+            exit 1
+          fi
+
+          echo "Infection generated $count mutants."

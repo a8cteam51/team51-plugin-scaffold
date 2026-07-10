@@ -12,49 +12,12 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: read
+  # zizmor's SARIF upload in the called workflow needs this -- a reusable
+  # workflow can never escalate beyond what the caller grants.
+  security-events: write
 
 jobs:
-  actionlint:
-    name: Actionlint
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-        with:
-          persist-credentials: false
-
-      # Advisory during rollout: seeded workflows carry pre-existing lint debt.
-      # Surfaces findings without failing CI; flip to blocking once they're clean.
-      - name: Run actionlint
-        uses: raven-actions/actionlint@205b530c5d9fa8f44ae9ed59f341a0db994aa6f8
-        continue-on-error: true
-
-  zizmor:
-    name: Zizmor
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: read
-      # SARIF upload to the Security tab on public repos (free code scanning).
-      security-events: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-        with:
-          persist-credentials: false
-
-      # Adapts to the repo: public repos (this scaffold, or any public project
-      # scaffolded from it) get free code scanning, so zizmor uploads SARIF to the
-      # Security tab. Private projects on the Free plan have no code scanning, so it
-      # runs advisory -- findings print in the Actions log and never fail CI.
-      - name: Run zizmor
-        uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa
-        continue-on-error: ${{ github.event.repository.visibility != 'public' }}
-        with:
-          # Scope to this repo's own workflows -- don't audit third-party CI
-          # files a scaffolded plugin may commit under vendor/ or node_modules/.
-          inputs: .github/workflows
-          advanced-security: ${{ github.event.repository.visibility == 'public' }}
+  workflow-checks:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-workflow-checks.yml@update/php85-wp70-floors
