@@ -13,12 +13,12 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
   autoloader check, and requirement validation.
 - `functions-bootstrap.php` contains metadata, version compatibility, and admin
   notice helpers that are available before the full plugin loads.
-- `functions.php` exposes the main plugin singleton. PHP helper files under
+- `functions.php` boots the plugin's component registry. PHP helper files under
   `includes/` (currently `includes/assets.php`) are loaded through Composer's
   `autoload.files` entry rather than a runtime glob.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
-  including the main `Plugin`, block registration, and integration coordinator.
-- `src/Integrations/WC_Subscriptions.php` is an example optional integration
+  including the main `Plugin`, its `Component` registry, and block registration.
+- `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
   with placeholder hook and filter methods.
 - `includes/` (Composer `files`-autoloaded helper functions) and `languages/`
   (translations) are extension points.

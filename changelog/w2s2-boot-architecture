@@ -1,0 +1,4 @@
+Significance: major
+Type: changed
+
+Replaced the Plugin singleton's mutable component properties and the do-nothing Integrations wrapper with a private component registry and a two-method Component interface (is_needed(), initialize()); Blocks and WC_Subscriptions now implement Component directly, and the plugins_loaded callback moved from Plugin::maybe_initialize() to an idempotent Plugin::boot().

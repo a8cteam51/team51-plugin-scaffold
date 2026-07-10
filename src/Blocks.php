@@ -10,8 +10,20 @@ defined( 'ABSPATH' ) || exit;
  * @since   1.0.0
  * @version 1.0.0
  */
-final class Blocks {
+final class Blocks implements Component {
 	// region METHODS
+
+	/**
+	 * Blocks have no environmental dependency, so the component always runs.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  bool
+	 */
+	public function is_needed(): bool {
+		return true;
+	}
 
 	/**
 	 * Initializes the blocks.

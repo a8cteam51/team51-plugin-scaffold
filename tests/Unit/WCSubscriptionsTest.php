@@ -3,12 +3,13 @@
 namespace A8C\SpecialProjects\Scaffold\Tests\Unit;
 
 use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
+use A8C\SpecialProjects\Scaffold\Plugin;
 use A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles\RecordingWCSubscriptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Exercises WC_Subscriptions::is_active() and maybe_initialize(), the plugin's smallest
+ * Exercises WC_Subscriptions::is_needed() and Plugin::boot_component(), the plugin's smallest
  * branching, WP-light seam: its only WordPress dependency is the ABSPATH boot guard, so it
  * models the house pattern of hand-rolled recording doubles for Unit-suite tests instead of
  * Mockery or Brain-Monkey.
@@ -17,9 +18,10 @@ use PHPUnit\Framework\TestCase;
  * @version 1.0.0
  */
 #[CoversClass( WC_Subscriptions::class )]
+#[CoversClass( Plugin::class )]
 final class WCSubscriptionsTest extends TestCase {
 	/**
-	 * Satisfies the production file's `ABSPATH` boot guard before its class is first
+	 * Satisfies the production files' `ABSPATH` boot guard before their classes are first
 	 * autoloaded.
 	 *
 	 * @since   1.0.0
@@ -35,46 +37,46 @@ final class WCSubscriptionsTest extends TestCase {
 
 	/**
 	 * Without the real WooCommerce Subscriptions plugin loaded, the integration reports itself
-	 * as inactive.
+	 * as not needed.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_is_active_is_false_without_the_real_plugin(): void {
-		self::assertFalse( ( new WC_Subscriptions() )->is_active() );
+	public function test_is_needed_is_false_without_the_real_plugin(): void {
+		self::assertFalse( ( new WC_Subscriptions() )->is_needed() );
 	}
 
 	/**
-	 * An inactive integration never runs its initialization.
+	 * The registry gate never initializes a component that reports itself as not needed.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_maybe_initialize_skips_initialization_when_inactive(): void {
-		$integration = new RecordingWCSubscriptions( false );
+	public function test_boot_component_skips_initialization_when_not_needed(): void {
+		$component = new RecordingWCSubscriptions( false );
 
-		$integration->maybe_initialize();
+		Plugin::boot_component( $component );
 
-		self::assertFalse( $integration->initialized );
+		self::assertFalse( $component->initialized );
 	}
 
 	/**
-	 * An active integration runs its initialization.
+	 * The registry gate initializes a component that reports itself as needed.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_maybe_initialize_runs_initialization_when_active(): void {
-		$integration = new RecordingWCSubscriptions( true );
+	public function test_boot_component_runs_initialization_when_needed(): void {
+		$component = new RecordingWCSubscriptions( true );
 
-		$integration->maybe_initialize();
+		Plugin::boot_component( $component );
 
-		self::assertTrue( $integration->initialized );
+		self::assertTrue( $component->initialized );
 	}
 }

@@ -7,15 +7,15 @@ defined( 'ABSPATH' ) || exit;
 // region META
 
 /**
- * Returns the plugin's main class instance.
+ * Boots the plugin's component registry.
  *
  * @since   1.0.0
  * @version 1.0.0
  *
- * @return  Plugin
+ * @return  void
  */
-function a8csp_scaffold_get_plugin_instance(): Plugin {
-	return Plugin::get_instance();
+function a8csp_scaffold_boot_plugin(): void {
+	Plugin::get_instance()->boot();
 }
 
 // endregion

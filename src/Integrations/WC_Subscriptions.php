@@ -2,6 +2,8 @@
 
 namespace A8C\SpecialProjects\Scaffold\Integrations;
 
+use A8C\SpecialProjects\Scaffold\Component;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -10,35 +12,19 @@ defined( 'ABSPATH' ) || exit;
  * @since   1.0.0
  * @version 1.0.0
  */
-class WC_Subscriptions {
+class WC_Subscriptions implements Component {
 	// region METHODS
 
 	/**
-	 * Returns true if the integration is active.
+	 * Returns true if WooCommerce Subscriptions is active.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return  boolean
+	 * @return  bool
 	 */
-	public function is_active(): bool {
+	public function is_needed(): bool {
 		return \class_exists( 'WC_Subscriptions' );
-	}
-
-	/**
-	 * Initializes the integration if it's active.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  void
-	 */
-	public function maybe_initialize(): void {
-		if ( ! $this->is_active() ) {
-			return;
-		}
-
-		$this->initialize();
 	}
 
 	/**
@@ -49,7 +35,7 @@ class WC_Subscriptions {
 	 *
 	 * @return  void
 	 */
-	protected function initialize(): void {
+	public function initialize(): void {
 		// HOOKS AND FILTERS HERE
 	}
 

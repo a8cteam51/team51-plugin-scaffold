@@ -74,5 +74,5 @@ if ( is_wp_error( A8CSP_SCAFFOLD_REQUIREMENTS ) ) {
 	a8csp_scaffold_output_requirements_error( A8CSP_SCAFFOLD_REQUIREMENTS );
 } else {
 	require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions.php';
-	add_action( 'plugins_loaded', array( a8csp_scaffold_get_plugin_instance(), 'maybe_initialize' ) );
+	add_action( 'plugins_loaded', 'a8csp_scaffold_boot_plugin' );
 }

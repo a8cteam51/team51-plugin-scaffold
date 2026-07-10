@@ -14,24 +14,37 @@ final class Plugin {
 	// region FIELDS AND CONSTANTS
 
 	/**
-	 * The blocks component.
+	 * The components booted by the plugin, in registration order.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @var     Blocks|null
+	 * @var     array<int, class-string<Component>>
 	 */
-	public ?Blocks $blocks = null;
+	private const COMPONENTS = array(
+		Blocks::class,
+		Integrations\WC_Subscriptions::class,
+	);
 
 	/**
-	 * The integrations component.
+	 * The singleton instance.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @var     Integrations|null
+	 * @var     Plugin|null
 	 */
-	public ?Integrations $integrations = null;
+	private static ?self $instance = null;
+
+	/**
+	 * Whether `boot()` has already run.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @var     bool
+	 */
+	private bool $booted = false;
 
 	// endregion
 
@@ -43,7 +56,7 @@ final class Plugin {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
-	protected function __construct() {
+	private function __construct() {
 		/* Empty on purpose. */
 	}
 
@@ -65,10 +78,12 @@ final class Plugin {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
+	 * @throws  \LogicException When unserialization is attempted.
+	 *
 	 * @return  void
 	 */
 	public function __wakeup() {
-		/* Empty on purpose. */
+		throw new \LogicException( 'Cannot unserialize a singleton.' );
 	}
 
 	// endregion
@@ -84,13 +99,7 @@ final class Plugin {
 	 * @return  Plugin
 	 */
 	public static function get_instance(): self {
-		static $instance = null;
-
-		if ( null === $instance ) {
-			$instance = new self();
-		}
-
-		return $instance;
+		return self::$instance ??= new self();
 	}
 
 	/**
@@ -122,19 +131,21 @@ final class Plugin {
 	}
 
 	/**
-	 * Initializes the plugin components.
+	 * Initializes a component if it reports itself as needed.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
+	 * @param   Component $component The component to gate and initialize.
+	 *
 	 * @return  void
 	 */
-	protected function initialize(): void {
-		$this->blocks = new Blocks();
-		$this->blocks->initialize();
+	public static function boot_component( Component $component ): void {
+		if ( ! $component->is_needed() ) {
+			return;
+		}
 
-		$this->integrations = new Integrations();
-		$this->integrations->initialize();
+		$component->initialize();
 	}
 
 	// endregion
@@ -142,21 +153,29 @@ final class Plugin {
 	// region HOOKS
 
 	/**
-	 * Initializes the plugin components if WooCommerce is activated.
+	 * Boots the component registry if the plugin's dependencies are met. Idempotent: only the
+	 * first call has any effect.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function maybe_initialize(): void {
+	public function boot(): void {
+		if ( $this->booted ) {
+			return;
+		}
+		$this->booted = true;
+
 		$is_active = $this->is_active();
-		if ( is_wp_error( $is_active ) ) {
+		if ( \is_wp_error( $is_active ) ) {
 			a8csp_scaffold_output_requirements_error( $is_active );
 			return;
 		}
 
-		$this->initialize();
+		foreach ( self::COMPONENTS as $component_class ) {
+			self::boot_component( new $component_class() );
+		}
 	}
 
 	// endregion

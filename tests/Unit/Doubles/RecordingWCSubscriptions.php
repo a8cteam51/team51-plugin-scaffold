@@ -5,9 +5,8 @@ namespace A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles;
 use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
 
 /**
- * Hand-rolled recording double for WC_Subscriptions: reports a canned active-state and records
- * whether `initialize()` ran, since the real method is a protected no-op with no other
- * observable effect.
+ * Hand-rolled recording double for WC_Subscriptions: reports a canned needed-state and records
+ * whether `initialize()` ran, since the real method is a no-op with no other observable effect.
  *
  * @since   1.0.0
  * @version 1.0.0
@@ -24,35 +23,35 @@ final class RecordingWCSubscriptions extends WC_Subscriptions {
 	public bool $initialized = false;
 
 	/**
-	 * The canned return value for `is_active()`.
+	 * The canned return value for `is_needed()`.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @var     bool
 	 */
-	private bool $active;
+	private bool $needed;
 
 	/**
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   bool $active The canned return value for `is_active()`.
+	 * @param   bool $needed The canned return value for `is_needed()`.
 	 */
-	public function __construct( bool $active ) {
-		$this->active = $active;
+	public function __construct( bool $needed ) {
+		$this->needed = $needed;
 	}
 
 	/**
-	 * Returns the canned active-state instead of checking for the real plugin.
+	 * Returns the canned needed-state instead of checking for the real plugin.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  bool
 	 */
-	public function is_active(): bool {
-		return $this->active;
+	public function is_needed(): bool {
+		return $this->needed;
 	}
 
 	/**
@@ -63,7 +62,7 @@ final class RecordingWCSubscriptions extends WC_Subscriptions {
 	 *
 	 * @return  void
 	 */
-	protected function initialize(): void {
+	public function initialize(): void {
 		$this->initialized = true;
 	}
 }
