@@ -8,7 +8,7 @@
     "wp-content/plugins/woocommerce": "./vendor/wpackagist-plugin/woocommerce"
   },
   "lifecycleScripts": {
-    "afterStart": "vendor/a8cteam51/team51-configs/docker/wp-env-install-pdo_mysql.sh && wp-env --config .wp-env.tests.json run cli wp plugin activate woocommerce a8csp-plugin-scaffold"
+    "afterStart": "bin/wp-env-install-pdo_mysql.sh && wp-env --config .wp-env.tests.json run cli wp plugin activate woocommerce a8csp-plugin-scaffold"
   },
   "config": {
     "WP_DEBUG": true,

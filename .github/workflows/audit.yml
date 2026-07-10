@@ -14,3 +14,5 @@ permissions:
 jobs:
   supply-chain:
     uses: a8cteam51/team51-configs/.github/workflows/reusable-supply-chain-audit.yml@update/php85-wp70-floors
+    with:
+      npm-audit-flags: '--audit-level=high --omit=dev'

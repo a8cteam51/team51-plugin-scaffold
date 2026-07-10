@@ -9,7 +9,7 @@
     "wp-content/plugins/woocommerce": "./vendor/wpackagist-plugin/woocommerce"
   },
   "lifecycleScripts": {
-    "afterStart": "vendor/a8cteam51/team51-configs/docker/wp-env-install-pdo_mysql.sh"
+    "afterStart": "bin/wp-env-install-pdo_mysql.sh"
   },
   "config": {
     "WP_DEBUG": true,

@@ -46,3 +46,4 @@ jobs:
     uses: a8cteam51/team51-configs/.github/workflows/reusable-playwright-e2e.yml@update/php85-wp70-floors
     with:
       artifact-slug: 'e2e'
+      composer-options: '--prefer-dist --ignore-platform-req=php+'
