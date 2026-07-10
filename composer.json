@@ -87,6 +87,8 @@
 
     "test": "@php vendor/bin/phpunit",
     "test:unit": "@php vendor/bin/phpunit --testsuite=Unit",
+    "test:integration": "npm --prefix=. run test:integration",
+    "test:requirements": "npm --prefix=. run test:requirements",
     "quality-check": [
       "@lint:php",
       "@test:unit"
