@@ -61,10 +61,12 @@
   },
 
   "scripts": {
-    "changelog:add": "@php vendor/bin/changelogger add",
-    "changelog:validate": "@php vendor/bin/changelogger validate",
-    "changelog:write": "@php vendor/bin/changelogger write",
     "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
+    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
+    "packages-update": [
+      "@composer clear-cache",
+      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
+    ],
 
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. ./ -v",
     "lint:php": [
@@ -89,17 +91,12 @@
     "i18n:makemo": "wp i18n make-mo ./languages/",
     "i18n:makephp": "wp i18n make-php ./languages/",
 
-    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
-    "packages-update": [
-      "@composer clear-cache",
-      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
-    ],
-
     "test": "@php vendor/bin/phpunit",
     "test:unit": "@php vendor/bin/phpunit --testsuite=Unit",
     "test:unit:mutation": "@php vendor/bin/infection --threads=max",
     "test:integration": "npm --prefix=. run test:integration",
     "test:requirements": "npm --prefix=. run test:requirements",
+
     "quality-check": [
       "@lint:php",
       "@test:unit"
@@ -107,7 +104,11 @@
     "quality-check:all": [
       "@quality-check",
       "@test:unit:mutation"
-    ]
+    ],
+
+    "changelog:add": "@php vendor/bin/changelogger add",
+    "changelog:validate": "@php vendor/bin/changelogger validate",
+    "changelog:write": "@php vendor/bin/changelogger write"
   },
   "config": {
     "allow-plugins": {
