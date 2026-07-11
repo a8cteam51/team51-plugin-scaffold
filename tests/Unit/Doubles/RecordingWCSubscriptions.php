@@ -5,8 +5,9 @@ namespace A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles;
 use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
 
 /**
- * Hand-rolled recording double for WC_Subscriptions: reports a canned needed-state and records
- * whether `initialize()` ran, since the real method is a no-op with no other observable effect.
+ * Hand-rolled recording double for WC_Subscriptions: reports a configurable needed-state and
+ * records whether `initialize()` ran, since the real method is a no-op with no other observable
+ * effect.
  *
  * @since   1.0.0
  * @version 1.0.0
@@ -20,26 +21,29 @@ final class RecordingWCSubscriptions extends WC_Subscriptions {
 	 *
 	 * @var     bool
 	 */
-	public bool $initialized = false;
+	public static bool $initialized = false;
 
 	/**
-	 * The canned return value for `is_needed()`.
+	 * The configured return value for `is_needed()`.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @var     bool
 	 */
-	private bool $needed;
+	public static bool $needed = true;
 
 	/**
+	 * Restores the double's default state.
+	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   bool $needed The canned return value for `is_needed()`.
+	 * @return  void
 	 */
-	public function __construct( bool $needed ) {
-		$this->needed = $needed;
+	public static function reset(): void {
+		self::$needed      = true;
+		self::$initialized = false;
 	}
 
 	/**
@@ -51,7 +55,7 @@ final class RecordingWCSubscriptions extends WC_Subscriptions {
 	 * @return  bool
 	 */
 	public function is_needed(): bool {
-		return $this->needed;
+		return self::$needed;
 	}
 
 	/**
@@ -63,6 +67,6 @@ final class RecordingWCSubscriptions extends WC_Subscriptions {
 	 * @return  void
 	 */
 	public function initialize(): void {
-		$this->initialized = true;
+		self::$initialized = true;
 	}
 }

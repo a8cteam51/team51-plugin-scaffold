@@ -10,9 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Exercises WC_Subscriptions::is_needed(), WC_Subscriptions::meets_minimum_wc_version(), and
- * Plugin::boot_component(): the negative integration gate, its pure version comparison, and the
- * registry's component gate. The production classes require only the ABSPATH boot guard for these
- * Unit tests, which use hand-rolled recording doubles instead of Mockery or Brain-Monkey.
+ * the private Plugin::boot_component(): the negative integration gate, its pure version comparison,
+ * and the registry's component gate invoked through Reflection. The production classes require
+ * only the ABSPATH boot guard for these Unit tests, which use hand-rolled recording doubles instead
+ * of Mockery or Brain-Monkey.
  *
  * @since   1.0.0
  * @version 1.0.0
@@ -57,11 +58,14 @@ final class WCSubscriptionsTest extends TestCase {
 	 * @return  void
 	 */
 	public function test_boot_component_skips_initialization_when_not_needed(): void {
-		$component = new RecordingWCSubscriptions( false );
+		RecordingWCSubscriptions::reset();
+		RecordingWCSubscriptions::$needed = false;
 
-		Plugin::boot_component( $component );
+		$seen = array();
+		( new \ReflectionMethod( Plugin::class, 'boot_component' ) )
+			->invokeArgs( new Plugin(), array( RecordingWCSubscriptions::class, &$seen ) );
 
-		self::assertFalse( $component->initialized );
+		self::assertFalse( RecordingWCSubscriptions::$initialized );
 	}
 
 	/**
@@ -73,11 +77,13 @@ final class WCSubscriptionsTest extends TestCase {
 	 * @return  void
 	 */
 	public function test_boot_component_runs_initialization_when_needed(): void {
-		$component = new RecordingWCSubscriptions( true );
+		RecordingWCSubscriptions::reset();
 
-		Plugin::boot_component( $component );
+		$seen = array();
+		( new \ReflectionMethod( Plugin::class, 'boot_component' ) )
+			->invokeArgs( new Plugin(), array( RecordingWCSubscriptions::class, &$seen ) );
 
-		self::assertTrue( $component->initialized );
+		self::assertTrue( RecordingWCSubscriptions::$initialized );
 	}
 
 	/**

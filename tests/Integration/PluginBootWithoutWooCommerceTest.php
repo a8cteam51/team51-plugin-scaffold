@@ -32,7 +32,7 @@ final class PluginBootWithoutWooCommerceTest extends TestCase {
 		}
 
 		self::assertNotInstanceOf( \WP_Error::class, A8CSP_SCAFFOLD_REQUIREMENTS );
-		self::assertTrue( \function_exists( 'a8csp_scaffold_boot_plugin' ) );
+		self::assertTrue( \function_exists( 'a8csp_scaffold_plugin' ) );
 
 		$block_metadata = \json_decode(
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local filesystem read of a tracked build artifact, not a remote resource.

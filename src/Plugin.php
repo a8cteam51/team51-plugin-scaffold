@@ -14,7 +14,8 @@ final class Plugin {
 	// region FIELDS AND CONSTANTS
 
 	/**
-	 * Add the plugin's components here; they boot in registration order.
+	 * Add the plugin's top-level components here; they boot in registration order. A component
+	 * implementing `ComponentContainer` boots its declared children immediately after itself.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -25,16 +26,6 @@ final class Plugin {
 		Blocks::class,
 		Integrations\WC_Subscriptions::class,
 	);
-
-	/**
-	 * The singleton instance.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @var     Plugin|null
-	 */
-	private static ?self $instance = null;
 
 	/**
 	 * Whether `boot()` has already run.
@@ -48,76 +39,64 @@ final class Plugin {
 
 	// endregion
 
-	// region MAGIC METHODS
-
-	/**
-	 * Plugin constructor.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 */
-	private function __construct() {
-		/* Empty on purpose. */
-	}
-
-	/**
-	 * Prevent cloning.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  void
-	 */
-	private function __clone() {
-		/* Empty on purpose. */
-	}
-
-	/**
-	 * Prevent unserializing.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @throws  \LogicException When unserialization is attempted.
-	 *
-	 * @return  void
-	 */
-	public function __wakeup() {
-		throw new \LogicException( 'Cannot unserialize a singleton.' );
-	}
-
-	// endregion
-
 	// region METHODS
 
 	/**
-	 * Returns the singleton instance of the plugin.
+	 * Returns true if the plugin should boot on the current site.
+	 *
+	 * A plugin that is gated as a whole — e.g. one that requires WooCommerce for everything it
+	 * does — expresses that check here once instead of in every component.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return  Plugin
+	 * @return  bool
 	 */
-	public static function get_instance(): self {
-		return self::$instance ??= new self();
+	public function is_needed(): bool {
+		return true;
 	}
 
 	/**
-	 * Initializes a component if it reports itself as needed.
+	 * Boots one component and recurses into its declared children: gate, initialize, descend. A
+	 * component whose `is_needed()` returns false prunes its whole subtree unconstructed. A class
+	 * reached twice anywhere in the graph is a developer error.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   Component $component The component to gate and initialize.
+	 * @param   class-string<Component>              $component_class The component class to boot.
+	 * @param   array<class-string<Component>, true> $seen             Component classes already
+	 *                                                                 reached in the graph.
+	 *
+	 * @throws  \LogicException When a component class appears more than once in the graph.
 	 *
 	 * @return  void
 	 */
-	public static function boot_component( Component $component ): void {
+	private function boot_component( string $component_class, array &$seen ): void {
+		if ( isset( $seen[ $component_class ] ) ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Registered class names are developer-controlled identifiers in a LogicException.
+			throw new \LogicException(
+				\sprintf(
+					'Component %s is registered more than once; a component may belong to a single parent.',
+					$component_class
+				)
+			);
+			// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
+		}
+		$seen[ $component_class ] = true;
+
+		$component = new $component_class();
 		if ( ! $component->is_needed() ) {
 			return;
 		}
 
 		$component->initialize();
+
+		if ( $component instanceof ComponentContainer ) {
+			foreach ( $component::get_child_component_classes() as $child_class ) {
+				$this->boot_component( $child_class, $seen );
+			}
+		}
 	}
 
 	// endregion
@@ -125,8 +104,8 @@ final class Plugin {
 	// region HOOKS
 
 	/**
-	 * Boots the component registry unconditionally; each component reports whether it is needed.
-	 * Idempotent: only the first call has any effect.
+	 * Boots the plugin's component tree when the plugin reports itself as needed. Idempotent: only
+	 * the first eligible call has any effect.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -134,14 +113,15 @@ final class Plugin {
 	 * @return  void
 	 */
 	public function boot(): void {
-		if ( $this->booted ) {
+		if ( $this->booted || ! $this->is_needed() ) {
 			return;
 		}
 
 		$this->booted = true;
 
+		$seen = array();
 		foreach ( self::COMPONENTS as $component_class ) {
-			self::boot_component( new $component_class() );
+			$this->boot_component( $component_class, $seen );
 		}
 	}
 

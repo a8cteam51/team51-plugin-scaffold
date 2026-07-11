@@ -27,7 +27,7 @@ final class RequirementsCheckTest extends TestCase {
 
 		if ( \version_compare( $GLOBALS['wp_version'], '7.0', '<' ) ) {
 			self::assertInstanceOf( \WP_Error::class, A8CSP_SCAFFOLD_REQUIREMENTS );
-			self::assertFalse( \function_exists( 'a8csp_scaffold_boot_plugin' ) );
+			self::assertFalse( \function_exists( 'a8csp_scaffold_plugin' ) );
 		} else {
 			self::assertNotInstanceOf( \WP_Error::class, A8CSP_SCAFFOLD_REQUIREMENTS );
 		}
