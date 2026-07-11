@@ -114,6 +114,12 @@ final class UninstallTest extends TestCase {
 	 * seeded anything for them to delete. Locates the array literal by balancing parens from
 	 * its own `array(` so the nested `options`/`user_meta` arrays don't confuse the match, then
 	 * evaluates only that expression — never uninstall.php's guard or its delete loops.
+	 * This eval is safe only because it parses this repository's own version-controlled
+	 * `uninstall.php` and must never be generalized to evaluate user input, remote data,
+	 * another file, or anything else from outside this repository; if the footprint's shape
+	 * grows complex enough that this string-slicing extraction becomes fragile, use a
+	 * `token_get_all()`-based reader as the eval-free alternative instead of trying to make
+	 * the eval safer.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0

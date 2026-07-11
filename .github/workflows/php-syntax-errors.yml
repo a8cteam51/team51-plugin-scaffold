@@ -33,8 +33,18 @@ jobs:
           coverage: none
           tools: none
 
-      # The reusable syntax-check job lints the full tree and requires PHP 8.5+ syntax
-      # support; below the plugin's PHP floor only the graceful-degradation entry file
-      # must still parse, so that file is checked directly rather than via the reusable.
+      # Only the entry file must parse below the plugin's PHP floor; functions.php,
+      # uninstall.php, and index.php load after the requirements gate and are excluded.
+      # Discover it by its WordPress "Plugin Name:" header because generation renames the
+      # file per repo without rewriting .github/.
       - name: Check the entry file for syntax errors
-        run: php -l "$GITHUB_WORKSPACE/a8csp-plugin-scaffold.php"
+        run: |
+          set -euo pipefail
+
+          mapfile -t entry_files < <(grep -l 'Plugin Name:' "$GITHUB_WORKSPACE"/*.php || true)
+          entry_count=${#entry_files[@]}
+          if [ "$entry_count" -ne 1 ]; then
+            echo "::error::expected exactly one root *.php file with a 'Plugin Name:' header, found $entry_count" >&2
+            exit 1
+          fi
+          php -l "${entry_files[0]}"

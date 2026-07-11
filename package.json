@@ -81,7 +81,7 @@
     "wp-env:belowfloor:start": "wp-env --config .wp-env.belowfloor.json start",
     "wp-env:belowfloor:stop": "wp-env --config .wp-env.belowfloor.json stop",
 
-    "audit": "npm audit",
+    "audit": "composer audit --abandoned=report && npm audit",
     "audit:fix": "npm audit fix",
     "check:engines": "wp-scripts check-engines",
     "check:licenses": "wp-scripts check-licenses",
