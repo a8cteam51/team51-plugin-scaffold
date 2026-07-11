@@ -57,6 +57,11 @@ const buildTemplate = async ( filePath ) => {
 			'A scaffold for A8C Special Projects plugins.': repository.description ?? '',
 			'team51-plugin-scaffold': repository.name,
 			'a8csp-scaffold': repository.name,
+			// The entry file's own name (fill-in-scaffold.yml already renamed it to
+			// "$REPO_NAME.php" by this point) must resolve to the repo-name rule, not the
+			// kebab-title rule below it — ordered first so this more specific, ".php"-suffixed
+			// match consumes the substring before the bare kebab-title key can.
+			'a8csp-plugin-scaffold.php': repository.name + '.php',
 			'a8csp-plugin-scaffold': toKebabCase( title ),
 			'A8C\\SpecialProjects\\Scaffold': 'A8C\\SpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
 			'A8C\\SpecialProjects\\\\Scaffold': 'A8C\\SpecialProjects\\\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),

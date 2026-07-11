@@ -34,7 +34,7 @@ jobs:
           tools: none
 
       # The reusable syntax-check job lints the full tree and requires PHP 8.5+ syntax
-      # support; below the plugin's PHP floor only the graceful-degradation bootstrap
-      # files must still parse, so that path is checked directly rather than via the reusable.
-      - name: Check bootstrap files for syntax errors
-        run: find "$GITHUB_WORKSPACE" -maxdepth 1 \( -name 'team51-plugin-scaffold.php' -o -name 'functions-bootstrap.php' \) -print0 | xargs -0 -n 1 -P 4 php -l
+      # support; below the plugin's PHP floor only the graceful-degradation entry file
+      # must still parse, so that file is checked directly rather than via the reusable.
+      - name: Check the entry file for syntax errors
+        run: php -l "$GITHUB_WORKSPACE/a8csp-plugin-scaffold.php"

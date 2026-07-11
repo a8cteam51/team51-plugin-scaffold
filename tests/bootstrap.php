@@ -14,5 +14,5 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $a8csp_scaffold_wp_load = '/var/www/html/wp-load.php';
 if ( file_exists( $a8csp_scaffold_wp_load ) ) {
 	require_once $a8csp_scaffold_wp_load;
-	require_once __DIR__ . '/../team51-plugin-scaffold.php';
+	require_once __DIR__ . '/../a8csp-plugin-scaffold.php';
 }

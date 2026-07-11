@@ -8,11 +8,10 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 
 ## What is in this repository
 
-- `team51-plugin-scaffold.php` is the scaffold plugin bootstrap. It defines the
-  plugin header, constants, translation loading, WooCommerce HPOS compatibility,
+- `a8csp-plugin-scaffold.php` is the scaffold plugin bootstrap. It defines the
+  plugin header, constants, metadata and version-compatibility helpers, admin
+  notice helpers, translation loading, WooCommerce HPOS compatibility,
   autoloader check, and requirement validation.
-- `functions-bootstrap.php` contains metadata, version compatibility, and admin
-  notice helpers that are available before the full plugin loads.
 - `functions.php` boots the plugin's component registry and loads the PHP helper files under `includes/`.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
   including the main `Plugin`, its `Component` registry, and block registration. Add the plugin's
@@ -50,7 +49,7 @@ repository itself.
 For generated repositories, the workflow:
 
 1. Renames `README.scaffold.md` to `README.md`.
-2. Renames `team51-plugin-scaffold.php` to the generated repository name.
+2. Renames `a8csp-plugin-scaffold.php` to the generated repository name.
 3. Runs `.github/workflows/fill-in-scaffold.mjs` to replace scaffold strings.
 4. Commits and pushes the renamed and filled files.
 
@@ -66,6 +65,10 @@ The script replaces the following tracked template values:
   `README.md`.
 - `A8CSP Plugin Scaffold`, `A scaffold for A8C Special Projects plugins.`,
   `team51-plugin-scaffold`, and `a8csp-scaffold` outside the generated README.
+- `a8csp-plugin-scaffold.php` (the entry file, already renamed to the repository
+  name by this point) with the generated repository name.
+- `a8csp-plugin-scaffold` (elsewhere — the wp-env mapping and Playwright slug)
+  with the title-derived slug.
 - `A8C\SpecialProjects\Scaffold` with a title-derived namespace.
 - `a8csp_scaffold` and `A8CSP_SCAFFOLD` with the configured PHP prefix.
 
