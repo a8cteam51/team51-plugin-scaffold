@@ -16,10 +16,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class PluginBootTest extends TestCase {
 	/**
-	 * On an at-floor runtime the requirements gate passes, `plugins_loaded` has already run the
-	 * accessor (it's wired via a void wrapper, since the accessor itself returns `Plugin`), and by
-	 * request time the registry has run the `Blocks` component far enough for its block to be
-	 * registered with WordPress.
+	 * On an at-floor runtime the requirements gate passes, `plugins_loaded` is wired to the named
+	 * void wrapper `a8csp_scaffold_boot_plugin()` (not the accessor directly, since the accessor
+	 * itself returns `Plugin`), and by request time the registry has run the `Blocks` component far
+	 * enough for its block to be registered with WordPress.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -29,6 +29,7 @@ final class PluginBootTest extends TestCase {
 	public function test_plugin_boots_on_supported_runtime(): void {
 		self::assertNotInstanceOf( \WP_Error::class, A8CSP_SCAFFOLD_REQUIREMENTS );
 		self::assertTrue( \function_exists( 'a8csp_scaffold_plugin' ) );
+		self::assertNotFalse( \has_action( 'plugins_loaded', 'a8csp_scaffold_boot_plugin' ) );
 		self::assertInstanceOf( Plugin::class, \a8csp_scaffold_plugin() );
 
 		$block_metadata = \json_decode(

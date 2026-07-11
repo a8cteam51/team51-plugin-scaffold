@@ -70,12 +70,5 @@ if ( is_wp_error( A8CSP_SCAFFOLD_REQUIREMENTS ) ) {
 	a8csp_scaffold_output_requirements_error( A8CSP_SCAFFOLD_REQUIREMENTS );
 } else {
 	require_once A8CSP_SCAFFOLD_DIR_PATH . '/functions.php';
-	// A void wrapper, not the accessor directly: a8csp_scaffold_plugin() returns Plugin for its
-	// other callers (e.g. tests), and WordPress's action-callback contract requires void.
-	add_action(
-		'plugins_loaded',
-		static function (): void {
-			a8csp_scaffold_plugin();
-		}
-	);
+	add_action( 'plugins_loaded', 'a8csp_scaffold_boot_plugin' );
 }

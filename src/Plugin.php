@@ -24,7 +24,7 @@ final class Plugin {
 	 */
 	private const COMPONENTS = array(
 		Blocks::class,
-		Integrations\WC_Subscriptions::class,
+		Integrations::class,
 	);
 
 	/**

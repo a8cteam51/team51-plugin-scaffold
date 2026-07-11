@@ -25,6 +25,21 @@ function a8csp_scaffold_plugin(): Plugin {
 	return $plugin;
 }
 
+/**
+ * The `plugins_loaded` hook target. A void wrapper, not the accessor directly: the accessor
+ * returns `Plugin` for its other callers (e.g. tests), and WordPress's action-callback contract
+ * requires void. Named, rather than an anonymous closure, so it can be unhooked and so
+ * `has_action()` can assert the wiring by name.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @return  void
+ */
+function a8csp_scaffold_boot_plugin(): void {
+	a8csp_scaffold_plugin();
+}
+
 // endregion
 
 // region OTHER

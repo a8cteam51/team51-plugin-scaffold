@@ -17,8 +17,10 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
   including the main `Plugin`, its `Component` registry, and block registration. Add the plugin's
   components to the `COMPONENTS` list in `src/Plugin.php`; they boot in registration order.
-- `src/Integrations/WC_Subscriptions.php` is an example optional `Component`
-  with placeholder hook and filter methods.
+- `src/Integrations.php` is the worked example of a `ComponentContainer`: it groups
+  third-party integrations under one node, gating the group as a whole while each
+  child still gates itself. `src/Integrations/WC_Subscriptions.php`, its one declared
+  child, is an example optional `Component` with placeholder hook and filter methods.
 - `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
 - `models/` is an extension point for classmapped data/model classes.
 - `templates/` is an extension point for template partials rendered by components.

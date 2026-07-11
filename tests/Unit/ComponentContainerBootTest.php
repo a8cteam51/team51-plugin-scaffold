@@ -3,6 +3,8 @@
 namespace A8C\SpecialProjects\Scaffold\Tests\Unit;
 
 use A8C\SpecialProjects\Scaffold\Component;
+use A8C\SpecialProjects\Scaffold\Integrations;
+use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
 use A8C\SpecialProjects\Scaffold\Plugin;
 use A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles\ComponentBootLedger;
 use A8C\SpecialProjects\Scaffold\Tests\Unit\Doubles\RecordingContainerA;
@@ -19,6 +21,7 @@ use PHPUnit\Framework\TestCase;
  * @version 1.0.0
  */
 #[CoversClass( Plugin::class )]
+#[CoversClass( Integrations::class )]
 final class ComponentContainerBootTest extends TestCase {
 	/**
 	 * Satisfies the production files' `ABSPATH` boot guard before their classes are first
@@ -183,6 +186,41 @@ final class ComponentContainerBootTest extends TestCase {
 	 */
 	public function test_plugin_is_needed_returns_true_by_default(): void {
 		self::assertTrue( ( new Plugin() )->is_needed() );
+	}
+
+	/**
+	 * The real `Integrations` container declares `WC_Subscriptions` as its one child, the fleet's
+	 * worked example of the container pattern in the flesh.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_integrations_children_include_wc_subscriptions(): void {
+		self::assertSame(
+			array( WC_Subscriptions::class ),
+			Integrations::get_child_component_classes()
+		);
+	}
+
+	/**
+	 * Booting a registry through the real `Integrations` container reaches its real
+	 * `WC_Subscriptions` leaf: no double at either node, since the graph walk marks every
+	 * component it constructs as seen regardless of that component's own `is_needed()` gate,
+	 * which is enough to prove the container path was walked all the way down.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_booting_integrations_reaches_the_wc_subscriptions_leaf(): void {
+		$seen = array();
+		$this->boot_component( new Plugin(), Integrations::class, $seen );
+
+		self::assertArrayHasKey( Integrations::class, $seen );
+		self::assertArrayHasKey( WC_Subscriptions::class, $seen );
 	}
 
 	/**

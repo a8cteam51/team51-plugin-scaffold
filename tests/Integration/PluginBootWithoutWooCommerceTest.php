@@ -2,24 +2,26 @@
 
 namespace A8C\SpecialProjects\Scaffold\Tests\Integration;
 
+use A8C\SpecialProjects\Scaffold\Integrations;
 use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Proves Plugin::boot() boots the whole component registry independently of WooCommerce: a
+ * Proves Plugin::boot() boots the whole component tree independently of WooCommerce: a
  * WooCommerce-independent component (Blocks) registers itself when WooCommerce is inactive,
- * while the WooCommerce-dependent component (WC_Subscriptions) correctly reports itself as not
- * needed. Only meaningful with WooCommerce deactivated, so it self-skips in the standard
- * `composer test:integration` run (WooCommerce is active there) — see tests/README.md for how to
- * exercise it against a WooCommerce-less runtime.
+ * while the WooCommerce-dependent component (WC_Subscriptions, nested under the Integrations
+ * container) correctly reports itself as not needed. Only meaningful with WooCommerce
+ * deactivated, so it self-skips in the standard `composer test:integration` run (WooCommerce is
+ * active there) — see tests/README.md for how to exercise it against a WooCommerce-less runtime.
  *
  * @since   1.0.0
  * @version 1.0.0
  */
 final class PluginBootWithoutWooCommerceTest extends TestCase {
 	/**
-	 * With WooCommerce inactive, the boot hook runs, the Blocks component registers
-	 * its block, and the WC-dependent component correctly reports itself as not needed.
+	 * With WooCommerce inactive, the boot hook runs, the Blocks component registers its block,
+	 * the Integrations container still declares WC_Subscriptions as its child (the container
+	 * itself is unconditional), and the WC-dependent leaf correctly reports itself as not needed.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -43,6 +45,7 @@ final class PluginBootWithoutWooCommerceTest extends TestCase {
 		);
 
 		self::assertTrue( \WP_Block_Type_Registry::get_instance()->is_registered( $block_metadata['name'] ) );
+		self::assertSame( array( WC_Subscriptions::class ), Integrations::get_child_component_classes() );
 		self::assertFalse( ( new WC_Subscriptions() )->is_needed() );
 	}
 }
