@@ -9,7 +9,10 @@ fixtures at three WordPress-version tiers.
   hand-rolled recording doubles instead of Mockery or Brain Monkey (see `tests/Unit/Doubles/`).
   Fast; this is the suite `composer quality-check` runs on every push.
 - **Integration** (`tests/Integration/`) — boots inside wp-env against a supported WordPress
-  version and exercises the plugin's real boot path.
+  version and exercises the plugin's real boot path. `UninstallTest` runs the real
+  `uninstall.php` end-to-end (seeds sentinels, defines `WP_UNINSTALL_PLUGIN`, asserts its
+  footprint is gone and a canary key survives) inside `#[RunInSeparateProcess]`, since that
+  constant must not leak into the rest of the suite.
 - **Requirements** (`tests/Integration/RequirementsCheckTest.php`, run as its own suite) — boots
   inside wp-env against a below-floor WordPress version to verify the requirements gate degrades
   gracefully instead of fataling.

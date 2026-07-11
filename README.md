@@ -23,11 +23,11 @@ GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 - `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
 - `models/` is an extension point for classmapped data/model classes.
 - `templates/` is an extension point for template partials rendered by components.
-- `uninstall.php` reads `includes/_uninstall-footprint.php` during WordPress's cold
-  uninstall bootstrap and deletes the options and user-meta keys declared there.
-  The manifest records the plugin's complete persisted footprint; add an entry in
-  the same change that introduces the corresponding write. Its underscore prefix
-  keeps it out of the normal `includes/` loader.
+- `uninstall.php` holds the plugin's complete persisted footprint inline — every
+  option and user-meta key any component writes, grouped by owning component — and
+  deletes them during WordPress's cold uninstall bootstrap. Add an entry in the same
+  change that introduces the corresponding write; a component that persists state
+  cross-references its keys with `@see uninstall.php` in its class docblock.
 - `blocks/src/foobar/` is the source for an example block. `blocks/build/` is the
   tracked build output. `npm run build` generates `blocks/build/blocks-manifest.php`;
   it is committed with that output, and `src/Blocks.php` uses it to register all

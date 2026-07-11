@@ -1,6 +1,7 @@
 Significance: minor
 Type: added
 
-Added a footprint-manifest uninstall story: `includes/_uninstall-footprint.php` lists every
-wp_options row and user-meta key the plugin owns (currently none), and the new `uninstall.php`
-deletes them directly, framework-free, in WordPress's cold uninstall bootstrap.
+Added a manifest-driven uninstall story: `uninstall.php` deletes every option and user-meta
+key the plugin owns directly, framework-free, in WordPress's cold uninstall bootstrap, off
+an inline footprint array (currently empty, since the scaffold persists no state) grouped by
+owning component. Add an entry in the same change that introduces the corresponding write.
