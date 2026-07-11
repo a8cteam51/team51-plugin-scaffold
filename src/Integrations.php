@@ -2,44 +2,57 @@
 
 namespace A8C\SpecialProjects\Scaffold;
 
-use A8C\SpecialProjects\Scaffold\Integrations\WC_Subscriptions;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Logical node for all integration functionalities.
+ * Groups the plugin's third-party integrations under one `ComponentContainer` node. This is the
+ * fleet's worked example of the container pattern: a container may also do real work in its own
+ * `initialize()` (e.g. wire a filter shared by all children), but this one groups only — each
+ * child gates and wires itself.
  *
  * @since   1.0.0
  * @version 1.0.0
  */
-final class Integrations {
-	// region FIELDS AND CONSTANTS
+final class Integrations implements Component, ComponentContainer {
+	// region METHODS
 
 	/**
-	 * The WooCommerce Subscriptions integration instance.
+	 * The group itself is unconditional; each child gates itself via its own `is_needed()`.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @var     WC_Subscriptions|null
+	 * @return  bool
 	 */
-	public ?WC_Subscriptions $wc_subscriptions = null;
-
-	// endregion
-
-	// region METHODS
+	public function is_needed(): bool {
+		return true;
+	}
 
 	/**
-	 * Initializes the integrations.
+	 * Empty on purpose: this container is a pure grouping node with no wiring of its own. A
+	 * container that also does real work would put it here, ahead of its children.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function initialize(): void {
-		$this->wc_subscriptions = new WC_Subscriptions();
-		$this->wc_subscriptions->maybe_initialize();
+	public function initialize(): void {}
+
+	/**
+	 * Class names of the integrations this container groups, booted in this order.
+	 *
+	 * Add your integrations here.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  array<int, class-string<Component>>
+	 */
+	public static function get_child_component_classes(): array {
+		return array(
+			Integrations\WC_Subscriptions::class,
+		);
 	}
 
 	// endregion

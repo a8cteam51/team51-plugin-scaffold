@@ -1,0 +1,4 @@
+Significance: minor
+Type: changed
+
+Simplified the plugin-metadata cache in the requirements gate to two states (raw/translated) instead of three, fixing a defect where the cache could permanently serve untranslated data once translations became available; capability-gated the requirements-error admin notice to users who can activate plugins; and added `wp_set_script_translations()` for the block-editor script, which had none.

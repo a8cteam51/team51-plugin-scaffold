@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [trunk]
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.5', '8.6']
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-phpunit.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      php-version: ${{ matrix.php }}
+      composer-script: 'test:unit'
+      needs-wp-env: false
+
+  integration:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'WP 7.0'
+            wp-version: '7.0'
+          - name: 'WP nightly'
+            wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-phpunit.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      wp-version: ${{ matrix.wp-version || '' }}
+      wp-env-core: ${{ matrix.wp-env-core || '' }}
+      wp-env-config-file: '.wp-env.tests.json'
+      composer-script: 'test:integration'
+
+  requirements:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-phpunit.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      wp-env-config-file: '.wp-env.belowfloor.json'
+      composer-script: 'test:requirements'
+
+  e2e:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-playwright-e2e.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      artifact-slug: 'e2e'
+      composer-options: '--prefer-dist --ignore-platform-req=php+'

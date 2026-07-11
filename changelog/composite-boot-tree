@@ -1,0 +1,4 @@
+Significance: major
+Type: changed
+
+Replaced the flat component registry with a composable tree: a component implementing the new `ComponentContainer` interface declares child component classes that `Plugin::boot()` walks and boots itself (pre-order, parent before children), pruning a whole subtree unconstructed when a container's `is_needed()` is false and throwing if a class is reached twice anywhere in the graph. `Plugin` also gains a one-method whole-plugin gate, `is_needed()`, for the common "everything in this plugin requires WooCommerce" case. The `Plugin` singleton ceremony (`$instance`, `__clone`, `__wakeup`, `get_instance()`) is gone; the plugin instance now lives in a function-local static inside the `a8csp_scaffold_plugin()` accessor. The named `a8csp_scaffold_boot_plugin()` void wrapper persists as the `plugins_loaded` hook target, in place of the array callable on the old singleton's `maybe_initialize()`.

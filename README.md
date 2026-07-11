@@ -3,31 +3,40 @@
 A scaffold for A8C Special Projects / Team 51 WordPress plugins.
 
 This repository is a template plugin, not a finished product plugin. It contains
-the PHP bootstrap, block and asset build setup, Codeception test harness, and
+the PHP bootstrap, block and asset build setup, automated test suite, and
 GitHub Actions workflow used to turn the scaffold into a new plugin repository.
 
 ## What is in this repository
 
-- `team51-plugin-scaffold.php` is the scaffold plugin bootstrap. It defines the
-  plugin header, constants, translation loading, WooCommerce HPOS compatibility,
+- `a8csp-plugin-scaffold.php` is the scaffold plugin bootstrap. It defines the
+  plugin header, constants, metadata and version-compatibility helpers, admin
+  notice helpers, translation loading, WooCommerce HPOS compatibility,
   autoloader check, and requirement validation.
-- `functions-bootstrap.php` contains metadata, version compatibility, and admin
-  notice helpers that are available before the full plugin loads.
-- `functions.php` exposes the main plugin singleton and loads PHP helper files
-  from `includes/*.php`, skipping files prefixed with an underscore.
+- `functions.php` boots the plugin's component registry and loads the PHP helper files under `includes/`.
 - `src/` contains the PSR-4 classes under `A8C\SpecialProjects\Scaffold`,
-  including the main `Plugin`, block registration, and integration coordinator.
-- `src/Integrations/WC_Subscriptions.php` is an example optional integration
-  with placeholder hook and filter methods.
-- `includes/`, `models/`, `templates/`, and `languages/` are extension points
-  for helper functions, classmapped models, PHP templates, and translations.
-- `blocks/src/foobar/` is the source for an example block. `blocks/build/foobar/`
-  is the tracked build output registered by `src/Blocks.php`.
+  including the main `Plugin`, its `Component` registry, and block registration. Add the plugin's
+  components to the `COMPONENTS` list in `src/Plugin.php`; they boot in registration order.
+- `src/Integrations.php` is the worked example of a `ComponentContainer`: it groups
+  third-party integrations under one node, gating the group as a whole while each
+  child still gates itself. `src/Integrations/WC_Subscriptions.php`, its one declared
+  child, is an example optional `Component` with placeholder hook and filter methods.
+- `includes/` and `languages/` (translations) are extension points. PHP files dropped into `includes/` load automatically inside WordPress; files prefixed with an underscore are skipped.
+- `models/` is an extension point for classmapped data/model classes.
+- `templates/` is an extension point for template partials rendered by components.
+- `uninstall.php` holds the plugin's complete persisted footprint inline — every
+  option and user-meta key any component writes, grouped by owning component — and
+  deletes them during WordPress's cold uninstall bootstrap. Add an entry in the same
+  change that introduces the corresponding write; a component that persists state
+  cross-references its keys with `@see uninstall.php` in its class docblock.
+- `blocks/src/foobar/` is the source for an example block. `blocks/build/` is the
+  tracked build output. `npm run build` generates `blocks/build/blocks-manifest.php`;
+  it is committed with that output, and `src/Blocks.php` uses it to register all
+  built blocks as one metadata collection.
 - `assets/js/src/editor.js` defines the shared editor hook entry point.
   `assets/js/build/` contains the tracked build output used in the editor.
-- `tests/` contains the WPBrowser / Codeception integration and end-to-end test
-  configuration. See `tests/README.md` for the local test workflow.
-- `.github/workflows/` contains PHP, JavaScript, CSS, Codeception, syntax, and
+- `tests/` contains the automated test suite. See `tests/README.md` for the
+  local test workflow.
+- `.github/workflows/` contains PHP, JavaScript, CSS, syntax, and
   scaffold-fill workflows.
 
 ## Scaffold generation
@@ -40,7 +49,7 @@ repository itself.
 For generated repositories, the workflow:
 
 1. Renames `README.scaffold.md` to `README.md`.
-2. Renames `team51-plugin-scaffold.php` to the generated repository name.
+2. Renames `a8csp-plugin-scaffold.php` to the generated repository name.
 3. Runs `.github/workflows/fill-in-scaffold.mjs` to replace scaffold strings.
 4. Commits and pushes the renamed and filled files.
 
@@ -56,29 +65,34 @@ The script replaces the following tracked template values:
   `README.md`.
 - `A8CSP Plugin Scaffold`, `A scaffold for A8C Special Projects plugins.`,
   `team51-plugin-scaffold`, and `a8csp-scaffold` outside the generated README.
+- `a8csp-plugin-scaffold.php` (the entry file, already renamed to the repository
+  name by this point) with the generated repository name.
+- `a8csp-plugin-scaffold` (elsewhere — the wp-env mapping and Playwright slug)
+  with the title-derived slug.
 - `A8C\SpecialProjects\Scaffold` with a title-derived namespace.
 - `a8csp_scaffold` and `A8CSP_SCAFFOLD` with the configured PHP prefix.
 
 After generation, review the remaining example identifiers that the script does
-not replace, including the `wpcomsp-scaffold/foobar` block metadata, example
-block copy, `window.wpcomsp_scaffold`, the `team51_donations` localized script
-object, and the placeholder WooCommerce Subscriptions hook methods.
+not replace, including the example block copy (block title, description, and
+sample text) and the placeholder WooCommerce Subscriptions hook methods.
 
 ## Runtime requirements
 
 The tracked scaffold files declare these runtime targets:
 
-- WordPress `6.9` in the plugin header.
-- PHP `>=8.3` in `composer.json` and `8.3` in `.wp-env.json`.
-- WooCommerce `9.5` in the plugin header and `wpackagist-plugin/woocommerce`
-  `9.5.*` as a development dependency.
+- WordPress `7.0` in the plugin header.
+- PHP `>=8.5` in `composer.json` and `8.5` in `.wp-env.json`.
+- WooCommerce `10.0` in the plugin header and `wpackagist-plugin/woocommerce`
+  `10.9.*` as a development dependency.
 - Composer for PHP dependency installation and autoload generation.
-- Node.js `>=20.0` and npm `>=10.0` for JavaScript, CSS, block, and markdown
+- Node.js `>=26` and npm `>=11` for JavaScript, CSS, block, and markdown
   tooling.
-- Docker for the `wp-env` and Selenium-based test workflow.
+- Docker for the `wp-env` local environment.
 
-The plugin checks for WooCommerce before initializing its components, and the
-main bootstrap declares compatibility with WooCommerce custom order tables.
+The plugin boots its component registry unconditionally. The WooCommerce-dependent example
+component (`src/Integrations/WC_Subscriptions.php`) gates itself through `is_needed()`, checking
+that WooCommerce is active and meets the `WC requires at least` header floor. The main bootstrap
+declares HPOS (`custom_order_tables`) compatibility whether or not WooCommerce is active.
 
 ## Development
 
@@ -126,8 +140,8 @@ composer run-script internationalize
 
 ## Quality checks
 
-PHP checks are configured through `.phpcs.xml`, `.phpmd.xml`, `.phpstan.neon`,
-and the shared `a8cteam51/team51-configs` package:
+PHP checks are configured through `.phpcs.xml`, `.phpcs.tests.xml`, `.phpstan.neon`,
+`.composer-require-checker.json`, and the shared `a8cteam51/team51-configs` package:
 
 ```sh
 composer run-script lint:php
@@ -143,32 +157,31 @@ npm run lint:pkg-json
 npm run lint:readme-md
 ```
 
-The GitHub workflows run these checks on `trunk`, and the JavaScript/CSS and PHP
-syntax workflows also run for `develop` pull requests and pushes.
+The GitHub workflows, including the JavaScript/CSS and PHP syntax workflows, run
+on `trunk` pushes and on pull requests.
 
 ## Tests
 
-The test harness uses `lucatume/wp-browser` and Codeception. The GitHub
-Codeception workflow runs integration and end-to-end suites across PHP `8.3` and
-`8.4`, and WordPress versions including `6.6`, `6.7`, and `master`.
-
-For local tests, follow `tests/README.md`. In summary, install Composer and npm
-dependencies, run a Selenium Chromium container with host networking, copy
-`tests/.dist.env` to `tests/.env`, export the database fixture, and run:
+The suite has three PHPUnit tiers (Unit, Integration, Requirements) plus a Playwright end-to-end
+suite. See `tests/README.md` for how to run each suite, the wp-env ports involved, and why the rig
+runs PHPUnit 13 against plain `TestCase` instead of `WP_UnitTestCase`.
 
 ```sh
-npm run tests:run
+composer test:unit
+npm run wp-env:tests:start && composer test:integration
+composer test:requirements
+npm run test:e2e
 ```
-
-`tests:export-db` writes `tests/Support/Data/dump.sql`, which is intentionally
-ignored by Git.
 
 ## Maintenance notes
 
-- Customize source files under `src/`, `includes/`, `blocks/src/`, `assets/js/src/`,
-  `assets/css/src/`, `models/`, `templates/`, and `languages/`.
+- Customize source files under `src/`, `includes/`, `models/`, `templates/`,
+  `blocks/src/`, `assets/js/src/`, `assets/css/src/`, and `languages/`.
 - Rebuild generated assets after changing block or editor sources. The tracked
   generated outputs live in `blocks/build/` and `assets/js/build/`.
+- Composer autoloading uses PSR-4 for `src/` plus a classmap for `models/`. Files
+  loaded from `includes/` and classes loaded through either Composer mapping may
+  carry an `ABSPATH` guard, but any file added to Composer's
+  `autoload.files` is eagerly required in non-WordPress CLI processes and must not
+  carry an unconditional guard that exits when `ABSPATH` is undefined.
 - Do not commit dependency directories such as `vendor/` or `node_modules/`.
-- The tracked `LICENSE` file and plugin header use GPL v3 terms, while
-  `composer.json` and `package.json` currently declare `GPL-2.0-or-later`.

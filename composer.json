@@ -27,16 +27,21 @@
     }
   ],
   "require": {
-    "php": ">=8.3",
+    "php": ">=8.5",
     "ext-json": "*"
   },
   "require-dev": {
-    "a8cteam51/team51-configs": "dev-trunk",
+    "automattic/jetpack-changelogger": "^6",
+    "phpcompatibility/phpcompatibility-wp": "^3@alpha",
+    "phpcompatibility/php-compatibility": "^10@alpha",
+    "phpcompatibility/phpcompatibility-paragonie": "^2@alpha",
+    "a8cteam51/team51-configs": "dev-update/php85-wp70-floors as dev-trunk",
+    "phpunit/phpunit": "^13",
 
     "wp-cli/i18n-command": "^2",
-    "lucatume/wp-browser": "^4",
 
-    "wpackagist-plugin/woocommerce": "9.5.*",
+    "wpackagist-plugin/woocommerce": "10.9.*",
+    "php-stubs/woocommerce-stubs": "^10",
 
     "roave/security-advisories": "dev-latest"
   },
@@ -50,21 +55,30 @@
     ]
   },
   "autoload-dev": {
-
+    "psr-4": {
+      "A8C\\SpecialProjects\\Scaffold\\Tests\\": "tests/"
+    }
   },
 
   "scripts": {
     "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
+    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
+    "packages-update": [
+      "@composer clear-cache",
+      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
+    ],
 
     "format:php": "phpcbf --standard=./.phpcs.xml --basepath=. ./ -v",
     "lint:php": [
       "@lint:php:phpcs",
-      "@lint:php:phpmd",
-      "@lint:php:phpstan"
+      "@lint:php:phpcs:tests",
+      "@lint:php:phpstan",
+      "@lint:php:composer-require-checker"
     ],
     "lint:php:phpcs": "phpcs --standard=./.phpcs.xml --basepath=. ./ -v",
-    "lint:php:phpmd": "phpmd ./ ansi ./.phpmd.xml -v",
+    "lint:php:phpcs:tests": "phpcs --standard=./.phpcs.tests.xml --basepath=. ./tests -v",
     "lint:php:phpstan": "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G",
+    "lint:php:composer-require-checker": "@php -d memory_limit=1G vendor/bin/composer-require-checker check --config-file=./.composer-require-checker.json ./composer.json",
 
     "internationalize": [
       "@i18n:makepot",
@@ -77,35 +91,49 @@
     "i18n:makemo": "wp i18n make-mo ./languages/",
     "i18n:makephp": "wp i18n make-php ./languages/",
 
-    "tests:clean": "@php ./vendor/bin/codecept clean",
-    "tests:run": [
-      "@tests:run:integration",
-      "@tests:run:end-to-end"
+    "test": "@php vendor/bin/phpunit",
+    "test:unit": "@php vendor/bin/phpunit --testsuite=Unit",
+    "test:unit:mutation": "@php vendor/bin/infection --threads=max",
+    "test:integration": "npm --prefix=. run test:integration",
+    "test:requirements": "npm --prefix=. run test:requirements",
+
+    "quality-check": [
+      "@lint:php",
+      "@test:unit"
     ],
-    "tests:run:integration": [
-      "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run Integration --debug"
-    ],
-    "tests:run:end-to-end": [
-      "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run EndToEnd  --debug"
+    "quality-check:all": [
+      "@quality-check",
+      "@test:unit:mutation"
     ],
 
-    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
-    "packages-update": [
-      "@composer clear-cache",
-      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
-    ]
+    "changelog:add": "@php vendor/bin/changelogger add",
+    "changelog:validate": "@php vendor/bin/changelogger validate",
+    "changelog:write": "@php vendor/bin/changelogger write"
   },
   "config": {
     "allow-plugins": {
       "composer/*": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "phpstan/extension-installer": true
+      "phpstan/extension-installer": true,
+      "infection/extension-installer": true
     }
   },
 
   "extra": {
+    "changelogger": {
+      "changelog": "CHANGELOG.md",
+      "changes-dir": "changelog",
+      "versioning": "semver",
+      "default-type": "changed",
+      "types": {
+        "added": "Added",
+        "changed": "Changed",
+        "deprecated": "Deprecated",
+        "removed": "Removed",
+        "fixed": "Fixed",
+        "security": "Security"
+      }
+    },
     "installer-paths": {
       "vendor/wpackagist-plugin/{$name}/": [
         "type:wordpress-plugin"

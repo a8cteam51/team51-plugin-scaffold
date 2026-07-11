@@ -1,0 +1,21 @@
+name: CodeQL
+
+on:
+  pull_request:
+  push:
+    branches: [trunk]
+  schedule:
+    # Weekly Monday 08:00 UTC -- catches newly published CodeQL query findings between workflow changes.
+    - cron: '0 8 * * 1'
+
+permissions: {}
+
+jobs:
+  codeql:
+    permissions:
+      contents: read
+      actions: read
+      # CodeQL's SARIF upload in the called workflow needs this -- a reusable
+      # workflow can never escalate beyond what this job grants.
+      security-events: write
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-codeql.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors

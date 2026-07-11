@@ -1,0 +1,4 @@
+Significance: minor
+Type: changed
+
+Deleted the empty models/ and templates/ directories and their composer classmap/include references.

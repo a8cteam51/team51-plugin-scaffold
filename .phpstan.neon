@@ -4,3 +4,14 @@ includes:
 parameters:
     scanDirectories:
         - vendor/wpackagist-plugin/woocommerce
+    # The included config's paths[] autodetection looks for "{basename(cwd)}.php" and
+    # functions-bootstrap.php by those literal names; neither exists post-fold, so the
+    # entry file (and the a8csp_scaffold_get_plugin_* functions it now defines) is added
+    # explicitly here rather than relying on that detection.
+    paths:
+        - %currentWorkingDirectory%/a8csp-plugin-scaffold.php
+    WPCompat:
+        # wp-compat's own fallback guesses "{cwd}/{basename(cwd)}.php", which only holds
+        # by coincidence when a repo's directory name matches its entry file; declared
+        # explicitly so it doesn't depend on that coincidence.
+        pluginFile: %currentWorkingDirectory%/a8csp-plugin-scaffold.php
