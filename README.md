@@ -1,7 +1,7 @@
 # A8CSP Plugin Scaffold
 
 > [!IMPORTANT]
-> **Superseded by [a8csp-plugin-template](https://github.com/a8cteam51/a8csp-plugin-template).** Start new plugins from it. Plugins already generated from it are independent repositories and keep working as they are.
+> **Superseded by [a8csp-plugin-template](https://github.com/a8cteam51/a8csp-plugin-template).** Start new plugins from it. Plugins already generated from this scaffold are independent copies; archiving this repository doesn't change them.
 
 A scaffold for A8C Special Projects / Team 51 WordPress plugins.
 
