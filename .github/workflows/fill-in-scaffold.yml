@@ -7,7 +7,7 @@ on:
 
 jobs:
   fill-scaffold:
-    if: github.repository != 'a8cteam51/team51-plugin-scaffold' # Don't run this on the scaffold itself.
+    if: github.repository != 'a8cteam51/team51-plugin-scaffold'
 
     runs-on: ubuntu-latest
     permissions:
@@ -32,10 +32,18 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
           git mv --force README.scaffold.md README.md
-          git mv team51-plugin-scaffold.php "$REPO_NAME.php"
+          git mv a8csp-plugin-scaffold.php "$REPO_NAME.php"
 
       - name: Commit the changed files.
         run: git commit -am "chore -- rename files from scaffolding"
+
+      - name: Clear the changelog fragments.
+        run: |
+          # Changelog fragments describe the scaffold's own development history, not the new plugin's, so they must not carry over into a freshly generated plugin.
+          find changelog -type f ! -name '.gitkeep' -delete
+
+      - name: Commit the changed files.
+        run: git commit -am "chore -- clear scaffold changelog fragments"
 
       - name: Perform string replacements within the files.
         env:

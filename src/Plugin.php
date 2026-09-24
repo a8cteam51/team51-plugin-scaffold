@@ -10,131 +10,93 @@ defined( 'ABSPATH' ) || exit;
  * @since   1.0.0
  * @version 1.0.0
  */
-class Plugin {
+final class Plugin {
 	// region FIELDS AND CONSTANTS
 
 	/**
-	 * The blocks component.
+	 * Add the plugin's top-level components here; they boot in registration order. A component
+	 * implementing `ComponentContainer` boots its declared children immediately after itself.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @var     Blocks|null
+	 * @var     array<int, class-string<Component>>
 	 */
-	public ?Blocks $blocks = null;
+	private const COMPONENTS = array(
+		Blocks::class,
+		Integrations::class,
+	);
 
 	/**
-	 * The integrations component.
+	 * Whether `boot()` has already run.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @var     Integrations|null
+	 * @var     bool
 	 */
-	public ?Integrations $integrations = null;
-
-	// endregion
-
-	// region MAGIC METHODS
-
-	/**
-	 * Plugin constructor.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 */
-	protected function __construct() {
-		/* Empty on purpose. */
-	}
-
-	/**
-	 * Prevent cloning.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  void
-	 */
-	private function __clone() {
-		/* Empty on purpose. */
-	}
-
-	/**
-	 * Prevent unserializing.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  void
-	 */
-	public function __wakeup() {
-		/* Empty on purpose. */
-	}
+	private bool $booted = false;
 
 	// endregion
 
 	// region METHODS
 
 	/**
-	 * Returns the singleton instance of the plugin.
+	 * Returns true if the plugin should boot on the current site.
+	 *
+	 * A plugin that is gated as a whole — e.g. one that requires WooCommerce for everything it
+	 * does — expresses that check here once instead of in every component.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return  Plugin
+	 * @return  bool
 	 */
-	public static function get_instance(): self {
-		static $instance = null;
-
-		if ( null === $instance ) {
-			$instance = new self();
-		}
-
-		return $instance;
-	}
-
-	/**
-	 * Returns true if all the plugin's dependencies are met.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  true|\WP_Error
-	 */
-	public function is_active(): bool|\WP_Error {
-		// Check if WooCommerce is active.
-		if ( ! \class_exists( 'WooCommerce' ) || ! \defined( 'WC_VERSION' ) ) {
-			return new \WP_Error( 'woocommerce_not_active', 'WooCommerce is not active.' );
-		}
-
-		// Get the minimum WooCommerce version required from the plugin's header, if needed.
-		$minimum_wc_version = a8csp_scaffold_get_plugin_metadata( \WC_Plugin_Updates::VERSION_REQUIRED_HEADER );
-		if ( \is_null( $minimum_wc_version ) ) {
-			return true;
-		}
-
-		// Check if WooCommerce version is supported.
-		if ( ! \version_compare( WC_VERSION, $minimum_wc_version, '>=' ) ) {
-			return new \WP_Error( 'woocommerce_version_not_supported', \sprintf( 'WooCommerce version %s or newer is required.', $minimum_wc_version ) );
-		}
-
+	public function is_needed(): bool {
 		return true;
 	}
 
 	/**
-	 * Initializes the plugin components.
+	 * Boots one component and recurses into its declared children: gate, initialize, descend. A
+	 * component whose `is_needed()` returns false prunes its whole subtree unconstructed. A class
+	 * reached twice anywhere in the graph is a developer error.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
+	 * @param   class-string<Component>              $component_class The component class to boot.
+	 * @param   array<class-string<Component>, true> $seen             Component classes already
+	 *                                                                 reached in the graph.
+	 *
+	 * @throws  \LogicException When a component class appears more than once in the graph.
+	 *
 	 * @return  void
 	 */
-	protected function initialize(): void {
-		$this->blocks = new Blocks();
-		$this->blocks->initialize();
+	private function boot_component( string $component_class, array &$seen ): void {
+		if ( isset( $seen[ $component_class ] ) ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Registered class names are developer-controlled identifiers in a LogicException.
+			throw new \LogicException(
+				\sprintf(
+					'Component %s is registered more than once; a component may belong to a single parent.',
+					$component_class
+				)
+			);
+			// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
+		}
+		$seen[ $component_class ] = true;
 
-		$this->integrations = new Integrations();
-		$this->integrations->initialize();
+		$component = new $component_class();
+		if ( ! $component->is_needed() ) {
+			return;
+		}
+
+		$component->initialize();
+
+		if ( $component instanceof ComponentContainer ) {
+			foreach ( $component::get_child_component_classes() as $child_class ) {
+				$this->boot_component( $child_class, $seen );
+			}
+		}
 	}
 
 	// endregion
@@ -142,21 +104,25 @@ class Plugin {
 	// region HOOKS
 
 	/**
-	 * Initializes the plugin components if WooCommerce is activated.
+	 * Boots the plugin's component tree when the plugin reports itself as needed. Idempotent: only
+	 * the first eligible call has any effect.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function maybe_initialize(): void {
-		$is_active = $this->is_active();
-		if ( is_wp_error( $is_active ) ) {
-			a8csp_scaffold_output_requirements_error( $is_active );
+	public function boot(): void {
+		if ( $this->booted || ! $this->is_needed() ) {
 			return;
 		}
 
-		$this->initialize();
+		$this->booted = true;
+
+		$seen = array();
+		foreach ( self::COMPONENTS as $component_class ) {
+			$this->boot_component( $component_class, $seen );
+		}
 	}
 
 	// endregion

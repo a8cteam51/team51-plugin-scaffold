@@ -2,12 +2,12 @@
 
 **Contributors:** wpcomspecialprojects
 **Tags:**
-**Requires at least:** 6.9
-**Tested up to:** 6.9
-**Requires PHP:** 8.3
+**Requires at least:** 7.0
+**Tested up to:** 7.0
+**Requires PHP:** 8.5
 **Stable tag:** 1.0.0
-**License:** GPL v3 or later
-**License URI:** https://www.gnu.org/licenses/gpl-3.0.html
+**License:** GPL v2 or later
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
 EXAMPLE_REPO_DESCRIPTION
 
@@ -17,7 +17,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo ligula, aliquam
 
 ## Installation
 
-This plugin requires WooCommerce 7.4+ to run. If you're running a lower version, please update first. After you made sure that you're running a supported version of WooCommerce, you may install `Team51 Plugin Scaffold` either manually or through your site's plugins page.
+This plugin boots whether or not WooCommerce is active. The example WooCommerce Subscriptions integration initializes only when WooCommerce is active and meets the `WC requires at least` version declared in the plugin header. Install `Team51 Plugin Scaffold` either manually or through your site's plugins page.
 
 ### INSTALL FROM WITHIN WORDPRESS
 

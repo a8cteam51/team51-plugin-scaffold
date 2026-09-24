@@ -1,0 +1,29 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches: [trunk]
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-php-lint.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      scripts: '["lint:php:phpcs", "lint:php:phpcs:tests", "lint:php:phpstan", "lint:php:composer-require-checker"]'
+
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+      - run: composer changelog:validate

@@ -1,0 +1,38 @@
+{
+    "scan-files": [
+        "vendor/php-stubs/wordpress-stubs/wordpress-stubs.php",
+        "vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php",
+        "functions.php",
+        "a8csp-plugin-scaffold.php",
+        "includes/assets.php"
+    ],
+    "symbol-whitelist": [
+        "ARRAY_A",
+        "OBJECT",
+        "EP_NONE",
+        "GETID3_TEMP_DIR",
+        "MAX_SIZE",
+        "FTP_ASCII",
+        "FTP_AUTOASCII",
+        "UNDEFINED",
+        "DOMDocument",
+        "DOMXPath",
+        "Redis",
+        "Psr\\Http\\Client\\ClientInterface",
+        "Psr\\Http\\Message\\RequestFactoryInterface",
+        "Psr\\Http\\Message\\ResponseInterface",
+        "Psr\\Http\\Message\\UriFactoryInterface",
+        "Psr\\SimpleCache\\CacheInterface",
+        "ABSPATH",
+        "WP_PLUGIN_DIR",
+        "DAY_IN_SECONDS",
+        "HOUR_IN_SECONDS",
+        "MONTH_IN_SECONDS",
+        "WEEK_IN_SECONDS",
+        "Automattic\\WooCommerce\\Blocks\\Assets\\Api",
+        "Automattic\\WooCommerce\\EmailEditor\\Engine\\Renderer\\ContentRenderer\\Rendering_Context",
+        "Automattic\\WooCommerce\\Internal\\DataStores\\Orders\\CustomOrdersTableController",
+        "Automattic\\WooCommerce\\Internal\\DataStores\\Orders\\DataSynchronizer",
+        "Automattic\\WooCommerce\\Internal\\Features\\FeaturesController"
+    ]
+}

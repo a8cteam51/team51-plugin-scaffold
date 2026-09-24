@@ -1,0 +1,18 @@
+name: Audit
+
+on:
+  pull_request:
+  push:
+    branches: [trunk]
+  schedule:
+    # Weekly Monday 07:00 UTC -- catches newly disclosed advisories between dependency bumps.
+    - cron: '0 7 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  supply-chain:
+    uses: a8cteam51/team51-configs/.github/workflows/reusable-supply-chain-audit.yml@adec0d882cd5064a7bcc9533d3ebd8bab4a90d5c # update/php85-wp70-floors
+    with:
+      npm-audit-flags: '--audit-level=high --omit=dev'

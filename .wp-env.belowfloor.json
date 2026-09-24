@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/wp-env.schema.json",
+  "core": "WordPress/WordPress#tags/6.9.4",
+  "phpVersion": "8.5",
+  "port": 8891,
+  "testsEnvironment": false,
+  "mappings": {
+    "wp-content/plugins/a8csp-plugin-scaffold": ".",
+    "wp-content/plugins/woocommerce": "./vendor/wpackagist-plugin/woocommerce"
+  },
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true
+  }
+}

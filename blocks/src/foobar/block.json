@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpcomsp-scaffold/foobar",
+	"name": "a8csp-scaffold/foobar",
 	"version": "0.1.0",
 	"title": "FooBar Block",
 	"category": "widgets",
@@ -10,7 +10,7 @@
 	"supports": {
 		"html": false
 	},
-	"textdomain": "wpcomsp-scaffold",
+	"textdomain": "a8csp-scaffold",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"

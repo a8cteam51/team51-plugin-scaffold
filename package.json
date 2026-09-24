@@ -14,13 +14,20 @@
   "repository": "https://github.com/a8cteam51/team51-plugin-scaffold",
   "bugs": "https://github.com/a8cteam51/team51-plugin-scaffold/issues",
   "engines": {
-    "node": ">=20.0",
-    "npm": ">=10.0"
+    "node": ">=26",
+    "npm": ">=11"
   },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.0.1",
+    "@playwright/test": "^1.61.1",
+    "@wordpress/block-editor": "^15.23.0",
+    "@wordpress/blocks": "^15.23.0",
     "@wordpress/browserslist-config": "^6.8.1",
+    "@wordpress/dom-ready": "^4.50.0",
+    "@wordpress/e2e-test-utils-playwright": "^1.50.0",
     "@wordpress/env": "^11.8.0",
+    "@wordpress/hooks": "^4.50.0",
+    "@wordpress/i18n": "^6.23.0",
     "@wordpress/postcss-plugins-preset": "^5.8.3",
     "@wordpress/scripts": "^32.4.0",
     "npm-run-all": "^4.1.5",
@@ -44,9 +51,18 @@
     "extends @wordpress/browserslist-config"
   ],
   "scripts": {
+    "packages-install": "npm install",
+    "packages-update": "npm update",
+    "packages-update:wp": "wp-scripts packages-update --dist-tag=wp-7.0",
+
     "build": "npm-run-all --sequential build:**",
     "build:blocks": "wp-scripts build --webpack-src-dir=blocks/src --output-path=blocks/build",
+    "build:blocks-manifest": "wp-scripts build-blocks-manifest --input=blocks/build --output=blocks/build/blocks-manifest.php",
     "build:assets:scripts": "wp-scripts build assets/js/src/*.js --output-path=assets/js/build",
+    "start": "npm-run-all --parallel start:**",
+    "start:blocks": "wp-scripts start --webpack-src-dir=blocks/src --output-path=blocks/build",
+    "start:assets:scripts": "wp-scripts start assets/js/src/*.js --output-path=assets/js/build",
+
     "format": "npm-run-all --sequential format:**",
     "format:scripts": "wp-scripts format blocks assets/js --no-error-on-unmatched-pattern",
     "format:styles": "npm run lint:styles -- --fix",
@@ -55,23 +71,23 @@
     "lint:styles": "wp-scripts lint-style blocks/**/*.{css,sass,scss} assets/css/**/*.{css,sass,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
-    "packages-update": "wp-scripts packages-update --dist-tag=wp-6.7",
-    "check-engines": "wp-scripts check-engines",
-    "check-licenses": "wp-scripts check-licenses",
-    "selenium:start": "docker container start selenium-chromium",
-    "selenium:stop": "docker container stop selenium-chromium",
-    "start": "npm-run-all --parallel start:**",
-    "start:blocks": "wp-scripts start --webpack-src-dir=blocks/src --output-path=blocks/build",
-    "start:assets:scripts": "wp-scripts start assets/js/src/*.js --output-path=assets/js/build",
-    "tests:start": "wp-env start && npm run selenium:start",
-    "tests:run": "npm run tests:start && npm run tests:run:integration && npm run tests:run:end-to-end",
-    "tests:run:integration": "wp-env run tests-wordpress --env-cwd=wp-content/plugins/a8csp-plugin-scaffold composer run-script tests:run:integration",
-    "tests:run:end-to-end": "wp-env run tests-wordpress --env-cwd=wp-content/plugins/a8csp-plugin-scaffold composer run-script tests:run:end-to-end",
-    "tests:output-wp-path": "npm run wp-env install-path",
-    "tests:export-db": "npm run wp-env run tests-cli wp db export wp-content/plugins/a8csp-plugin-scaffold/tests/Support/Data/dump.sql",
+
+    "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
     "wp-env:update": "wp-env start --update",
     "wp-env:stop": "wp-env stop",
-    "wp-env": "wp-env"
+    "wp-env:tests:start": "wp-env --config .wp-env.tests.json start",
+    "wp-env:tests:stop": "wp-env --config .wp-env.tests.json stop",
+    "wp-env:belowfloor:start": "wp-env --config .wp-env.belowfloor.json start",
+    "wp-env:belowfloor:stop": "wp-env --config .wp-env.belowfloor.json stop",
+
+    "audit": "composer audit --abandoned=report && npm audit",
+    "audit:fix": "npm audit fix",
+    "check:engines": "wp-scripts check-engines",
+    "check:licenses": "wp-scripts check-licenses",
+
+    "test:integration": "wp-env --config .wp-env.tests.json run cli --env-cwd=wp-content/plugins/a8csp-plugin-scaffold vendor/bin/phpunit --testsuite=Integration",
+    "test:requirements": "wp-env --config .wp-env.belowfloor.json run cli --env-cwd=wp-content/plugins/a8csp-plugin-scaffold vendor/bin/phpunit --testsuite=Requirements",
+    "test:e2e": "playwright test --config=playwright.config.js"
   }
 }
